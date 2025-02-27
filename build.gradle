@@ -59,9 +59,10 @@ repositories {
         url "https://maven.shedaniel.me/"
     }
     maven {
-        // CC:Tweaked
-        name = "Squiddev maven cct"
-        url = 'https://squiddev.cc/maven/'
+        url "https://maven.squiddev.cc"
+        content {
+            includeGroup("cc.tweaked")
+        }
     }
     exclusiveContent {
         forRepository {
@@ -91,12 +92,12 @@ dependencies {
 //    runtimeOnly "maven.modrinth:thermal-expansion:${thermal_version}"
 //    runtimeOnly "maven.modrinth:thermal-foundation:${thermal_version}"
 
-    //runtimeOnly "maven.modrinth:mekanism:${mekanism_version}"            // Mekanism: Core
-    //runtimeOnly "maven.modrinth:mekanism-additions:${mekanism_version}"  // Mekanism: Additions
-    //runtimeOnly "maven.modrinth:mekanism-generators:${mekanism_version}" // Mekanism: Generators
-    //runtimeOnly "maven.modrinth:mekanism-tools:${mekanism_version}"      // Mekanism: Tools
-
-    runtimeOnly "maven.modrinth:powah:${powah_version}-neoforge"
+//    runtimeOnly "maven.modrinth:mekanism:${mekanism_version}"            // Mekanism: Core
+//    runtimeOnly "maven.modrinth:mekanism-additions:${mekanism_version}"  // Mekanism: Additions
+//    runtimeOnly "maven.modrinth:mekanism-generators:${mekanism_version}" // Mekanism: Generators
+//    runtimeOnly "maven.modrinth:mekanism-tools:${mekanism_version}"      // Mekanism: Tools
+//
+//    runtimeOnly "maven.modrinth:powah:${powah_version}-neoforge"
 
     implementation "maven.modrinth:architectury-api:${architectury_version}+neoforge"
 
