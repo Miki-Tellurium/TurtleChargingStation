@@ -33,7 +33,7 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
 
     public TurtleChargingStationBlock() {
         super(Properties.of()
-                .mapColor(MapColor.METAL)
+                .mapColor(MapColor.COLOR_BLACK)
                 .requiresCorrectToolForDrops()
                 .strength(3.0F, 6.0F)
                 .sound(SoundType.METAL));
