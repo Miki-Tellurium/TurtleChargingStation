@@ -45,63 +45,62 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
     // Block entity stuff
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new TurtleChargingStationBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
+        return new TurtleChargingStationBlockEntity(pos, blockState);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
 
     // Functionality
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-                                 BlockHitResult pHit) {
-        if (!pLevel.isClientSide) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
+    public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand interactionHand,
+                                 BlockHitResult hitResult) {
+        if (!level.isClientSide) {
+            BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof TurtleChargingStationBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer) pPlayer, (TurtleChargingStationBlockEntity)entity, pPos);
+                NetworkHooks.openScreen((ServerPlayer) player, (TurtleChargingStationBlockEntity)entity, pos);
                 ModMessages.sendToClients(
-                        new EnergySyncS2CPacket(((TurtleChargingStationBlockEntity) entity).getEnergyStorage().getEnergyStored(), pPos));
+                        new EnergySyncS2CPacket(((TurtleChargingStationBlockEntity) entity).getEnergyStorage().getEnergyStored(), pos));
             } else {
                 throw new IllegalStateException("Container provider is missing");
             }
         }
 
-        return InteractionResult.sidedSuccess(pLevel.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
-    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
-        if (!pOldState.is(pState.getBlock())) {
-            checkPoweredState(pLevel, pPos, pState);
+    public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        if (!oldState.is(blockState.getBlock())) {
+            this.checkPoweredState(level, pos, blockState);
         }
     }
 
     @Override
-    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
-        this.checkPoweredState(pLevel, pPos, pState);
+    public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        this.checkPoweredState(level, pos, blockState);
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker getTicker(Level pLevel, BlockState pState,
-                                                               BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.TURTLE_CHARGING_STATION.get(),
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, ModBlockEntities.TURTLE_CHARGING_STATION.get(),
                 TurtleChargingStationBlockEntity::tick);
     }
 
-    private void checkPoweredState(Level level, BlockPos pos, BlockState state) {
+    private void checkPoweredState(Level level, BlockPos pos, BlockState blockState) {
         boolean flag = !level.hasNeighborSignal(pos);
-        if (flag != state.getValue(ENABLED)) {
-            level.setBlock(pos, state.setValue(ENABLED, Boolean.valueOf(flag)), 2);
+        if (flag != blockState.getValue(ENABLED)) {
+            level.setBlock(pos, blockState.setValue(ENABLED, flag), 2);
         }
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(ENABLED);
-        pBuilder.add(CHARGING);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(ENABLED);
+        builder.add(CHARGING);
     }
 
 }
