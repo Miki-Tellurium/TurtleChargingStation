@@ -1,6 +1,6 @@
 package com.mikitellurium.turtlecharginstation.gui.element;
 
-import com.mikitellurium.turtlecharginstation.util.SimpleSprite;
+import com.mikitellurium.telluriumforge.util.SimpleSprite;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
@@ -22,19 +22,19 @@ public class EnergyStorageElement {
     }
 
     public void draw(GuiGraphics graphics) {
-        RenderSystem.setShaderTexture(0, sprite.getTexture());
-        graphics.blit(sprite.getTexture(), area.getX(), area.getY(), 0, 0, area.getWidth(), area.getHeight(),
-                sprite.getWidth(), sprite.getHeight());
+        RenderSystem.setShaderTexture(0, sprite.texture());
+        graphics.blit(sprite.texture(), area.getX(), area.getY(), 0, 0, area.getWidth(), area.getHeight(),
+                sprite.width(), sprite.height());
         drawEnergyLevel(graphics);
     }
 
     private void drawEnergyLevel(GuiGraphics graphics) {
-        graphics.blit(sprite.getTexture(), area.getX(), area.getY() + getEnergyLevel(),18, getEnergyLevel(),
-                area.getWidth(), area.getHeight() - getEnergyLevel(), sprite.getWidth(), sprite.getHeight());
+        graphics.blit(sprite.texture(), area.getX(), area.getY() + getEnergyLevel(),18, getEnergyLevel(),
+                area.getWidth(), area.getHeight() - getEnergyLevel(), sprite.width(), sprite.height());
     }
     // Get the pixel in the texture to start drawing at relative to the amount of stored energy
     private int getEnergyLevel() {
-        return sprite.getHeight() - (int)Math.floor((area.getHeight()*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored())));
+        return sprite.height() - (int)Math.floor((area.getHeight()*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored())));
     }
     // Energy tooltip
     public List<Component> getTooltips() {

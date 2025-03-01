@@ -1,13 +1,11 @@
 package com.mikitellurium.turtlecharginstation.gui;
 
+import com.mikitellurium.telluriumforge.util.MouseUtils;
+import com.mikitellurium.telluriumforge.util.SimpleSprite;
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.gui.element.EnergyStorageElement;
 import com.mikitellurium.turtlecharginstation.gui.element.TurtleInfoElement;
-import com.mikitellurium.turtlecharginstation.util.MouseUtil;
-import com.mikitellurium.turtlecharginstation.util.SimpleSprite;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -74,7 +72,7 @@ public class TurtleChargingStationGui extends AbstractContainerScreen<TurtleChar
 
     private void renderEnergyAreaTooltips(GuiGraphics graphics, int pMouseX, int pMouseY, int x, int y) {
         Rect2i area = energyStorage.getArea();
-        if(MouseUtil.isAboveArea(pMouseX, pMouseY, area.getX(), area.getY(), area.getWidth(), area.getHeight())) {
+        if(MouseUtils.isAboveArea(pMouseX, pMouseY, area.getX(), area.getY(), area.getWidth(), area.getHeight())) {
             graphics.renderTooltip(this.font, energyStorage.getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
