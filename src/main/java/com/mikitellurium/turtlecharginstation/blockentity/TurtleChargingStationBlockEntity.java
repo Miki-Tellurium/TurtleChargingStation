@@ -102,10 +102,6 @@ public class TurtleChargingStationBlockEntity extends BlockEntity implements Tic
         } else {
             level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, false), 2);
         }
-
-        System.out.println(level.getBlockState(pos));
-
-        //debugRecharge(level, pos, state, this);
     }
 
     private void refuelTurtle(TurtleBlockEntity turtle) {
