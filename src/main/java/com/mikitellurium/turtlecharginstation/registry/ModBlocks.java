@@ -1,8 +1,8 @@
 package com.mikitellurium.turtlecharginstation.registry;
 
-import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.block.ThunderchargeDynamoBlock;
 import com.mikitellurium.turtlecharginstation.block.TurtleChargingStationBlock;
+import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -15,8 +15,7 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
 
-    public static DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, TurtleChargingStationMod.MOD_ID);
+    public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, FastLoc.modId());
 
     public static final RegistryObject<Block> TURTLE_CHARGING_STATION_BLOCK = registerBlock("turtle_charging_station",
             TurtleChargingStationBlock::new);

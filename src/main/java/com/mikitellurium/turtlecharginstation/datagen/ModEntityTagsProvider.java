@@ -2,6 +2,7 @@ package com.mikitellurium.turtlecharginstation.datagen;
 
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
+import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -15,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModEntityTagsProvider extends EntityTypeTagsProvider {
 
     public ModEntityTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, TurtleChargingStationMod.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, FastLoc.modId(), existingFileHelper);
     }
 
     @Override

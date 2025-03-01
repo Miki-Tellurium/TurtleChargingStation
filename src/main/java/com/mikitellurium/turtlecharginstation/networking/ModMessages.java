@@ -3,6 +3,7 @@ package com.mikitellurium.turtlecharginstation.networking;
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;
+import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -20,7 +21,7 @@ public class ModMessages {
 
     public static void register() {
         SimpleChannel net = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(TurtleChargingStationMod.MOD_ID, "messages"))
+                .named(FastLoc.modLoc("messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)

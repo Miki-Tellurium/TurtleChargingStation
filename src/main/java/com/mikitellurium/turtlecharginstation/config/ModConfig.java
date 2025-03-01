@@ -3,6 +3,7 @@ package com.mikitellurium.turtlecharginstation.config;
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 
@@ -15,7 +16,7 @@ public class ModConfig {
     }
 
     public static void setupConfig(ForgeConfigSpec.Builder CONFIG_BUILDER) {
-        CONFIG_BUILDER.comment("Turtle Charging Station Configuration").push(TurtleChargingStationMod.MOD_ID);
+        CONFIG_BUILDER.comment("Turtle Charging Station Configuration").push(FastLoc.modId());
 
         TurtleChargingStationBlockEntity.CAPACITY = CONFIG_BUILDER
                 .comment("The maximum amount of FE the charging station can hold")

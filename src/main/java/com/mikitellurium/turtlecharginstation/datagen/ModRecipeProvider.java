@@ -1,10 +1,9 @@
 package com.mikitellurium.turtlecharginstation.datagen;
 
-import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
+import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import com.mikitellurium.turtlecharginstation.util.ModIdConstants;
 import dan200.computercraft.shared.ModRegistry;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -33,13 +32,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         Item redstoneBlock = Items.REDSTONE_BLOCK;
-        Item energyCellFrame = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_THERMAL, "energy_cell_frame"));
-        Item machineFrame = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_THERMAL, "machine_frame"));
-        Item rfCoil = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_THERMAL, "rf_coil"));
-        Item steelCasing = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_MEKANISM, "steel_casing"));
-        Item osmiumIngot = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_MEKANISM, "ingot_osmium"));
-        Item dielectricCasing = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_POWAH, "dielectric_casing"));
-        Item basicCapacitor = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModIdConstants.ID_POWAH, "capacitor_basic"));
+        Item energyCellFrame = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_THERMAL, "energy_cell_frame"));
+        Item machineFrame = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_THERMAL, "machine_frame"));
+        Item rfCoil = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_THERMAL, "rf_coil"));
+        Item steelCasing = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_MEKANISM, "steel_casing"));
+        Item osmiumIngot = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_MEKANISM, "ingot_osmium"));
+        Item dielectricCasing = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_POWAH, "dielectric_casing"));
+        Item basicCapacitor = ForgeRegistries.ITEMS.getValue(FastLoc.of(ModIdConstants.ID_POWAH, "capacitor_basic"));
 
         this.turtleChargingStation(consumer,
                 not(or(
@@ -79,7 +78,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', redstoneBlock)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(TurtleChargingStationMod.MOD_ID, "tundercharge_dynamo"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo"));
 
         ConditionalRecipe.builder()
                 .addCondition(and(
@@ -97,7 +96,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', machineFrame)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(TurtleChargingStationMod.MOD_ID, "tundercharge_dynamo_thermal"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo_thermal"));
 
         ConditionalRecipe.builder()
                 .addCondition(and(
@@ -115,7 +114,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', steelCasing)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(TurtleChargingStationMod.MOD_ID, "tundercharge_dynamo_mekanism"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo_mekanism"));
 
         ConditionalRecipe.builder()
                 .addCondition(and(
@@ -133,7 +132,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', dielectricCasing)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(TurtleChargingStationMod.MOD_ID, "tundercharge_dynamo_powah"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo_powah"));
     }
 
     private void turtleChargingStation(Consumer<FinishedRecipe> consumer, ICondition condition, ItemLike item, String path) {
@@ -150,7 +149,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('R', item)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(TurtleChargingStationMod.MOD_ID, path));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), path));
     }
 
 }

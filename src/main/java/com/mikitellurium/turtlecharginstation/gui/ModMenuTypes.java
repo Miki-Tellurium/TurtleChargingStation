@@ -1,6 +1,6 @@
 package com.mikitellurium.turtlecharginstation.gui;
 
-import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
+import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -11,8 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, TurtleChargingStationMod.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, FastLoc.modId());
 
     public static final RegistryObject<MenuType<TurtleChargingStationMenu>> TURTLE_CHARGING_STATION_GUI =
             registerMenuType(TurtleChargingStationMenu::new, "turtle_charging_station_gui");
