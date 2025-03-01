@@ -41,3 +41,10 @@ mandatory=true
 versionRange="${cc_version_range}"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="telluriumforge"
+mandatory=true
+versionRange="${telluriumforge_version_range}"
+ordering="NONE"
+side="BOTH"
