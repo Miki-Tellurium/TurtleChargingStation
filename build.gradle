@@ -133,6 +133,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    implementation files("dependencies/telluriumforge-1.3.3-1.20.1-forge.jar")
+
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
@@ -154,7 +156,7 @@ dependencies {
 
     implementation fg.deobf("maven.modrinth:cloth-config:${cloth_config_version}+forge")
 
-    implementation fg.deobf("curse.maven:weather2-237746:5244118")
+    compileOnly fg.deobf("curse.maven:weather2-237746:5244118")
     implementation fg.deobf("curse.maven:coroutil-237749:5096038")
 }
 
