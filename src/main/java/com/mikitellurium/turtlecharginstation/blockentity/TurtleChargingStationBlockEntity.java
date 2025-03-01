@@ -38,14 +38,14 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     public static ForgeConfigSpec.IntValue CAPACITY;
     public static ForgeConfigSpec.IntValue CONVERSION_RATE; // Based on Thermal Expansion stirling dynamo production rate using coal
     private final int maxReceive = CONVERSION_RATE.get() * 6; // 6 sides
-    private final SimpleEnergyStorage ENERGY_STORAGE = new SimpleEnergyStorage(CAPACITY.get(), maxReceive) {
+    private final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(CAPACITY.get(), maxReceive) {
         @Override
         public void onEnergyChanged() {
             setChanged();
             ModMessages.sendToClients(new EnergySyncS2CPacket(this.energy, getBlockPos()));
         }
     };
-    private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+    private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
 
     public TurtleChargingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TURTLE_CHARGING_STATION.get(), pPos, pBlockState);
@@ -62,11 +62,11 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             }
         }
         // State stays charging even if disabled
-        boolean shouldCharge = !turtles.isEmpty() && this.hasChargeableTurtle(turtles) && this.ENERGY_STORAGE.getEnergyStored() >= CONVERSION_RATE.get();
+        boolean shouldCharge = !turtles.isEmpty() && this.hasChargeableTurtle(turtles) && this.energyStorage.getEnergyStored() >= CONVERSION_RATE.get();
         level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, shouldCharge), 2);
         if (shouldCharge && this.getBlockState().getValue(TurtleChargingStationBlock.ENABLED)) {
             for (TurtleBlockEntity turtle: turtles) {
-                if (this.isChargeable(turtle) && this.ENERGY_STORAGE.getEnergyStored() >= CONVERSION_RATE.get()) {
+                if (this.isChargeable(turtle) && this.energyStorage.getEnergyStored() >= CONVERSION_RATE.get()) {
                     this.refuelTurtle(turtle);
                 }
             }
@@ -88,16 +88,24 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
 
     private void refuelTurtle(TurtleBlockEntity turtle) {
         turtle.getAccess().addFuel(1);
-        this.ENERGY_STORAGE.extractEnergy(CONVERSION_RATE.get(), false);
+        this.energyStorage.extractEnergy(CONVERSION_RATE.get(), false);
         ModMessages.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
     }
 
     public EnergyStorage getEnergyStorage() {
-        return ENERGY_STORAGE;
+        return energyStorage;
+    }
+
+    public int getEnergy() {
+        return this.energyStorage.getEnergyStored();
+    }
+
+    public int getMaxEnergy() {
+        return this.energyStorage.getMaxEnergyStored();
     }
 
     public void setEnergy(int energy) {
-        this.ENERGY_STORAGE.setEnergy(energy);
+        this.energyStorage.setEnergy(energy);
     }
 
     // Gui
@@ -136,12 +144,12 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     @Override
     public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
-        ENERGY_STORAGE.setEnergy(nbt.getInt("turtle_charger.energy"));
+        energyStorage.setEnergy(nbt.getInt("turtle_charger.energy"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putInt("turtle_charger.energy", ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt("turtle_charger.energy", energyStorage.getEnergyStored());
         super.saveAdditional(nbt);
     }
 

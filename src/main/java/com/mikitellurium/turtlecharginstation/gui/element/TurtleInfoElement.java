@@ -1,8 +1,8 @@
 package com.mikitellurium.turtlecharginstation.gui.element;
 
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
-import dan200.computercraft.shared.ModRegistry;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,132 +10,122 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Direction;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.Component;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class TurtleInfoElement {
 
-    private final TurtleChargingStationBlockEntity charger;
+    private final TurtleChargingStationBlockEntity station;
     private final Rect2i area;
-    private final int width = 100;
-    private final int height = 80;
-
-    public TurtleInfoElement(TurtleChargingStationBlockEntity charger, int xPos, int yPos) {
-        area = new Rect2i(xPos, yPos, width, height);
-        this.charger = charger;
-    }
-
+    private final Map<Direction, TurtleData> turtleData = Util.make(new HashMap<>(), (map) -> {
+        for (Direction direction : Direction.values()) {
+            map.put(direction, new TurtleData());
+        }
+    });
     private final Font font = Minecraft.getInstance().font;
-    private final int white = FastColor.ARGB32.color(255, 255, 255, 255);
+    private static final int white = FastColor.ARGB32.color(255, 255, 255, 255);
+
+    public TurtleInfoElement(TurtleChargingStationBlockEntity station, int xPos, int yPos) {
+        this.area = new Rect2i(xPos, yPos, 166, 87);
+        this.station = station;
+    }
 
     public void draw(GuiGraphics graphics) {
-        int x = area.getX();
-        int y = area.getY();
-        graphics.drawCenteredString(font, "Name", x + 55, y + 1, white);
-        graphics.drawString(font, "Fuel Level", x + area.getWidth() - 14, y + 1, white);
-        int h = y;
+        this.turtleData.forEach((direction, data) -> data.updateData(this.station, direction));
+        int xPos = area.getX();
+        int yPos = area.getY();
+        Component name = Component.translatable("gui.turtlechargingstation.turtle_charging_station.turtle_name");
+        Component fuelLevel = Component.translatable("gui.turtlechargingstation.turtle_charging_station.fuel_level");
+        graphics.drawCenteredString(font, name, xPos + 95, yPos + 2, white);
+        graphics.drawCenteredString(font, fuelLevel, xPos + 180, yPos + 2, white);
+        int h = yPos + 2;
         for (Direction direction : Direction.values()) {
+            TurtleData data = this.turtleData.get(direction);
             h = h + 12;
-            graphics.drawString(font, getDirectionString(direction), alignString(getDirectionString(direction), x), h, white);
-            graphics.drawCenteredString(font, TurtleData.getAdjacentTurtleName(charger, direction), x + 55, h,
-                    TurtleData.getAdjacentTurtleColor(charger, direction));
-            graphics.drawCenteredString(font, getFuelString(TurtleData.getAdjacentTurtleFuel(charger, direction)), x + 110, h, white);
+            String directionName = this.getDirectionName(direction);
+            Component turtleName = data.getFormattedTurtleName();
+            graphics.drawString(font, directionName, this.alignString(directionName, xPos - 8), h, white);
+            graphics.drawCenteredString(font, turtleName, xPos + 95, h, white);
+            graphics.drawCenteredString(font, this.getFuelString(data.getTurtleFuel()), xPos + 180, h, white);
         }
     }
 
-    private String getDirectionString(Direction direction) {
-        switch (direction.getName()) {
-            case "down":  return " Down:";
-            case "up":    return "   Up:";
-            case "north": return "North:";
-            case "south": return "South:";
-            case "west":  return " West:";
-            case "east":  return " East:";
-        }
-        return "-";
+    private String getDirectionName(Direction direction) {
+        String name = Component.translatable("gui.turtlechargingstation.turtle_charging_station." + direction.getName()).getString();
+        String withColon = name + ":";
+        int leadingSpace = 7 - withColon.length();
+        return " ".repeat(Math.max(leadingSpace, 0)) + withColon;
     }
 
     private String getFuelString(int fuelLevel) {
-        if (fuelLevel == -1) {
-            return "-";
-        }
-        return String.valueOf(fuelLevel);
+        return fuelLevel == -1 ? "-" : String.valueOf(fuelLevel);
     }
-    // Align to the right
+
+    // Align text to the right
     private int alignString(String string, int xPos) {
-        if (Objects.equals(string, "   Up:")) {
-            return xPos + 4;
-        } else if (Objects.equals(string, " West:") || Objects.equals(string, " East:")) {
-            return xPos + 2;
-        }
-        return xPos;
+        int width = font.width(string);
+        return Math.max(xPos + (40 - width), xPos);
     }
 
     public Rect2i getArea() {
         return area;
     }
 
+    private static class TurtleData {
 
-    public static class TurtleData {
+        private String turtleName = "-";
+        private int turtleColor = white;
+        private int turtleFuel = -1;
 
-        public static String getAdjacentTurtleName(TurtleChargingStationBlockEntity station, Direction direction) {
-            BlockEntity be = station.getLevel().getBlockEntity(station.getBlockPos().relative(direction));
-            // Adjacent isn't a block entity
-            if (be == null) {
-                return "-";
+        private void updateData(TurtleChargingStationBlockEntity station, Direction direction) {
+            Optional<TurtleBlockEntity> optional = this.getAdjacentTurtle(station, direction);
+            if (optional.isPresent()) {
+                TurtleBlockEntity turtle = optional.get();
+                this.turtleName = this.getTurtleName(turtle);
+                this.turtleColor = this.getTurtleColor(turtle);
+                this.turtleFuel = this.getTurtleFuel(turtle);
+            } else {
+                this.turtleName = "-";
+                this.turtleColor = white;
+                this.turtleFuel = -1;
             }
-            // Adjacent is a turtle
-            if (be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_NORMAL.get() ||
-                    be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_ADVANCED.get()) {
-                TurtleBlockEntity turtle = ((TurtleBlockEntity) be);
-                if (turtle.hasCustomName()) {
-                    return turtle.getLabel();
-                } else {
-                    return String.valueOf(turtle.getComputerID());
-                }
-            }
-
-            return  "-";
         }
 
-        private static final int white = FastColor.ARGB32.color(255, 255, 255, 255);
-
-        public static int getAdjacentTurtleColor(TurtleChargingStationBlockEntity station, Direction direction) {
-            BlockEntity be = station.getLevel().getBlockEntity(station.getBlockPos().relative(direction));
-            // Adjacent isn't a block entity
-            if (be == null) {
-                return white;
-            }
-            // Adjacent is a turtle
-            if (be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_NORMAL.get() ||
-                    be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_ADVANCED.get()) {
-                TurtleBlockEntity turtle = ((TurtleBlockEntity) be);
-                if (turtle.getColour() == -1) {
-                    return white;
-                } else {
-                    return turtle.getColour();
-                }
-            }
-
-            return white;
+        private String getTurtleName(TurtleBlockEntity turtle) {
+            return turtle.hasCustomName() ? turtle.getLabel() : String.valueOf(turtle.getComputerID());
         }
 
-        public static int getAdjacentTurtleFuel(TurtleChargingStationBlockEntity station, Direction direction) {
-            BlockEntity be = station.getLevel().getBlockEntity(station.getBlockPos().relative(direction));
-            // Adjacent isn't a block entity
-            if (be == null) {
-                return -1;
-            }
-            // Adjacent is a turtle
-            if (be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_NORMAL.get() ||
-                    be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_ADVANCED.get()) {
-                TurtleBlockEntity turtle = ((TurtleBlockEntity) be);
-                return turtle.getAccess().getFuelLevel();
-            }
-
-            return -1;
+        private int getTurtleColor(TurtleBlockEntity turtle) {
+            return turtle.getColour() == -1 ? white : turtle.getColour();
         }
 
+        private int getTurtleFuel(TurtleBlockEntity turtle) {
+            return turtle.getAccess().getFuelLevel();
+        }
+
+        private Optional<TurtleBlockEntity> getAdjacentTurtle(TurtleChargingStationBlockEntity station, Direction direction) {
+            BlockEntity blockEntity = station.getLevel().getBlockEntity(station.getBlockPos().relative(direction));
+            return blockEntity instanceof TurtleBlockEntity turtle ? Optional.of(turtle) : Optional.empty();
+        }
+
+        public String getTurtleName() {
+            return turtleName;
+        }
+
+        public int getTurtleColor() {
+            return turtleColor;
+        }
+
+        public int getTurtleFuel() {
+            return turtleFuel;
+        }
+
+        public Component getFormattedTurtleName() {
+            return Component.literal(this.turtleName).withStyle((s) -> s.withColor(this.turtleColor));
+        }
     }
 
 }

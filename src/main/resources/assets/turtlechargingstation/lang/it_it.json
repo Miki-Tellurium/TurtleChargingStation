@@ -5,5 +5,14 @@
   "block.turtlechargingstation.thundercharge_dynamo": "Dinamo Fulminata",
 
   "tooltip.turtlechargingstation.thundercharge_dynamo": "Genera energia quando colpita da un fulmine",
-  "tooltip.turtlechargingstation.thundercharge_dynamo.shift": "[SHIFT]"
+  "tooltip.turtlechargingstation.thundercharge_dynamo.shift": "[SHIFT]",
+
+  "gui.turtlechargingstation.turtle_charging_station.turtle_name": "Nome",
+  "gui.turtlechargingstation.turtle_charging_station.fuel_level": "Carburante",
+  "gui.turtlechargingstation.turtle_charging_station.down": "Sotto",
+  "gui.turtlechargingstation.turtle_charging_station.up": "Sopra",
+  "gui.turtlechargingstation.turtle_charging_station.north": "Nord",
+  "gui.turtlechargingstation.turtle_charging_station.south": "Sud",
+  "gui.turtlechargingstation.turtle_charging_station.east": "Est",
+  "gui.turtlechargingstation.turtle_charging_station.west": "Ovest"
 }
