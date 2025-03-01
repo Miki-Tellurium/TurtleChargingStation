@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlecharginstation.blockentity;
 
+import com.mikitellurium.telluriumforge.blockentity.NameableBlockEntity;
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.telluriumforge.energy.SimpleEnergyStorage;
 import com.mikitellurium.turtlecharginstation.block.TurtleChargingStationBlock;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TurtleChargingStationBlockEntity extends BlockEntity implements TickingBlockEntity, MenuProvider {
+public class TurtleChargingStationBlockEntity extends NameableBlockEntity implements TickingBlockEntity, MenuProvider {
 
     public static ForgeConfigSpec.IntValue CAPACITY;
     public static ForgeConfigSpec.IntValue CONVERSION_RATE; // Based on Thermal Expansion stirling dynamo production rate using coal
@@ -107,8 +108,13 @@ public class TurtleChargingStationBlockEntity extends BlockEntity implements Tic
     }
 
     @Override
-    public Component getDisplayName() {
+    protected Component getDefaultName() {
         return Component.translatable("block.turtlechargingstation.turtle_charging_station");
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return this.getName();
     }
 
     // Capabilities
