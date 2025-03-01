@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.mikitellurium.turtlecharginstation.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "turtlecharginstation.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
