@@ -33,11 +33,11 @@ public class EnergySyncS2CPacket {
             context.enqueueWork(() -> {
                 // Client
                 if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof TurtleChargingStationBlockEntity blockEntity) {
-                    blockEntity.setClientEnergy(energy);
+                    blockEntity.setEnergy(energy);
 
                     if(Minecraft.getInstance().player.containerMenu instanceof TurtleChargingStationMenu menu &&
                             menu.getBlockEntity().getBlockPos().equals(pos)) {
-                        blockEntity.setClientEnergy(energy);
+                        blockEntity.setEnergy(energy);
                     }
                 }
             });

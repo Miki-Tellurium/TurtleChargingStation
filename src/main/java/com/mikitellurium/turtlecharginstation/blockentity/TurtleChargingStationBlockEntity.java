@@ -95,7 +95,7 @@ public class TurtleChargingStationBlockEntity extends BlockEntity implements Tic
         return ENERGY_STORAGE;
     }
 
-    public void setClientEnergy(int energy) {
+    public void setEnergy(int energy) {
         this.ENERGY_STORAGE.setEnergy(energy);
     }
 
