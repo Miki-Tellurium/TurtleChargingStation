@@ -87,7 +87,7 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
         return createTickerHelper(blockEntityType, ModBlockEntities.TURTLE_CHARGING_STATION.get(),
-                TurtleChargingStationBlockEntity::tick);
+                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
     }
 
     private void checkPoweredState(Level level, BlockPos pos, BlockState blockState) {

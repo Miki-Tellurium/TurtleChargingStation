@@ -1,18 +1,20 @@
 package com.mikitellurium.turtlecharginstation.blockentity;
 
+import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
+import com.mikitellurium.telluriumforge.energy.SimpleEnergyStorage;
 import com.mikitellurium.turtlecharginstation.block.TurtleChargingStationBlock;
-import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
-import com.mikitellurium.turtlecharginstation.util.ModEnergyStorage;
 import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationMenu;
 import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;
+import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import dan200.computercraft.shared.ModRegistry;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -29,12 +31,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TurtleChargingStationBlockEntity extends BlockEntity implements MenuProvider {
+public class TurtleChargingStationBlockEntity extends BlockEntity implements TickingBlockEntity, MenuProvider {
 
     public static ForgeConfigSpec.IntValue CAPACITY;
     public static ForgeConfigSpec.IntValue CONVERSION_RATE; // Based on Thermal Expansion stirling dynamo production rate using coal
     private final int maxReceive = CONVERSION_RATE.get() * 6; // 6 sides
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(CAPACITY.get(), maxReceive) {
+    private final SimpleEnergyStorage ENERGY_STORAGE = new SimpleEnergyStorage(CAPACITY.get(), maxReceive) {
         @Override
         public void onEnergyChanged() {
             setChanged();
@@ -51,62 +53,64 @@ public class TurtleChargingStationBlockEntity extends BlockEntity implements Men
     private int extractCount = 6; // Track if a turtle was charged this tick
     private int textureTimer = 10;
 
-    public static void tick(Level level, BlockPos pos, BlockState state, TurtleChargingStationBlockEntity chargingStation) {
-        if (level.isClientSide) {
-            return;
-        }
-
-        // Check every direction for turtles
-        for (Direction direction : Direction.values()) {
-            BlockEntity be = level.getBlockEntity(chargingStation.worldPosition.relative(direction));
-            // If no block entity is found return
-            if (be == null) {
-                chargingStation.extractCount--;
-                continue;
-            }
-            // Check if block entity is a turtle
-            if (be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_NORMAL.get() ||
-                    be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_ADVANCED.get()) {
-
-                // If enough energy and no redstone signal
-                if (chargingStation.ENERGY_STORAGE.getEnergyStored() >= CONVERSION_RATE.get() &&
-                        chargingStation.getBlockState().getValue(TurtleChargingStationBlock.ENABLED)) {
-                    TurtleBlockEntity turtle = (TurtleBlockEntity) be;
-                    if (turtle.getAccess().getFuelLevel() == turtle.getAccess().getFuelLimit()) {
-                        chargingStation.extractCount--;
-                    } else {
-                        level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, true), 2);
-                        refuelTurtle(chargingStation, turtle);
-                        chargingStation.extractCount++;
-                        // Sync with client for gui
-                        ModMessages.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
-                    }
-                } else {
-                    chargingStation.extractCount--;
+    @Override
+    public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
+        if (this.getBlockState().getValue(TurtleChargingStationBlock.ENABLED)) {
+            // Check every direction for turtles
+            for (Direction direction : Direction.values()) {
+                BlockEntity be = level.getBlockEntity(this.worldPosition.relative(direction));
+                // If no block entity is found return
+                if (be == null) {
+                    this.extractCount--;
+                    continue;
                 }
+                // Check if block entity is a turtle
+                if (be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_NORMAL.get() ||
+                        be.getBlockState().getBlock() == ModRegistry.Blocks.TURTLE_ADVANCED.get()) {
 
+                    // If enough energy and no redstone signal
+                    if (this.ENERGY_STORAGE.getEnergyStored() >= CONVERSION_RATE.get()) {
+                        TurtleBlockEntity turtle = (TurtleBlockEntity) be;
+                        if (turtle.getAccess().getFuelLevel() == turtle.getAccess().getFuelLimit()) {
+                            this.extractCount--;
+                        } else {
+                            level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, true), 2);
+                            this.refuelTurtle(turtle);
+                            this.extractCount++;
+                            // Sync with client for gui
+                            ModMessages.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
+                        }
+                    } else {
+                        this.extractCount--;
+                    }
+
+                } else {
+                    this.extractCount--;
+                }
+                // End of direction for-loop
+            }
+
+            if (this.extractCount <= 0) {
+                if (--this.textureTimer <= 0) {
+                    level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, false), 2);
+                    this.textureTimer = 0;
+                }
             } else {
-                chargingStation.extractCount--;
+                this.textureTimer = 10;
             }
-            // End of direction for-loop
-        }
-
-        if (chargingStation.extractCount <= 0) {
-            if (--chargingStation.textureTimer <= 0) {
-                level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, false), 2);
-                chargingStation.textureTimer = 0;
-            }
+            this.extractCount = 6;
         } else {
-            chargingStation.textureTimer = 10;
+            level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, false), 2);
         }
-        chargingStation.extractCount = 6;
 
-        //debugRecharge(level, pos, state, chargingStation);
+        System.out.println(level.getBlockState(pos));
+
+        //debugRecharge(level, pos, state, this);
     }
 
-    private static void refuelTurtle(TurtleChargingStationBlockEntity chargingStation , TurtleBlockEntity turtle) {
+    private void refuelTurtle(TurtleBlockEntity turtle) {
        turtle.getAccess().addFuel(1);
-       chargingStation.ENERGY_STORAGE.extractEnergy(CONVERSION_RATE.get(), false);
+       this.ENERGY_STORAGE.extractEnergy(CONVERSION_RATE.get(), false);
     }
 
     public EnergyStorage getEnergyStorage() {
@@ -116,6 +120,7 @@ public class TurtleChargingStationBlockEntity extends BlockEntity implements Men
     public void setClientEnergy(int energy) {
         this.ENERGY_STORAGE.setEnergy(energy);
     }
+
     // Used for debug purposes
 //    private static void debugRecharge(Level level, BlockPos pos, BlockState state, TurtleChargingStationBlockEntity chargingStation) {
 //        BlockEntity blockEntity = level.getBlockEntity(pos.above());
