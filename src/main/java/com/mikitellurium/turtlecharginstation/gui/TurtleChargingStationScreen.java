@@ -23,7 +23,7 @@ public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleC
 
     @Override
     protected void init() {
-        this.imageWidth = 250;
+        this.imageWidth = 224;
         this.imageHeight = 112;
         this.titleLabelY = 5;
         int titleWidth = this.font.width(this.title);

@@ -37,10 +37,12 @@ public class TurtleInfoElement {
         this.turtleData.forEach((direction, data) -> data.updateData(this.station, direction));
         int xPos = area.getX();
         int yPos = area.getY();
+        int namePos = xPos + 75;
+        int fuelPos = xPos + 145;
         Component name = Component.translatable("gui.turtlechargingstation.turtle_charging_station.turtle_name");
         Component fuelLevel = Component.translatable("gui.turtlechargingstation.turtle_charging_station.fuel_level");
-        graphics.drawCenteredString(font, name, xPos + 95, yPos + 2, white);
-        graphics.drawCenteredString(font, fuelLevel, xPos + 180, yPos + 2, white);
+        graphics.drawCenteredString(font, name, namePos, yPos + 2, white);
+        graphics.drawCenteredString(font, fuelLevel, fuelPos, yPos + 2, white);
         int h = yPos + 2;
         for (Direction direction : Direction.values()) {
             TurtleData data = this.turtleData.get(direction);
@@ -48,8 +50,8 @@ public class TurtleInfoElement {
             String directionName = this.getDirectionName(direction);
             Component turtleName = data.getFormattedTurtleName();
             graphics.drawString(font, directionName, this.alignString(directionName, xPos - 8), h, white);
-            graphics.drawCenteredString(font, turtleName, xPos + 95, h, white);
-            graphics.drawCenteredString(font, this.getFuelString(data.getTurtleFuel()), xPos + 180, h, white);
+            graphics.drawCenteredString(font, turtleName, namePos, h, white);
+            graphics.drawCenteredString(font, this.getFuelString(data.getTurtleFuel()), fuelPos, h, white);
         }
     }
 
