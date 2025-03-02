@@ -1,7 +1,6 @@
 {
-  "replace": false,
   "values": [
     "turtlechargingstation:turtle_charging_station",
-    "turtlechargingstation:thundercharge_dynamo"
+    "turtlechargingstation:tundercharge_dynamo"
   ]
 }

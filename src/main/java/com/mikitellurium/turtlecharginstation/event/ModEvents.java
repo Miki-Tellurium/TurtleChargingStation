@@ -1,7 +1,10 @@
 package com.mikitellurium.turtlecharginstation.event;
 
+import com.mikitellurium.telluriumforge.event.EventHelper;
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
+import com.mikitellurium.turtlecharginstation.datagen.DataGenerators;
+import com.mikitellurium.turtlecharginstation.registry.ModCreativeTab;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -12,19 +15,27 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TurtleChargingStationMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
 
-    @SubscribeEvent
+    public static void register(IEventBus modEventBus) {
+        final EventHelper HELPER = new EventHelper();
+        HELPER
+                .addListener(MinecraftForge.EVENT_BUS, ModEvents::onLightningStrike)
+                .addListener(modEventBus, ModCreativeTab::buildCreativeTab)
+                .addListener(modEventBus, DataGenerators::gatherData)
+                .registerAll();
+    }
+
     public static void onLightningStrike(EntityJoinLevelEvent event) {
         if (event.getLevel().isClientSide) {
             return;

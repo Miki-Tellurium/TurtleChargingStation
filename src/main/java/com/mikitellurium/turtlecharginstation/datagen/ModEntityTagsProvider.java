@@ -1,6 +1,5 @@
 package com.mikitellurium.turtlecharginstation.datagen;
 
-import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.core.HolderLookup;
