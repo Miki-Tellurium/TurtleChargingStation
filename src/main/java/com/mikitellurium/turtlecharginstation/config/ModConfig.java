@@ -1,6 +1,5 @@
 package com.mikitellurium.turtlecharginstation.config;
 
-import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
@@ -15,7 +14,7 @@ public class ModConfig {
         ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, CONFIG_BUILDER.build());
     }
 
-    public static void setupConfig(ForgeConfigSpec.Builder CONFIG_BUILDER) {
+    private static void setupConfig(ForgeConfigSpec.Builder CONFIG_BUILDER) {
         CONFIG_BUILDER.comment("Turtle Charging Station Configuration").push(FastLoc.modId());
 
         TurtleChargingStationBlockEntity.CAPACITY = CONFIG_BUILDER

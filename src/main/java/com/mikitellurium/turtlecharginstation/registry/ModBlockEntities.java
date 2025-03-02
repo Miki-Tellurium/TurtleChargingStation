@@ -1,28 +1,33 @@
 package com.mikitellurium.turtlecharginstation.registry;
 
+import com.mikitellurium.telluriumforge.registry.RegistryHelper;
 import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
-import com.mikitellurium.turtlecharginstation.util.FastLoc;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Set;
+import java.util.function.BiFunction;
+
 public class ModBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, FastLoc.modId());
 
-    public static final RegistryObject<BlockEntityType<TurtleChargingStationBlockEntity>> TURTLE_CHARGING_STATION =
-            BLOCK_ENTITIES.register("turtle_charging_station", () -> BlockEntityType.Builder.of(TurtleChargingStationBlockEntity::new,
-                    ModBlocks.TURTLE_CHARGING_STATION_BLOCK.get()).build(null));
+    public static RegistryHelper<BlockEntityType<?>> REGISTRY;
+    public static final RegistryObject<BlockEntityType<TurtleChargingStationBlockEntity>> TURTLE_CHARGING_STATION;
+    public static final RegistryObject<BlockEntityType<ThunderchargeDynamoBlockEntity>> THUNDERCHARGE_DYNAMO;
 
-    public static final RegistryObject<BlockEntityType<ThunderchargeDynamoBlockEntity>> THUNDERCHARGE_DYNAMO =
-            BLOCK_ENTITIES.register("thundercharge_dynamo", () -> BlockEntityType.Builder.of(ThunderchargeDynamoBlockEntity::new,
-                    ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK.get()).build(null));
+    static {
+        REGISTRY = ModRegistries.makeRegistry(ForgeRegistries.BLOCK_ENTITY_TYPES);
+        TURTLE_CHARGING_STATION = ofBlock(ModBlocks.TURTLE_CHARGING_STATION_BLOCK, TurtleChargingStationBlockEntity::new);
+        THUNDERCHARGE_DYNAMO = ofBlock(ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK, ThunderchargeDynamoBlockEntity::new);
+    }
 
-
-    public static void register(IEventBus eventBus) {
-        BLOCK_ENTITIES.register(eventBus);
+    public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> ofBlock(RegistryObject<Block> block, BiFunction<BlockPos, BlockState, T> factory) {
+        return REGISTRY.register(block.getId().getPath(), () -> new BlockEntityType<>(factory::apply, Set.of(block.get()), null));
     }
 
 }

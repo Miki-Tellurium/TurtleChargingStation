@@ -2,6 +2,7 @@ package com.mikitellurium.turtlecharginstation.gui;
 
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.registry.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +19,7 @@ public class TurtleChargingStationMenu extends AbstractContainerMenu {
     private final TurtleChargingStationBlockEntity blockEntity;
     private final Level level;
 
-    protected TurtleChargingStationMenu(int id, Inventory inventory, FriendlyByteBuf data) {
+    public TurtleChargingStationMenu(int id, Inventory inventory, FriendlyByteBuf data) {
         this(id, inventory, inventory.player.level().getBlockEntity(data.readBlockPos()));
     }
 
