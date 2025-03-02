@@ -21,7 +21,7 @@ public class EnergyStorageElement {
 
     public EnergyStorageElement(TurtleChargingStationBlockEntity station, int xPos, int yPos, int width, int height) {
         this.station = station;
-        area = new Rect2i(xPos, yPos, width, height);
+        this.area = new Rect2i(xPos, yPos, width, height);
     }
 
     public void draw(GuiGraphics graphics) {
@@ -40,8 +40,8 @@ public class EnergyStorageElement {
         return sprite.height() - (int)Math.floor((area.getHeight() * (station.getEnergy() / (float)station.getMaxEnergy())));
     }
     // Energy tooltip
-    public List<Component> getTooltips() {
-        return List.of(Component.literal(station.getEnergy() + "/" + station.getMaxEnergy() + " FE"));
+    public Component getTooltip() {
+        return Component.literal(station.getEnergy() + "/" + station.getMaxEnergy() + " FE");
     }
 
     public Rect2i getArea() {
