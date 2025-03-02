@@ -4,7 +4,9 @@ import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
+import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,9 +27,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class TurtleChargingStationBlock extends BaseEntityBlock {
 
@@ -107,6 +113,20 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
                 ((TurtleChargingStationBlockEntity)blockentity).setCustomName(itemStack.getHoverName());
             }
         }
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder lootParams) {
+        List<ItemStack> drops = super.getDrops(blockState, lootParams);
+        for (ItemStack itemStack : drops) {
+            if (itemStack.is(ModBlocks.TURTLE_CHARGING_STATION_BLOCK.get().asItem())) {
+                BlockEntity be = lootParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+                if (be instanceof TurtleChargingStationBlockEntity station && station.hasCustomName()) {
+                    itemStack.setHoverName(station.getDisplayName());
+                }
+            }
+        }
+        return drops;
     }
 
     @Override
