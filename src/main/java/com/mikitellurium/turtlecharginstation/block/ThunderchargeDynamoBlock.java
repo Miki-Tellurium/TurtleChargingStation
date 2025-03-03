@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,8 +34,8 @@ public class ThunderchargeDynamoBlock extends BaseEntityBlock {
 
     public static BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public ThunderchargeDynamoBlock() {
-        super(Properties.of()
+    public ThunderchargeDynamoBlock(BlockBehaviour.Properties properties) {
+        super(properties
                 .mapColor(MapColor.METAL)
                 .requiresCorrectToolForDrops()
                 .strength(3.0F, 6.0F)

@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -40,8 +41,8 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
     public static final BooleanProperty CHARGING = BooleanProperty.create("charging");
 
-    public TurtleChargingStationBlock() {
-        super(Properties.of()
+    public TurtleChargingStationBlock(BlockBehaviour.Properties properties) {
+        super(properties
                 .mapColor(MapColor.COLOR_BLACK)
                 .requiresCorrectToolForDrops()
                 .strength(3.0F, 6.0F)
