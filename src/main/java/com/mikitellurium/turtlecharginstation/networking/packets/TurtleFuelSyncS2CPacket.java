@@ -11,6 +11,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class TurtleFuelSyncS2CPacket implements ModPacket {
+
     private final int fuelLevel;
     private final BlockPos pos;
 

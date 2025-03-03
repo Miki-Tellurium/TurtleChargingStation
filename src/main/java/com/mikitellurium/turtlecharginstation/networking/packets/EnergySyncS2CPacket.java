@@ -11,6 +11,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class EnergySyncS2CPacket implements ModPacket {
+
     private final int energy;
     private final BlockPos pos;
 
