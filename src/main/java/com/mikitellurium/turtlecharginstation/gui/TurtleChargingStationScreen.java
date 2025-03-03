@@ -16,6 +16,7 @@ public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleC
     private static final ResourceLocation GUI_TEXTURE = FastLoc.modLoc("textures/gui/turtle_charging_station_gui.png");
     private EnergyStorageElement energyStorage;
     private TurtleInfoElement turtleInfo;
+    private int tickTimer = 0;
 
     public TurtleChargingStationScreen(TurtleChargingStationMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -31,6 +32,15 @@ public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleC
         super.init();
         energyStorage = new EnergyStorageElement(menu.getBlockEntity(), this.leftPos + 8, this.topPos + 18, 16, 84);
         turtleInfo = new TurtleInfoElement(menu.getBlockEntity(), this.leftPos + 30, this.topPos + 16);
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        if (++tickTimer >= 12) {
+            this.turtleInfo.updateStringTimer();
+            tickTimer = 0;
+        }
     }
 
     @Override
