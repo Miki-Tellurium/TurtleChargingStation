@@ -49,10 +49,10 @@ public class TurtleInfoElement {
             TurtleData data = this.turtleData.get(direction);
             h = h + 12;
             String directionName = this.getDirectionName(direction);
-            Component turtleName = this.trimTurtleName(data.getFormattedTurtleName());
+            Component turtleName = this.trimLabel(data.getLabel());
             graphics.drawString(font, directionName, this.alignString(directionName, xPos - 8), h, WHITE);
-            graphics.drawCenteredString(font, turtleName, namePos, h, data.getTurtleColor());
-            graphics.drawCenteredString(font, this.getFuelString(data.getTurtleFuel()), fuelPos, h, WHITE);
+            graphics.drawCenteredString(font, turtleName, namePos, h, data.turtleColor);
+            graphics.drawCenteredString(font, this.getFuelString(data.turtleFuel), fuelPos, h, WHITE);
         }
     }
 
@@ -73,7 +73,7 @@ public class TurtleInfoElement {
         stringTimer++;
     }
 
-    private Component trimTurtleName(Component component) {
+    private Component trimLabel(Component component) {
         final int maxWidth = 80;
         String s = component.getString();
         String finalString = s;
@@ -98,7 +98,7 @@ public class TurtleInfoElement {
 
     private static class TurtleData {
 
-        private String turtleName = "-";
+        private String label = "-";
         private int turtleColor = WHITE;
         private int turtleFuel = -1;
 
@@ -106,26 +106,14 @@ public class TurtleInfoElement {
             Optional<TurtleBlockEntity> optional = this.getAdjacentTurtle(station, direction);
             if (optional.isPresent()) {
                 TurtleBlockEntity turtle = optional.get();
-                this.turtleName = this.getTurtleName(turtle);
-                this.turtleColor = this.getTurtleColor(turtle);
-                this.turtleFuel = this.getTurtleFuel(turtle);
+                this.label = turtle.hasCustomName() ? turtle.getLabel() : String.valueOf(turtle.getComputerID());
+                this.turtleColor = turtle.getColour() == -1 ? WHITE : turtle.getColour();
+                this.turtleFuel = turtle.getAccess().getFuelLevel();
             } else {
-                this.turtleName = "-";
+                this.label = "-";
                 this.turtleColor = WHITE;
                 this.turtleFuel = -1;
             }
-        }
-
-        private String getTurtleName(TurtleBlockEntity turtle) {
-            return turtle.hasCustomName() ? turtle.getLabel() : String.valueOf(turtle.getComputerID());
-        }
-
-        private int getTurtleColor(TurtleBlockEntity turtle) {
-            return turtle.getColour() == -1 ? WHITE : turtle.getColour();
-        }
-
-        private int getTurtleFuel(TurtleBlockEntity turtle) {
-            return turtle.getAccess().getFuelLevel();
         }
 
         private Optional<TurtleBlockEntity> getAdjacentTurtle(TurtleChargingStationBlockEntity station, Direction direction) {
@@ -133,21 +121,10 @@ public class TurtleInfoElement {
             return blockEntity instanceof TurtleBlockEntity turtle ? Optional.of(turtle) : Optional.empty();
         }
 
-        public String getTurtleName() {
-            return turtleName;
+        private Component getLabel() {
+            return Component.literal(label);
         }
 
-        public int getTurtleColor() {
-            return turtleColor;
-        }
-
-        public int getTurtleFuel() {
-            return turtleFuel;
-        }
-
-        public Component getFormattedTurtleName() {
-            return Component.literal(this.turtleName);
-        }
     }
 
 }
