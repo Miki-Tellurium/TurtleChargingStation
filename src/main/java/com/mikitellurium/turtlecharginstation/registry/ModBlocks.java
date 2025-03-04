@@ -17,7 +17,7 @@ public final class ModBlocks {
     static {
         REGISTRY = BlockWithItemRegistrator.makeRegistrator(ModItems.REGISTRY, FastLoc.modId());
         TURTLE_CHARGING_STATION_BLOCK = REGISTRY.registerWithItem("turtle_charging_station", () -> new TurtleChargingStationBlock(BlockBehaviour.Properties.of()));
-        THUNDERCHARGE_DYNAMO_BLOCK = REGISTRY.registerWithItem("tundercharge_dynamo", () -> new ThunderchargeDynamoBlock(BlockBehaviour.Properties.of()));
+        THUNDERCHARGE_DYNAMO_BLOCK = REGISTRY.registerWithItem("thundercharge_dynamo", () -> new ThunderchargeDynamoBlock(BlockBehaviour.Properties.of()));
     }
 
 }

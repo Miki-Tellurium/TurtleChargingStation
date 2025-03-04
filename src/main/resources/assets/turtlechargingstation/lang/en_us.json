@@ -2,7 +2,7 @@
   "creativemodetab.turtlechargingstation_creative_tab": "Turtle Charging Station",
 
   "block.turtlechargingstation.turtle_charging_station": "Turtle Charging Station",
-  "block.turtlechargingstation.thundercharge_dynamo": "Tundercharge Dynamo",
+  "block.turtlechargingstation.thundercharge_dynamo": "Thundercharge Dynamo",
 
   "tooltip.turtlechargingstation.thundercharge_dynamo": "Generates energy when struck by lightning",
   "tooltip.turtlechargingstation.thundercharge_dynamo.shift": "[SHIFT]",
