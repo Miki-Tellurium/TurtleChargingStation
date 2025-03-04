@@ -8,15 +8,15 @@
           "values": [
             {
               "type": "forge:mod_loaded",
-              "modid": "powah"
+              "modid": "thermal"
             },
             {
               "type": "forge:item_exists",
-              "item": "powah:dielectric_casing"
+              "item": "thermal:machine_frame"
             },
             {
               "type": "forge:item_exists",
-              "item": "powah:capacitor_basic"
+              "item": "thermal:rf_coil"
             }
           ]
         }
@@ -26,13 +26,13 @@
         "category": "misc",
         "key": {
           "#": {
-            "item": "powah:dielectric_casing"
+            "item": "thermal:machine_frame"
           },
           "G": {
             "tag": "forge:ingots/gold"
           },
           "R": {
-            "item": "powah:capacitor_basic"
+            "item": "thermal:rf_coil"
           },
           "X": {
             "tag": "forge:ingots/iron"
@@ -44,7 +44,7 @@
           "XGX"
         ],
         "result": {
-          "item": "turtlechargingstation:tundercharge_dynamo"
+          "item": "turtlechargingstation:thundercharge_dynamo"
         },
         "show_notification": true
       }

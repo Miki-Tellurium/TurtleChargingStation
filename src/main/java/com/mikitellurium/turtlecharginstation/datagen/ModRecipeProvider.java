@@ -78,7 +78,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', redstoneBlock)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "thundercharge_dynamo"));
 
         ConditionalRecipe.builder()
                 .addCondition(and(
@@ -96,7 +96,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', machineFrame)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo_thermal"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "thundercharge_dynamo_thermal"));
 
         ConditionalRecipe.builder()
                 .addCondition(and(
@@ -114,7 +114,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', steelCasing)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo_mekanism"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "thundercharge_dynamo_mekanism"));
 
         ConditionalRecipe.builder()
                 .addCondition(and(
@@ -132,7 +132,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', dielectricCasing)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, new ResourceLocation(FastLoc.modId(), "tundercharge_dynamo_powah"));
+                .build(consumer, new ResourceLocation(FastLoc.modId(), "thundercharge_dynamo_powah"));
     }
 
     private void turtleChargingStation(Consumer<FinishedRecipe> consumer, ICondition condition, ItemLike item, String path) {
