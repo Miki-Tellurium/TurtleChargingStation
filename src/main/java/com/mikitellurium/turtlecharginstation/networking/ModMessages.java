@@ -1,6 +1,7 @@
 package com.mikitellurium.turtlecharginstation.networking;
 
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
+import com.mikitellurium.turtlecharginstation.networking.packets.SideTrackingSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,6 +36,11 @@ public class ModMessages {
                 .decoder(TurtleFuelSyncS2CPacket::new)
                 .encoder(TurtleFuelSyncS2CPacket::write)
                 .consumerMainThread(TurtleFuelSyncS2CPacket::handle)
+                .add();
+        net.messageBuilder(SideTrackingSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SideTrackingSyncS2CPacket::new)
+                .encoder(SideTrackingSyncS2CPacket::write)
+                .consumerMainThread(SideTrackingSyncS2CPacket::handle)
                 .add();
     }
 

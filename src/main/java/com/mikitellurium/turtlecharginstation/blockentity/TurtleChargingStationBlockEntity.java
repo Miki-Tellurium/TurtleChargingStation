@@ -7,9 +7,12 @@ import com.mikitellurium.turtlecharginstation.block.TurtleChargingStationBlock;
 import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationMenu;
 import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
+import com.mikitellurium.turtlecharginstation.networking.packets.SideTrackingSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
+import net.minecraft.Util;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +34,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TurtleChargingStationBlockEntity extends NameableBlockEntity implements TickingBlockEntity, MenuProvider {
 
@@ -42,13 +47,28 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         @Override
         public void onEnergyChanged() {
             setChanged();
-            ModMessages.sendToClients(new EnergySyncS2CPacket(this.energy, getBlockPos()));
+            ModMessages.sendToClients(new EnergySyncS2CPacket(this.energy, worldPosition));
         }
     };
     private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
+    private final Map<Direction, Integer> sideTracker = Util.make(new HashMap<>(), (map) -> {
+        for (Direction dir : Direction.values()) {
+            map.put(dir, 0);
+        }
+    });
 
     public TurtleChargingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TURTLE_CHARGING_STATION.get(), pPos, pBlockState);
+    }
+
+    @Override
+    public void clientTick(ClientLevel level, BlockPos blockPos, BlockState blockState) {
+        for (Direction dir : Direction.values()) {
+            int count = this.sideTracker.get(dir);
+            if (count > 0) {
+                this.sideTracker.put(dir, --count);
+            }
+        }
     }
 
     @Override
@@ -87,9 +107,18 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     }
 
     private void refuelTurtle(TurtleBlockEntity turtle) {
-        turtle.getAccess().addFuel(1);
-        this.energyStorage.extractEnergy(CONVERSION_RATE.get(), false);
-        ModMessages.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
+        if (this.energyStorage.extractEnergy(CONVERSION_RATE.get(), false) == CONVERSION_RATE.get()) {
+            turtle.getAccess().addFuel(1);
+            ModMessages.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
+        }
+    }
+
+    public boolean isReceivingEnergy(Direction side) {
+        return this.sideTracker.get(side) > 0;
+    }
+
+    public void setReceivingEnergy(Direction side) {
+        this.sideTracker.put(side, 5);
     }
 
     public EnergyStorage getEnergyStorage() {
@@ -125,13 +154,14 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         return this.getName();
     }
 
-    // Capabilities
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
+            if (side != null) {
+                ModMessages.sendToClients(new SideTrackingSyncS2CPacket(side, this.worldPosition));
+            }
             return lazyEnergyHandler.cast();
         }
-
         return super.getCapability(cap, side);
     }
 

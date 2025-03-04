@@ -1,6 +1,7 @@
 package com.mikitellurium.turtlecharginstation.gui.element;
 
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.registry.ModTags;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -8,6 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.network.chat.Component;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class TurtleInfoElement {
 
     private static final int WHITE = FastColor.ARGB32.color(255, 255, 255, 255);
+    private static final int YELLOW = FastColor.ARGB32.color(255, 255, 240, 25);
     private final TurtleChargingStationBlockEntity station;
     private final Rect2i area;
     private final Map<Direction, TurtleData> turtleData = Util.make(new HashMap<>(), (map) -> {
@@ -39,7 +42,7 @@ public class TurtleInfoElement {
         int xPos = area.getX();
         int yPos = area.getY();
         int namePos = xPos + 75;
-        int fuelPos = xPos + 145;
+        int fuelPos = xPos + 143;
         Component name = Component.translatable("gui.turtlechargingstation.turtle_charging_station.turtle_name");
         Component fuelLevel = Component.translatable("gui.turtlechargingstation.turtle_charging_station.fuel_level");
         graphics.drawCenteredString(font, name, namePos, yPos + 2, WHITE);
@@ -110,8 +113,13 @@ public class TurtleInfoElement {
                 this.turtleColor = turtle.getColour() == -1 ? WHITE : turtle.getColour();
                 this.turtleFuel = turtle.getAccess().getFuelLevel();
             } else {
-                this.label = "-";
-                this.turtleColor = WHITE;
+                if (station.isReceivingEnergy(direction)) {
+                    MutableComponent translated = Component.translatable("gui.turtlechargingstation.turtle_charging_station.energy");
+                    this.label = "--".concat(translated.getString()).concat("--");
+                } else {
+                    this.label = "-";
+                }
+                this.turtleColor = station.isReceivingEnergy(direction) ? YELLOW : WHITE;
                 this.turtleFuel = -1;
             }
         }
