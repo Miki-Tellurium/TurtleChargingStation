@@ -22,6 +22,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -30,6 +31,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +53,14 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             ModMessages.sendToClients(new EnergySyncS2CPacket(this.energy, worldPosition));
         }
     };
+    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+    };
     private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
+    private final LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.of(() -> itemHandler);
     private final Map<Direction, Integer> sideTracker = Util.make(new HashMap<>(), (map) -> {
         for (Direction dir : Direction.values()) {
             map.put(dir, 0);
@@ -73,6 +83,14 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
 
     @Override
     public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
+        ItemStack itemStack = this.itemHandler.getStackInSlot(0);
+        itemStack.getCapability(ForgeCapabilities.ENERGY).ifPresent((energyStorage) -> {
+            int extracted = energyStorage.extractEnergy(this.maxReceive, true);
+            if (extracted > 0 && this.getEnergy() < this.getMaxEnergy()) {
+                int energy = this.energyStorage.receiveEnergy(extracted, false);
+                energyStorage.extractEnergy(energy, false);
+            }
+        });
         List<TurtleBlockEntity> turtles = new ArrayList<>();
         for (Direction direction : Direction.values()) {
             BlockEntity be = level.getBlockEntity(this.worldPosition.relative(direction));
@@ -122,7 +140,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     }
 
     public EnergyStorage getEnergyStorage() {
-        return energyStorage;
+        return this.energyStorage;
     }
 
     public int getEnergy() {
@@ -135,6 +153,10 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
 
     public void setEnergy(int energy) {
         this.energyStorage.setEnergy(energy);
+    }
+
+    public ItemStackHandler getItemHandler() {
+        return this.itemHandler;
     }
 
     // Gui
@@ -161,6 +183,8 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
                 ModMessages.sendToClients(new SideTrackingSyncS2CPacket(side, this.worldPosition));
             }
             return lazyEnergyHandler.cast();
+        } else if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            return lazyItemHandler.cast();
         }
         return super.getCapability(cap, side);
     }
@@ -169,18 +193,21 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyEnergyHandler.invalidate();
+        lazyItemHandler.invalidate();
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag nbt) {
+        nbt.putInt("turtle_charger.energy", energyStorage.getEnergyStored());
+        nbt.put("turtle_charger.inventory", itemHandler.serializeNBT());
+        super.saveAdditional(nbt);
     }
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
         energyStorage.setEnergy(nbt.getInt("turtle_charger.energy"));
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        nbt.putInt("turtle_charger.energy", energyStorage.getEnergyStored());
-        super.saveAdditional(nbt);
+        itemHandler.deserializeNBT(nbt.getCompound("turtle_charger.inventory"));
     }
 
 }

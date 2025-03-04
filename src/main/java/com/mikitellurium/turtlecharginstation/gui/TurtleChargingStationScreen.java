@@ -24,13 +24,14 @@ public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleC
 
     @Override
     protected void init() {
-        this.imageWidth = 224;
-        this.imageHeight = 112;
+        this.imageWidth = 208;
+        this.imageHeight = 197;
         this.titleLabelY = 5;
-        int titleWidth = this.font.width(this.title);
-        this.titleLabelX = (this.imageWidth - titleWidth) / 2;
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
+        this.inventoryLabelX = 28;
+        this.inventoryLabelY = 105;
         super.init();
-        energyStorage = new EnergyStorageElement(menu.getBlockEntity(), this.leftPos + 8, this.topPos + 18, 16, 84);
+        energyStorage = new EnergyStorageElement(menu.getBlockEntity(), this.leftPos + 8, this.topPos + 15, 16, 66);
         turtleInfo = new TurtleInfoElement(menu.getBlockEntity(), this.leftPos + 30, this.topPos + 16);
     }
 
@@ -56,13 +57,8 @@ public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleC
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(graphics);
         super.render(graphics, mouseX, mouseY, partialTick);
-        //this.renderTooltip(graphics, mouseX, mouseY);
+        this.renderTooltip(graphics, mouseX, mouseY);
         this.renderEnergyAreaTooltips(graphics, mouseX, mouseY);
-    }
-
-    @Override
-    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
     }
 
     private void renderEnergyAreaTooltips(GuiGraphics graphics, int mouseX, int mouseY) {

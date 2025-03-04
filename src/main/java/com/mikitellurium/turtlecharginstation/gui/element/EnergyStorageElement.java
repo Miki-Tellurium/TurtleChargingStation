@@ -15,7 +15,7 @@ import java.util.List;
 public class EnergyStorageElement {
 
     private static final ResourceLocation ENERGY_STORAGE_TEXTURE = FastLoc.modLoc("textures/gui/energy_storage.png");
-    private final SimpleSprite sprite = new SimpleSprite(ENERGY_STORAGE_TEXTURE, 34, 84);
+    private final SimpleSprite sprite = new SimpleSprite(ENERGY_STORAGE_TEXTURE, 34, 66);
     private final TurtleChargingStationBlockEntity station;
     private final Rect2i area;
 
@@ -25,17 +25,15 @@ public class EnergyStorageElement {
     }
 
     public void draw(GuiGraphics graphics) {
-        RenderSystem.setShaderTexture(0, sprite.texture());
-        graphics.blit(sprite.texture(), area.getX(), area.getY(), 0, 0, area.getWidth(), area.getHeight(),
-                sprite.width(), sprite.height());
-        drawEnergyLevel(graphics);
+        graphics.blit(sprite.texture(), area.getX(), area.getY(), 0, 0, area.getWidth(), area.getHeight(), sprite.width(), sprite.height());
+        this.drawEnergyLevel(graphics);
     }
 
     private void drawEnergyLevel(GuiGraphics graphics) {
         graphics.blit(sprite.texture(), area.getX(), area.getY() + getEnergyLevel(),18, getEnergyLevel(),
                 area.getWidth(), area.getHeight() - getEnergyLevel(), sprite.width(), sprite.height());
     }
-    // Get the pixel in the texture to start drawing at relative to the amount of stored energy
+
     private int getEnergyLevel() {
         return sprite.height() - (int)Math.floor((area.getHeight() * (station.getEnergy() / (float)station.getMaxEnergy())));
     }
