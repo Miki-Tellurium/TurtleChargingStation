@@ -1,50 +1,54 @@
 package com.mikitellurium.turtlecharginstation.gui.element;
 
-import com.mikitellurium.telluriumforge.util.SimpleSprite;
+import com.mikitellurium.telluriumforge.util.TextureSprite;
 import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.energy.EnergyStorage;
-
-import java.util.List;
 
 public class EnergyStorageElement {
 
     private static final ResourceLocation ENERGY_STORAGE_TEXTURE = FastLoc.modLoc("textures/gui/energy_storage.png");
-    private final SimpleSprite sprite = new SimpleSprite(ENERGY_STORAGE_TEXTURE, 34, 66);
+    private final int textureWidth = 30;
+    private final int textureHeight = 66;
     private final TurtleChargingStationBlockEntity station;
-    private final Rect2i area;
+    private final TextureSprite emptyStorage;
+    private final TextureSprite fullStorage;
+    private final int xPos;
+    private final int yPos;
 
-    public EnergyStorageElement(TurtleChargingStationBlockEntity station, int xPos, int yPos, int width, int height) {
+    public EnergyStorageElement(TurtleChargingStationBlockEntity station, int xPos, int yPos) {
         this.station = station;
-        this.area = new Rect2i(xPos, yPos, width, height);
+        this.emptyStorage = new TextureSprite(ENERGY_STORAGE_TEXTURE, 0, 0, 16, 66, xPos, yPos);
+        this.fullStorage = new TextureSprite(ENERGY_STORAGE_TEXTURE, 16, 0, 14, 64, xPos + 1, yPos + 1);
+        this.xPos = xPos;
+        this.yPos = yPos;
     }
 
     public void draw(GuiGraphics graphics) {
-        graphics.blit(sprite.texture(), area.getX(), area.getY(), 0, 0, area.getWidth(), area.getHeight(), sprite.width(), sprite.height());
-        this.drawEnergyLevel(graphics);
+        graphics.blit(emptyStorage.texture(), xPos, yPos, emptyStorage.uOffset(), emptyStorage.vOffset(), emptyStorage.width(), emptyStorage.height(), textureWidth, textureHeight);
+        if (this.station.getEnergy() > 0) {
+            this.drawEnergyLevel(graphics);
+        }
     }
 
     private void drawEnergyLevel(GuiGraphics graphics) {
-        graphics.blit(sprite.texture(), area.getX(), area.getY() + this.getEnergyLevel(),18, this.getEnergyLevel(),
-                area.getWidth(), area.getHeight() - this.getEnergyLevel(), sprite.width(), sprite.height());
+        graphics.blit(fullStorage.texture(), fullStorage.xPos(), fullStorage.yPos() + this.getEnergyLevel(),fullStorage.uOffset(), this.getEnergyLevel(),
+                fullStorage.width(), fullStorage.height() - this.getEnergyLevel(), textureWidth, textureHeight);
     }
 
     private int getEnergyLevel() {
-        return sprite.height() - (int)Math.floor((area.getHeight() * (station.getEnergy() / (float)station.getMaxEnergy())));
+        return fullStorage.height() - (int) Math.ceil(fullStorage.height() * (station.getEnergy() / (float) station.getMaxEnergy()));
     }
 
-    // Energy tooltip
     public Component getTooltip() {
         return Component.literal(station.getEnergy() + "/" + station.getMaxEnergy() + " FE");
     }
 
     public Rect2i getArea() {
-        return area;
+        return new Rect2i(xPos, yPos, emptyStorage.width(), emptyStorage.height());
     }
 
 }

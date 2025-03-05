@@ -31,7 +31,7 @@ public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleC
         this.inventoryLabelX = 28;
         this.inventoryLabelY = 105;
         super.init();
-        energyStorage = new EnergyStorageElement(menu.getBlockEntity(), this.leftPos + 8, this.topPos + 15, 16, 66);
+        energyStorage = new EnergyStorageElement(menu.getBlockEntity(), this.leftPos + 8, this.topPos + 15);
         turtleInfo = new TurtleInfoElement(menu.getBlockEntity(), this.leftPos + 30, this.topPos + 16);
     }
 
