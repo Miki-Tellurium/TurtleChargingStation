@@ -37,11 +37,6 @@ public class ModMessages {
                 .encoder(TurtleFuelSyncS2CPacket::write)
                 .consumerMainThread(TurtleFuelSyncS2CPacket::handle)
                 .add();
-        net.messageBuilder(SideTrackingSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(SideTrackingSyncS2CPacket::new)
-                .encoder(SideTrackingSyncS2CPacket::write)
-                .consumerMainThread(SideTrackingSyncS2CPacket::handle)
-                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {
