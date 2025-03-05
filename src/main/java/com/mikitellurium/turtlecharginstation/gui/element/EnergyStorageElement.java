@@ -30,13 +30,14 @@ public class EnergyStorageElement {
     }
 
     private void drawEnergyLevel(GuiGraphics graphics) {
-        graphics.blit(sprite.texture(), area.getX(), area.getY() + getEnergyLevel(),18, getEnergyLevel(),
-                area.getWidth(), area.getHeight() - getEnergyLevel(), sprite.width(), sprite.height());
+        graphics.blit(sprite.texture(), area.getX(), area.getY() + this.getEnergyLevel(),18, this.getEnergyLevel(),
+                area.getWidth(), area.getHeight() - this.getEnergyLevel(), sprite.width(), sprite.height());
     }
 
     private int getEnergyLevel() {
         return sprite.height() - (int)Math.floor((area.getHeight() * (station.getEnergy() / (float)station.getMaxEnergy())));
     }
+
     // Energy tooltip
     public Component getTooltip() {
         return Component.literal(station.getEnergy() + "/" + station.getMaxEnergy() + " FE");
