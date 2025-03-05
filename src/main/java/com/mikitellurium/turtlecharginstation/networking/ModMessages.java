@@ -1,7 +1,6 @@
 package com.mikitellurium.turtlecharginstation.networking;
 
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
-import com.mikitellurium.turtlecharginstation.networking.packets.SideTrackingSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.server.level.ServerPlayer;
