@@ -68,7 +68,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         modLoaded(ModIdConstants.ID_MEKANISM),
                         modLoaded(ModIdConstants.ID_POWAH))))
                 .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK.get())
+                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
                                 .pattern("XRX")
                                 .pattern("X#X")
                                 .pattern("XGX")
@@ -86,7 +86,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         itemExists(ModIdConstants.ID_THERMAL, "machine_frame"),
                         itemExists(ModIdConstants.ID_THERMAL, "rf_coil")))
                 .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK.get())
+                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
                                 .pattern("XRX")
                                 .pattern("X#X")
                                 .pattern("XGX")
@@ -104,7 +104,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         itemExists(ModIdConstants.ID_MEKANISM, "steel_casing"),
                         itemExists(ModIdConstants.ID_MEKANISM, "ingot_osmium")))
                 .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK.get())
+                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
                                 .pattern("XRX")
                                 .pattern("X#X")
                                 .pattern("XGX")
@@ -122,7 +122,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         itemExists(ModIdConstants.ID_POWAH, "dielectric_casing"),
                         itemExists(ModIdConstants.ID_POWAH, "capacitor_basic")))
                 .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK.get())
+                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
                                 .pattern("XRX")
                                 .pattern("X#X")
                                 .pattern("XGX")
@@ -139,7 +139,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ConditionalRecipe.builder()
                 .addCondition(condition)
                 .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.TURTLE_CHARGING_STATION_BLOCK.get())
+                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.TURTLE_CHARGING_STATION.get())
                                 .pattern("cgc")
                                 .pattern("gRg")
                                 .pattern("cIc")

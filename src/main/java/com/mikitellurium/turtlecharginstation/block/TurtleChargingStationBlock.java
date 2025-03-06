@@ -6,7 +6,6 @@ import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -120,7 +118,7 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder lootParams) {
         List<ItemStack> drops = super.getDrops(blockState, lootParams);
         for (ItemStack itemStack : drops) {
-            if (itemStack.is(ModBlocks.TURTLE_CHARGING_STATION_BLOCK.get().asItem())) {
+            if (itemStack.is(ModBlocks.TURTLE_CHARGING_STATION.get().asItem())) {
                 BlockEntity be = lootParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
                 if (be instanceof TurtleChargingStationBlockEntity station && station.hasCustomName()) {
                     itemStack.setHoverName(station.getDisplayName());

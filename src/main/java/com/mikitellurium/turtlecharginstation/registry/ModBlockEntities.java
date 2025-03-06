@@ -22,8 +22,8 @@ public class ModBlockEntities {
 
     static {
         REGISTRY = ModRegistries.makeRegistry(ForgeRegistries.BLOCK_ENTITY_TYPES);
-        TURTLE_CHARGING_STATION = ofBlock(ModBlocks.TURTLE_CHARGING_STATION_BLOCK, TurtleChargingStationBlockEntity::new);
-        THUNDERCHARGE_DYNAMO = ofBlock(ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK, ThunderchargeDynamoBlockEntity::new);
+        TURTLE_CHARGING_STATION = ofBlock(ModBlocks.TURTLE_CHARGING_STATION, TurtleChargingStationBlockEntity::new);
+        THUNDERCHARGE_DYNAMO = ofBlock(ModBlocks.THUNDERCHARGE_DYNAMO, ThunderchargeDynamoBlockEntity::new);
     }
 
     public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> ofBlock(RegistryObject<Block> block, BiFunction<BlockPos, BlockState, T> factory) {
