@@ -127,6 +127,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
     implementation fg.deobf("cc.tweaked:cc-tweaked-${minecraft_version}-forge:${cc_version}")
+    implementation fg.deobf("cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_version}")
 
     runtimeOnly fg.deobf("maven.modrinth:cofh-core:11.0.2")
     runtimeOnly fg.deobf("maven.modrinth:thermal-expansion:11.0.1")
