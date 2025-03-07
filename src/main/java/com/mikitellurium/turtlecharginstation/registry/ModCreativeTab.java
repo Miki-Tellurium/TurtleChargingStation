@@ -27,6 +27,7 @@ public class ModCreativeTab {
         if (event.getTab() == TAB_TURTLECHARGINGSTATION.get()) {
             event.accept(ModBlocks.TURTLE_CHARGING_STATION);
             event.accept(ModBlocks.THUNDERCHARGE_DYNAMO);
+            event.accept(ModBlocks.COPPER_CABLE);
         }
     }
 

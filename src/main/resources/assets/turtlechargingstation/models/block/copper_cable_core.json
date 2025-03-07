@@ -1,0 +1,20 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "texture": "minecraft:block/copper_block",
+    "particle": "minecraft:block/copper_block"
+  },
+  "elements": [
+    {   "from": [ 5, 5, 5 ],
+      "to": [ 11, 11, 11 ],
+      "faces": {
+        "down":  { "texture": "#texture", "cullface": "down" },
+        "up":    { "texture": "#texture", "cullface": "up" },
+        "north": { "texture": "#texture", "cullface": "north" },
+        "south": { "texture": "#texture", "cullface": "south" },
+        "west":  { "texture": "#texture", "cullface": "west" },
+        "east":  { "texture": "#texture", "cullface": "east" }
+      }
+    }
+  ]
+}

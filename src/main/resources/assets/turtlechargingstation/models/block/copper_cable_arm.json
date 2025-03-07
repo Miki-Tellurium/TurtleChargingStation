@@ -1,0 +1,19 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "minecraft:block/copper_block",
+    "side": "minecraft:block/copper_block"
+  },
+  "elements": [
+    {
+      "from": [ 5, 5, 11 ],
+      "to": [ 11, 11, 16 ],
+      "faces": {
+        "down": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" },
+        "up": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" },
+        "west": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" },
+        "east": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" }
+      }
+    }
+  ]
+}
