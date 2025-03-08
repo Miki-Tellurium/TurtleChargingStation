@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlecharginstation.blockentity;
 
+import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.turtlecharginstation.block.ThunderchargeDynamoBlock;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
@@ -7,6 +8,7 @@ import com.mikitellurium.turtlecharginstation.util.ConductiveBlockContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ThunderchargeDynamoBlockEntity extends BlockEntity {
+public class ThunderchargeDynamoBlockEntity extends BlockEntity implements TickingBlockEntity {
 
     private int charge = 0;
     public static ForgeConfigSpec.IntValue TRANSFER_RATE;
@@ -29,11 +31,8 @@ public class ThunderchargeDynamoBlockEntity extends BlockEntity {
         super(ModBlockEntities.THUNDERCHARGE_DYNAMO.get(), blockPos, blockState);
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        if (level.isClientSide) {
-            return;
-        }
-
+    @Override
+    public void serverTick(ServerLevel level, BlockPos blockPos, BlockState blockState) {
         if (this.charge > 0) {
 
             Set<BlockEntity> chargedBlockEntities = new HashSet<>(); // Avoid block entities being charged multiple times per tick

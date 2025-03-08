@@ -83,8 +83,7 @@ public class ThunderchargeDynamoBlock extends BaseEntityBlock {
         if(Screen.hasShiftDown()) {
             components.add(Component.translatable("tooltip.turtlechargingstation.thundercharge_dynamo"));
         } else {
-            components.add(Component.translatable("tooltip.turtlechargingstation.thundercharge_dynamo.shift")
-                    .withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("tooltip.turtlechargingstation.thundercharge_dynamo.shift").withStyle(ChatFormatting.AQUA));
         }
     }
 
