@@ -1,18 +1,18 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "minecraft:block/copper_block",
-    "side": "minecraft:block/copper_block"
+    "particle": "turtlechargingstation:block/copper_cable",
+    "side": "turtlechargingstation:block/copper_cable"
   },
   "elements": [
     {
       "from": [ 5, 5, 11 ],
       "to": [ 11, 11, 16 ],
       "faces": {
-        "down": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" },
-        "up": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" },
-        "west": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" },
-        "east": { "uv": [ 5, 5, 11, 11 ], "texture": "#side" }
+        "down": { "uv": [ 0, 11, 6, 16  ], "texture": "#side" },
+        "up":   { "uv": [ 0, 6, 6, 11 ], "texture": "#side" },
+        "west": { "uv": [ 6, 0, 11, 6 ], "texture": "#side" },
+        "east": { "uv": [ 11, 0, 16, 6 ], "texture": "#side" }
       }
     }
   ]
