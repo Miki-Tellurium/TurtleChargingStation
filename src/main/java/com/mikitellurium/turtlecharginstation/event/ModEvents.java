@@ -30,9 +30,9 @@ public class ModEvents {
     public static void register(IEventBus modEventBus) {
         final EventHelper HELPER = new EventHelper();
         HELPER
-                .addListener(MinecraftForge.EVENT_BUS, ModEvents::onLightningStrike)
                 .addListener(modEventBus, ModCreativeTab::buildCreativeTab)
                 .addListener(modEventBus, DataGenerators::gatherData)
+                .addListener(MinecraftForge.EVENT_BUS, ModEvents::onLightningStrike)
                 .registerAll();
     }
 
