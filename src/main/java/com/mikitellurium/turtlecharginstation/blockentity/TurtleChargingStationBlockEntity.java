@@ -54,8 +54,8 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             setChanged();
         }
     };
-    private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
-    private final LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     public TurtleChargingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TURTLE_CHARGING_STATION.get(), pPos, pBlockState);
@@ -159,10 +159,10 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     }
 
     @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyEnergyHandler.invalidate();
-        lazyItemHandler.invalidate();
+    public void onLoad() {
+        super.onLoad();
+        lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }
 
     @Override
@@ -177,6 +177,13 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         super.load(nbt);
         energyStorage.setEnergy(nbt.getInt("turtle_charger.energy"));
         itemHandler.deserializeNBT(nbt.getCompound("turtle_charger.inventory"));
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyEnergyHandler.invalidate();
+        lazyItemHandler.invalidate();
     }
 
 }
