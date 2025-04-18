@@ -23,7 +23,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.TURTLE_CHARGING_STATION.get())
-                .add(ModBlocks.THUNDERCHARGE_DYNAMO.get());
+                .add(ModBlocks.THUNDERCHARGE_DYNAMO.get())
+                .add(ModBlocks.COPPER_CABLE.get());
     }
 
 

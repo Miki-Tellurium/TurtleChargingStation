@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "X": {
+      "item": "minecraft:honeycomb"
+    }
+  },
+  "pattern": [
+    " X ",
+    "CCC",
+    " X "
+  ],
+  "result": {
+    "count": 8,
+    "item": "turtlechargingstation:copper_cable"
+  },
+  "show_notification": true
+}
