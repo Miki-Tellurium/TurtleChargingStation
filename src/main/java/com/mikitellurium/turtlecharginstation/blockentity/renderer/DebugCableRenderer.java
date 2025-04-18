@@ -8,17 +8,16 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 import java.util.function.Supplier;
 
-public class TestCableRenderer implements BlockEntityRenderer<CopperCableBlockEntity> {
+public class DebugCableRenderer implements BlockEntityRenderer<CopperCableBlockEntity> {
 
     private final Font font;
     private final Supplier<Quaternionf> cameraOrientation;
 
-    public TestCableRenderer(BlockEntityRendererProvider.Context context) {
+    public DebugCableRenderer(BlockEntityRendererProvider.Context context) {
         this.font = context.getFont();
         this.cameraOrientation = () -> context.getEntityRenderer().cameraOrientation();
     }
@@ -28,8 +27,7 @@ public class TestCableRenderer implements BlockEntityRenderer<CopperCableBlockEn
         poseStack.pushPose();
 
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        Quaternionf quaternionf = cameraOrientation.get();
-        poseStack.mulPose(quaternionf);
+        poseStack.mulPose(cameraOrientation.get());
         poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         poseStack.scale(0.02F, 0.02F, 0.02F);
 
@@ -39,11 +37,6 @@ public class TestCableRenderer implements BlockEntityRenderer<CopperCableBlockEn
         font.drawInBatch(text, 0, 0, -1, false, poseStack.last().pose(), bufferSource, Font.DisplayMode.SEE_THROUGH, backgroundColor, packedLight);
 
         poseStack.popPose();
-    }
-
-    @Override
-    public boolean shouldRender(CopperCableBlockEntity pBlockEntity, Vec3 pCameraPos) {
-        return BlockEntityRenderer.super.shouldRender(pBlockEntity, pCameraPos);
     }
 
 }

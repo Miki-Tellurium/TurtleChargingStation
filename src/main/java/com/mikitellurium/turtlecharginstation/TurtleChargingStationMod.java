@@ -1,6 +1,6 @@
 package com.mikitellurium.turtlecharginstation;
 
-import com.mikitellurium.turtlecharginstation.blockentity.renderer.TestCableRenderer;
+import com.mikitellurium.turtlecharginstation.blockentity.renderer.DebugCableRenderer;
 import com.mikitellurium.turtlecharginstation.config.ModConfig;
 import com.mikitellurium.turtlecharginstation.event.ModEvents;
 import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationScreen;
@@ -18,6 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.slf4j.Logger;
 
 @Mod(TurtleChargingStationMod.MOD_ID)
@@ -45,7 +46,9 @@ public class TurtleChargingStationMod {
 
         @SubscribeEvent
         public static void registerRenderer(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(ModBlockEntities.COPPER_CABLE.get(), TestCableRenderer::new);
+            if (!FMLLoader.isProduction()) {
+                event.registerBlockEntityRenderer(ModBlockEntities.COPPER_CABLE.get(), DebugCableRenderer::new);
+            }
         }
     }
 

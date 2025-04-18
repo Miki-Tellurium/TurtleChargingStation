@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.EmptyEnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +28,6 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private CableNetwork cableNetwork;
     private boolean ignoreOnUpdate = false;
-    private int clientNetworkId = -1;
 
     public CopperCableBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.COPPER_CABLE.get(), pos, blockState);
@@ -101,21 +101,12 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     public void setNetwork(CableNetwork cableNetwork) {
         Objects.requireNonNull(cableNetwork);
         this.cableNetwork = cableNetwork;
-        ModMessages.sendToClients(new CableIdSyncS2CPacket(((CableNetworkImpl)cableNetwork).getId(), this.worldPosition));
+        this.syncClientId(); // Only syncs if dev
     }
 
     @Override
     public boolean ignoreOnUpdate() {
         return ignoreOnUpdate;
-    }
-
-    public void setClientNetworkId(int id) {
-        this.clientNetworkId = id;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    public int getClientNetworkId() {
-        return this.level.isClientSide ? this.clientNetworkId : -2;
     }
 
     @Override
@@ -125,7 +116,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
         }
         return super.getCapability(cap, side);
     }
-    
+
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
@@ -150,5 +141,26 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
             this.updateConnections();
         }
     }
+
+    /*==DEBUG==*/
+
+    private int clientNetworkId = -1;
+
+    public void setClientNetworkId(int id) {
+        this.clientNetworkId = id;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public int getClientNetworkId() {
+        return this.level.isClientSide ? this.clientNetworkId : -2;
+    }
+
+    private void syncClientId() {
+        if (!FMLLoader.isProduction()) {
+            ModMessages.sendToClients(new CableIdSyncS2CPacket(((CableNetworkImpl) cableNetwork).getId(), this.worldPosition));
+        }
+    }
+
+    /**/
 
 }
