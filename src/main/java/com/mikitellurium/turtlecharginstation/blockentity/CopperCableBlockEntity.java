@@ -12,11 +12,19 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.EmptyEnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class CopperCableBlockEntity extends BlockEntity implements TickingBlockEntity, NetworkNode {
 
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private CableNetwork cableNetwork;
     private boolean ignoreOnUpdate = false;
     private int clientNetworkId = -1;
@@ -111,6 +119,14 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     }
 
     @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+    
+    @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
         tag.putInt("networkId", ((CableNetworkImpl)cableNetwork).getId());
@@ -129,6 +145,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     @Override
     public void onLoad() {
         super.onLoad();
+        lazyEnergyHandler = LazyOptional.of(() -> EmptyEnergyStorage.INSTANCE);
         if (!this.level.isClientSide) {
             this.updateConnections();
         }

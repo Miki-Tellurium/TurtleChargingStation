@@ -121,7 +121,7 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
                 shouldConnect = true;
             } else {
                 BlockEntity blockEntity = level.getBlockEntity(relativePos);
-                shouldConnect = blockEntity != null && blockEntity.getCapability(ForgeCapabilities.ENERGY).isPresent();
+                shouldConnect = blockEntity != null && blockEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).isPresent();
             }
             newState = newState.setValue(CONNECTIONS.get(direction), shouldConnect);
         }
@@ -129,7 +129,8 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(WATERLOGGED, this.getFluidStateForPlacement(context));
+        BlockState blockState = this.updateBlockState(context.getLevel(), this.defaultBlockState(), context.getClickedPos());
+        return blockState.setValue(WATERLOGGED, this.getFluidStateForPlacement(context));
     }
 
     public FluidState getFluidState(BlockState blockState) {

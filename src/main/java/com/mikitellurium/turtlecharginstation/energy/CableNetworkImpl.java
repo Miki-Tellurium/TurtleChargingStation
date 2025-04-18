@@ -73,7 +73,7 @@ public class CableNetworkImpl implements CableNetwork {
         for (Direction direction : Direction.values()) {
             BlockPos relativePos = node.getBlockPos().relative(direction);
             BlockEntity blockEntity = node.getLevel().getBlockEntity(relativePos);
-            if (blockEntity != null && blockEntity.getCapability(ForgeCapabilities.ENERGY).isPresent()) {
+            if (blockEntity != null && !(blockEntity instanceof NetworkNode) && blockEntity.getCapability(ForgeCapabilities.ENERGY, direction).isPresent()) {
                 this.addReceiver(blockEntity);
             }
         }

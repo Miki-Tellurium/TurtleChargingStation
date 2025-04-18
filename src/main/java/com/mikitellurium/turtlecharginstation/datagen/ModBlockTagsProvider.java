@@ -24,15 +24,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.TURTLE_CHARGING_STATION.get())
                 .add(ModBlocks.THUNDERCHARGE_DYNAMO.get());
-
-        this.tag(ModTags.DYNAMO_CONDUCTIVE_BLOCKS)
-                .add(Blocks.CHAIN)
-                .add(Blocks.GOLD_BLOCK)
-                .add(Blocks.COPPER_BLOCK)
-                .add(Blocks.CUT_COPPER)
-                .add(Blocks.WAXED_COPPER_BLOCK)
-                .add(Blocks.WAXED_CUT_COPPER)
-                .add(Blocks.LIGHTNING_ROD);
     }
 
 
