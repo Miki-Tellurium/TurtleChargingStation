@@ -14,10 +14,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
@@ -45,19 +49,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         modLoaded(ModIdConstants.ID_MEKANISM),
                         modLoaded(ModIdConstants.ID_POWAH))),
                 redstoneBlock, "turtle_charging_station");
-        this.turtleChargingStation(consumer, and(
-                        modLoaded(ModIdConstants.ID_THERMAL),
-                        itemExists(ModIdConstants.ID_THERMAL, "energy_cell_frame")),
-                energyCellFrame, "turtle_charging_station_thermal");
-        this.turtleChargingStation(consumer, and(
-                        modLoaded(ModIdConstants.ID_MEKANISM),
-                        itemExists(ModIdConstants.ID_MEKANISM, "steel_casing")),
-                steelCasing, "turtle_charging_station_mekanism");
-        this.turtleChargingStation(consumer, and(
-                        modLoaded(ModIdConstants.ID_POWAH),
-                        itemExists(ModIdConstants.ID_POWAH, "dielectric_casing")),
-                dielectricCasing, "turtle_charging_station_powah");
-
         ConditionalRecipe.builder()
                 .addCondition(not(or(
                         modLoaded(ModIdConstants.ID_THERMAL),
@@ -75,61 +66,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
                 .build(consumer,  FastLoc.modLoc("thundercharge_dynamo"));
-
-        ConditionalRecipe.builder()
-                .addCondition(and(
-                        modLoaded(ModIdConstants.ID_THERMAL),
-                        itemExists(ModIdConstants.ID_THERMAL, "machine_frame"),
-                        itemExists(ModIdConstants.ID_THERMAL, "rf_coil")))
-                .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
-                                .pattern("XRX")
-                                .pattern("X#X")
-                                .pattern("XGX")
-                                .define('X', Tags.Items.INGOTS_IRON)
-                                .define('G', Tags.Items.INGOTS_GOLD)
-                                .define('R', rfCoil)
-                                .define('#', machineFrame)
-                                .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
-                                .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer,  FastLoc.modLoc("thundercharge_dynamo_thermal"));
-
-        ConditionalRecipe.builder()
-                .addCondition(and(
-                        modLoaded(ModIdConstants.ID_MEKANISM),
-                        itemExists(ModIdConstants.ID_MEKANISM, "steel_casing"),
-                        itemExists(ModIdConstants.ID_MEKANISM, "ingot_osmium")))
-                .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
-                                .pattern("XRX")
-                                .pattern("X#X")
-                                .pattern("XGX")
-                                .define('X', Tags.Items.INGOTS_IRON)
-                                .define('G', Tags.Items.INGOTS_GOLD)
-                                .define('R', osmiumIngot)
-                                .define('#', steelCasing)
-                                .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
-                                .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer,  FastLoc.modLoc("thundercharge_dynamo_mekanism"));
-
-        ConditionalRecipe.builder()
-                .addCondition(and(
-                        modLoaded(ModIdConstants.ID_POWAH),
-                        itemExists(ModIdConstants.ID_POWAH, "dielectric_casing"),
-                        itemExists(ModIdConstants.ID_POWAH, "capacitor_basic")))
-                .addRecipe(
-                        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
-                                .pattern("XRX")
-                                .pattern("X#X")
-                                .pattern("XGX")
-                                .define('X', Tags.Items.INGOTS_IRON)
-                                .define('G', Tags.Items.INGOTS_GOLD)
-                                .define('R', basicCapacitor)
-                                .define('#', dielectricCasing)
-                                .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
-                                .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer, FastLoc.modLoc("thundercharge_dynamo_powah"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.COPPER_CABLE.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.COPPER_CABLE.get(), 6)
                 .pattern(" X ")
                 .pattern("CCC")
                 .pattern(" X ")
@@ -138,6 +75,78 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .unlockedBy("has_honeyComb", has(Items.HONEYCOMB))
                 .save(consumer, FastLoc.modLoc("copper_cable"));
+
+        if (ModList.get().isLoaded(ModIdConstants.ID_THERMAL)) {
+            this.turtleChargingStation(consumer, and(
+                            modLoaded(ModIdConstants.ID_THERMAL),
+                            itemExists(ModIdConstants.ID_THERMAL, "energy_cell_frame")),
+                    energyCellFrame, "turtle_charging_station_thermal");
+            ConditionalRecipe.builder()
+                    .addCondition(and(
+                            modLoaded(ModIdConstants.ID_THERMAL),
+                            itemExists(ModIdConstants.ID_THERMAL, "machine_frame"),
+                            itemExists(ModIdConstants.ID_THERMAL, "rf_coil")))
+                    .addRecipe(
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
+                                    .pattern("XRX")
+                                    .pattern("X#X")
+                                    .pattern("XGX")
+                                    .define('X', Tags.Items.INGOTS_IRON)
+                                    .define('G', Tags.Items.INGOTS_GOLD)
+                                    .define('R', rfCoil)
+                                    .define('#', machineFrame)
+                                    .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
+                                    .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
+                    .build(consumer, FastLoc.modLoc("thundercharge_dynamo_thermal"));
+        }
+
+        if (ModList.get().isLoaded(ModIdConstants.ID_MEKANISM)) {
+            this.turtleChargingStation(consumer, and(
+                            modLoaded(ModIdConstants.ID_MEKANISM),
+                            itemExists(ModIdConstants.ID_MEKANISM, "steel_casing")),
+                    steelCasing, "turtle_charging_station_mekanism");
+            ConditionalRecipe.builder()
+                    .addCondition(and(
+                            modLoaded(ModIdConstants.ID_MEKANISM),
+                            itemExists(ModIdConstants.ID_MEKANISM, "steel_casing"),
+                            itemExists(ModIdConstants.ID_MEKANISM, "ingot_osmium")))
+                    .addRecipe(
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
+                                    .pattern("XRX")
+                                    .pattern("X#X")
+                                    .pattern("XGX")
+                                    .define('X', Tags.Items.INGOTS_IRON)
+                                    .define('G', Tags.Items.INGOTS_GOLD)
+                                    .define('R', osmiumIngot)
+                                    .define('#', steelCasing)
+                                    .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
+                                    .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
+                    .build(consumer, FastLoc.modLoc("thundercharge_dynamo_mekanism"));
+        }
+
+        if (ModList.get().isLoaded(ModIdConstants.ID_POWAH)) {
+            this.turtleChargingStation(consumer, and(
+                            modLoaded(ModIdConstants.ID_POWAH),
+                            itemExists(ModIdConstants.ID_POWAH, "dielectric_casing")),
+                    dielectricCasing, "turtle_charging_station_powah");
+            ConditionalRecipe.builder()
+                    .addCondition(and(
+                            modLoaded(ModIdConstants.ID_POWAH),
+                            itemExists(ModIdConstants.ID_POWAH, "dielectric_casing"),
+                            itemExists(ModIdConstants.ID_POWAH, "capacitor_basic")))
+                    .addRecipe(
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO.get())
+                                    .pattern("XRX")
+                                    .pattern("X#X")
+                                    .pattern("XGX")
+                                    .define('X', Tags.Items.INGOTS_IRON)
+                                    .define('G', Tags.Items.INGOTS_GOLD)
+                                    .define('R', basicCapacitor)
+                                    .define('#', dielectricCasing)
+                                    .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
+                                    .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
+                    .build(consumer, FastLoc.modLoc("thundercharge_dynamo_powah"));
+        }
     }
 
     private void turtleChargingStation(Consumer<FinishedRecipe> consumer, ICondition condition, ItemLike item, String path) {

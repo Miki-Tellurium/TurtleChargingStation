@@ -1,6 +1,6 @@
-// 1.20.1	2025-04-18T18:14:46.1353278	Recipes
+// 1.20.1	2025-04-18T18:45:46.0832804	Recipes
 28e79952a9d35f1e25f3bb242a8d479a005b1bbc data/turtlechargingstation/advancements/recipes/misc/copper_cable.json
-2a6474d3205caa18d91c0d44f70682f8eb7811a1 data/turtlechargingstation/recipes/copper_cable.json
+a0bb9455b63d9aefc6d1b63d642200819f2c153e data/turtlechargingstation/recipes/copper_cable.json
 727859b9c70d98f5a8f4663a7e4b888db3612ed8 data/turtlechargingstation/recipes/thundercharge_dynamo.json
 3dceeb4eae72a61d8931004c49024cb9274c9442 data/turtlechargingstation/recipes/thundercharge_dynamo_mekanism.json
 b570969309c0db56c55e673bb357cb0002453477 data/turtlechargingstation/recipes/thundercharge_dynamo_powah.json
