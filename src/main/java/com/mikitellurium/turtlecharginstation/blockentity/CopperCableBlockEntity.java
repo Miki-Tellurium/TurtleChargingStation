@@ -162,6 +162,24 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
         }
     }
 
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyEnergyHandler.invalidate();
+    }
+
+    @Override
+    public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+        burningTimer = nbt.getInt("burningTimer");
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag nbt) {
+        nbt.putInt("burningTimer", burningTimer);
+        super.saveAdditional(nbt);
+    }
+
     /*==DEBUG==*/
 
     private int clientNetworkId = -1;
