@@ -40,6 +40,10 @@ public class ThunderchargeDynamoBlockEntity extends BlockEntity implements Ticki
                     node.getNetwork().getReceivers().forEach((receiver) -> {
                         receiver.getCapability(ForgeCapabilities.ENERGY, Direction.DOWN).ifPresent((energyStorage) -> energyStorage.receiveEnergy(TRANSFER_RATE.get(), false));
                     });
+                    node.getNetwork().getNodes().stream()
+                            .filter((n) -> n instanceof CopperCableBlockEntity)
+                            .map((n) -> (CopperCableBlockEntity)n)
+                            .forEach(CopperCableBlockEntity::setBurning);
                 } else {
                     blockEntity.getCapability(ForgeCapabilities.ENERGY, Direction.DOWN).ifPresent((energyStorage) -> energyStorage.receiveEnergy(TRANSFER_RATE.get(), false));
                 }

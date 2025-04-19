@@ -9,11 +9,13 @@ import com.mikitellurium.turtlecharginstation.util.CableHelper;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,21 +24,26 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
 public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelper {
 
+    public static final BooleanProperty BURNING = BooleanProperty.create("burning");
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
@@ -55,6 +62,7 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
     public CopperCableBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(BURNING, false)
                 .setValue(DOWN, false)
                 .setValue(UP, false)
                 .setValue(EAST, false)
@@ -70,21 +78,48 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
         return new CopperCableBlockEntity(pos, state);
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.COPPER_CABLE.get(),
+                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+    }
+
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide && pHand == InteractionHand.MAIN_HAND) {
-            pLevel.getBlockEntity(pPos, ModBlockEntities.COPPER_CABLE.get()).ifPresent((cable) -> {
+    public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random) {
+        if (blockState.getValue(BURNING) && random.nextFloat() < 0.4F) {
+            Direction direction = Direction.getRandom(random);
+            if (blockState.getValue(CONNECTIONS.get(direction))) {
+                Vec3 vec3 = pos.getCenter();
+                double d0 = direction.getStepX() == 0 ? getRandomOffset(random) : direction.getStepX() * (random.nextDouble() / 2);
+                double d1 = direction.getStepY() == 0 ? getRandomOffset(random) : direction.getStepY() * (random.nextDouble() / 2);
+                double d2 = direction.getStepZ() == 0 ? getRandomOffset(random) : direction.getStepZ() * (random.nextDouble() / 2);
+                ParticleOptions particleType = blockState.getValue(WATERLOGGED) ? ParticleTypes.BUBBLE : ParticleTypes.SMOKE;
+                double ySpeed = blockState.getValue(WATERLOGGED) ? 0.2D : -0.01D;
+                level.addParticle(particleType, vec3.x + d0, vec3.y + d1, vec3.z + d2, 0, ySpeed, 0);
+            }
+        }
+    }
+
+    private double getRandomOffset(RandomSource random) {
+        return random.nextInt(2) == 0 ? 0.17D : -0.17D;
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult hitResult) {
+        if (!level.isClientSide && interactionHand == InteractionHand.MAIN_HAND) {
+            level.getBlockEntity(pos, ModBlockEntities.COPPER_CABLE.get()).ifPresent((cable) -> {
                 if (cable.hasNetwork()) {
                     cable.getNetwork().update(cable);
                     LogUtils.consoleLog(cable.getNetwork());
                 }
             });
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.use(blockState, level, pos, player, interactionHand, hitResult);
     }
 
     @Override
@@ -139,7 +174,7 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(DOWN, UP, EAST, WEST, NORTH, SOUTH, WATERLOGGED);
+        builder.add(DOWN, UP, EAST, WEST, NORTH, SOUTH, WATERLOGGED, BURNING);
     }
 
 }

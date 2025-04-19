@@ -1,6 +1,7 @@
 package com.mikitellurium.turtlecharginstation.blockentity;
 
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
+import com.mikitellurium.turtlecharginstation.block.CopperCableBlock;
 import com.mikitellurium.turtlecharginstation.energy.CableNetwork;
 import com.mikitellurium.turtlecharginstation.energy.CableNetworkImpl;
 import com.mikitellurium.turtlecharginstation.energy.NetworkNode;
@@ -10,6 +11,7 @@ import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,9 +30,27 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private CableNetwork cableNetwork;
     private boolean ignoreOnUpdate = false;
+    private int burningTimer = 0;
 
     public CopperCableBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.COPPER_CABLE.get(), pos, blockState);
+    }
+
+    @Override
+    public void serverTick(ServerLevel level, BlockPos blockPos, BlockState blockState) {
+        if (this.burningTimer > 0) {
+            if (!blockState.getValue(CopperCableBlock.BURNING)) {
+                level.setBlockAndUpdate(blockPos, blockState.setValue(CopperCableBlock.BURNING, true));
+            }
+            this.burningTimer--;
+        } else if (blockState.getValue(CopperCableBlock.BURNING)) {
+            level.setBlockAndUpdate(blockPos, blockState.setValue(CopperCableBlock.BURNING, false));
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void setBurning() {
+        this.burningTimer = 200;
     }
 
     @SuppressWarnings("ConstantConditions")
