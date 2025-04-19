@@ -51,6 +51,12 @@ public class ThunderchargeDynamoBlock extends BaseEntityBlock {
     }
 
     @Override
+    public <T extends BlockEntity> BlockEntityTicker getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.THUNDERCHARGE_DYNAMO.get(),
+                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+    }
+
+    @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
         if (blockState.getValue(POWERED)) {
             if (random.nextInt(4) == 0) {
@@ -69,13 +75,6 @@ public class ThunderchargeDynamoBlock extends BaseEntityBlock {
                 }
             }
         }
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker getTicker(Level level, BlockState blockState,
-                                                               BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, ModBlockEntities.THUNDERCHARGE_DYNAMO.get(),
-                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
     }
 
     @Override

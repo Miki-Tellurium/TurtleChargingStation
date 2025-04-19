@@ -58,6 +58,12 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
     }
 
     @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.TURTLE_CHARGING_STATION.get(),
+                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
@@ -78,12 +84,6 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, ModBlockEntities.TURTLE_CHARGING_STATION.get(),
-                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
     }
 
     @Override
