@@ -15,6 +15,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -30,9 +31,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
@@ -91,7 +95,7 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random) {
-        if (blockState.getValue(BURNING) && random.nextFloat() < 0.4F) {
+        if (blockState.getValue(BURNING) && random.nextFloat() < 0.7F) {
             Direction direction = Direction.getRandom(random);
             if (blockState.getValue(CONNECTIONS.get(direction))) {
                 Vec3 vec3 = pos.getCenter();
@@ -106,20 +110,18 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
     }
 
     private double getRandomOffset(RandomSource random) {
-        return random.nextInt(2) == 0 ? 0.17D : -0.17D;
+        return random.nextInt(2) == 0 ? 0.18D : -0.18D;
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult hitResult) {
-        if (!level.isClientSide && interactionHand == InteractionHand.MAIN_HAND) {
-            level.getBlockEntity(pos, ModBlockEntities.COPPER_CABLE.get()).ifPresent((cable) -> {
-                if (cable.hasNetwork()) {
-                    cable.getNetwork().update(cable);
-                    LogUtils.consoleLog(cable.getNetwork());
-                }
-            });
+    public void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entity) {
+        if (blockState.getValue(BURNING)) {
+            VoxelShape blockShape = blockState.getShape(level, pos);
+            AABB aabb = entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ()).inflate(0.01D);
+            if (!blockShape.isEmpty() && Shapes.joinIsNotEmpty(blockShape, Shapes.create(aabb), BooleanOp.AND)) {
+                entity.hurt(level.damageSources().hotFloor(), 1.0F);
+            }
         }
-        return super.use(blockState, level, pos, player, interactionHand, hitResult);
     }
 
     @Override
