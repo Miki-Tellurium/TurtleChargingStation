@@ -8,12 +8,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class CableNetworkImpl implements CableNetwork {
 
-    private static int ids = 0;
+    private static int ids = 0; // Keep track of the networks created, for debug purposes
     private static int id() {
         return ++ids;
     }
@@ -95,7 +96,7 @@ public class CableNetworkImpl implements CableNetwork {
 
     @Override
     public Collection<NetworkNode> getNodes() {
-        return ImmutableSet.copyOf(nodes);
+        return Collections.unmodifiableSet(nodes);
     }
 
     @Override
@@ -113,7 +114,7 @@ public class CableNetworkImpl implements CableNetwork {
 
     @Override
     public Collection<BlockEntity> getReceivers() {
-        return ImmutableSet.copyOf(receivers);
+        return Collections.unmodifiableSet(receivers);
     }
 
     @Override
