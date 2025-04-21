@@ -1,8 +1,8 @@
-package com.mikitellurium.turtlecharginstation.blockentity;
+package com.mikitellurium.turtlecharginstation.common.blockentity;
 
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
-import com.mikitellurium.turtlecharginstation.block.ThunderchargeDynamoBlock;
-import com.mikitellurium.turtlecharginstation.energy.NetworkNode;
+import com.mikitellurium.turtlecharginstation.common.block.ThunderchargeDynamoBlock;
+import com.mikitellurium.turtlecharginstation.common.energy.NetworkNode;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

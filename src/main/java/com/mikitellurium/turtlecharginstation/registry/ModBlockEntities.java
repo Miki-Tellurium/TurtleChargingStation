@@ -1,9 +1,9 @@
 package com.mikitellurium.turtlecharginstation.registry;
 
 import com.mikitellurium.telluriumforge.registry.RegistryHelper;
-import com.mikitellurium.turtlecharginstation.blockentity.CopperCableBlockEntity;
-import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
-import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.CopperCableBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDynamoBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

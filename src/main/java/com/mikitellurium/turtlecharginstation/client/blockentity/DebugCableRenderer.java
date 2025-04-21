@@ -1,6 +1,6 @@
-package com.mikitellurium.turtlecharginstation.blockentity.renderer;
+package com.mikitellurium.turtlecharginstation.client.blockentity;
 
-import com.mikitellurium.turtlecharginstation.blockentity.CopperCableBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.CopperCableBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;

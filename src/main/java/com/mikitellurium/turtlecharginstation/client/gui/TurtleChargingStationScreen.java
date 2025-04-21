@@ -1,8 +1,8 @@
-package com.mikitellurium.turtlecharginstation.gui;
+package com.mikitellurium.turtlecharginstation.client.gui;
 
 import com.mikitellurium.telluriumforge.util.MouseUtils;
-import com.mikitellurium.turtlecharginstation.gui.element.EnergyStorageElement;
-import com.mikitellurium.turtlecharginstation.gui.element.TurtleInfoElement;
+import com.mikitellurium.turtlecharginstation.client.gui.element.EnergyStorageElement;
+import com.mikitellurium.turtlecharginstation.client.gui.element.TurtleInfoElement;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

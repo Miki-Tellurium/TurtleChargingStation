@@ -1,7 +1,7 @@
-package com.mikitellurium.turtlecharginstation.gui.element;
+package com.mikitellurium.turtlecharginstation.client.gui.element;
 
 import com.mikitellurium.telluriumforge.util.TextureSprite;
-import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;

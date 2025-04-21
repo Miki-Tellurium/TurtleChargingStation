@@ -1,10 +1,10 @@
-package com.mikitellurium.turtlecharginstation.blockentity;
+package com.mikitellurium.turtlecharginstation.common.blockentity;
 
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
-import com.mikitellurium.turtlecharginstation.block.CopperCableBlock;
-import com.mikitellurium.turtlecharginstation.energy.CableNetwork;
-import com.mikitellurium.turtlecharginstation.energy.CableNetworkImpl;
-import com.mikitellurium.turtlecharginstation.energy.NetworkNode;
+import com.mikitellurium.turtlecharginstation.common.block.CopperCableBlock;
+import com.mikitellurium.turtlecharginstation.common.energy.CableNetwork;
+import com.mikitellurium.turtlecharginstation.common.energy.CableNetworkImpl;
+import com.mikitellurium.turtlecharginstation.common.energy.NetworkNode;
 import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.networking.packets.CableIdSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;

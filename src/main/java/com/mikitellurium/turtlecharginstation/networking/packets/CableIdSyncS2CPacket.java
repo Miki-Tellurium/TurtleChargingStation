@@ -1,7 +1,7 @@
 package com.mikitellurium.turtlecharginstation.networking.packets;
 
 import com.mikitellurium.telluriumforge.networking.ModPacket;
-import com.mikitellurium.turtlecharginstation.blockentity.CopperCableBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.CopperCableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

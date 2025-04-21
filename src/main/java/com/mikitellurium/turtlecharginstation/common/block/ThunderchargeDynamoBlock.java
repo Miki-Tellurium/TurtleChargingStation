@@ -1,7 +1,7 @@
-package com.mikitellurium.turtlecharginstation.block;
+package com.mikitellurium.turtlecharginstation.common.block;
 
+import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
-import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;

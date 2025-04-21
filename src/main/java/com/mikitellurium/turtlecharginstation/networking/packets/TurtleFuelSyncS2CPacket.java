@@ -1,7 +1,7 @@
 package com.mikitellurium.turtlecharginstation.networking.packets;
 
 import com.mikitellurium.telluriumforge.networking.ModPacket;
-import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationMenu;
+import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationMenu;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

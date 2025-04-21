@@ -1,9 +1,9 @@
 package com.mikitellurium.turtlecharginstation;
 
-import com.mikitellurium.turtlecharginstation.blockentity.renderer.DebugCableRenderer;
+import com.mikitellurium.turtlecharginstation.client.blockentity.DebugCableRenderer;
 import com.mikitellurium.turtlecharginstation.config.ModConfig;
-import com.mikitellurium.turtlecharginstation.event.ModEvents;
-import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationScreen;
+import com.mikitellurium.turtlecharginstation.common.event.ModEvents;
+import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationScreen;
 import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlecharginstation.registry.ModMenuTypes;

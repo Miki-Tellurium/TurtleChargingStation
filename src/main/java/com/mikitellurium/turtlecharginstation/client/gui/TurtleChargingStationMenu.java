@@ -1,7 +1,7 @@
-package com.mikitellurium.turtlecharginstation.gui;
+package com.mikitellurium.turtlecharginstation.client.gui;
 
 import com.mikitellurium.telluriumforge.gui.menu.QuickMoveContainerMenu;
-import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import com.mikitellurium.turtlecharginstation.registry.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;

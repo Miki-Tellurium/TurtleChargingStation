@@ -1,6 +1,6 @@
 package com.mikitellurium.turtlecharginstation.util;
 
-import com.mikitellurium.turtlecharginstation.block.CopperCableBlock;
+import com.mikitellurium.turtlecharginstation.common.block.CopperCableBlock;
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;

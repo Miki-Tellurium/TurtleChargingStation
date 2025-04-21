@@ -1,4 +1,4 @@
-package com.mikitellurium.turtlecharginstation.energy;
+package com.mikitellurium.turtlecharginstation.common.energy;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;

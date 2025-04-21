@@ -1,6 +1,6 @@
-package com.mikitellurium.turtlecharginstation.gui.element;
+package com.mikitellurium.turtlecharginstation.client.gui.element;
 
-import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

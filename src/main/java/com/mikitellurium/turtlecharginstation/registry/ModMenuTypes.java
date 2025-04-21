@@ -1,9 +1,7 @@
 package com.mikitellurium.turtlecharginstation.registry;
 
 import com.mikitellurium.telluriumforge.registry.RegistryHelper;
-import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationMenu;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
+import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;

@@ -1,8 +1,8 @@
-package com.mikitellurium.turtlecharginstation.event;
+package com.mikitellurium.turtlecharginstation.common.event;
 
 import com.mikitellurium.telluriumforge.event.EventHelper;
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
-import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlecharginstation.datagen.DataGenerators;
 import com.mikitellurium.turtlecharginstation.registry.ModCreativeTab;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;

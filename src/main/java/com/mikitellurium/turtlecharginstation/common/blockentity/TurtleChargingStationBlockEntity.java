@@ -1,10 +1,10 @@
-package com.mikitellurium.turtlecharginstation.blockentity;
+package com.mikitellurium.turtlecharginstation.common.blockentity;
 
 import com.mikitellurium.telluriumforge.blockentity.NameableBlockEntity;
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.telluriumforge.energy.SimpleEnergyStorage;
-import com.mikitellurium.turtlecharginstation.block.TurtleChargingStationBlock;
-import com.mikitellurium.turtlecharginstation.gui.TurtleChargingStationMenu;
+import com.mikitellurium.turtlecharginstation.common.block.TurtleChargingStationBlock;
+import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationMenu;
 import com.mikitellurium.turtlecharginstation.networking.ModMessages;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;

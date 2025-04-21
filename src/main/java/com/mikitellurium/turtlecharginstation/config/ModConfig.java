@@ -1,7 +1,7 @@
 package com.mikitellurium.turtlecharginstation.config;
 
-import com.mikitellurium.turtlecharginstation.blockentity.ThunderchargeDynamoBlockEntity;
-import com.mikitellurium.turtlecharginstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDynamoBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
