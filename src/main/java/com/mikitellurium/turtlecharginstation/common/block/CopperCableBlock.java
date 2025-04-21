@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -27,6 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -157,6 +160,16 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
             newState = newState.setValue(CONNECTIONS.get(direction), shouldConnect);
         }
         return newState;
+    }
+
+    @Override
+    public @Nullable BlockPathTypes getBlockPathType(BlockState blockState, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+        return blockState.getValue(BURNING) ? BlockPathTypes.DAMAGE_FIRE : BlockPathTypes.WALKABLE;
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState blockState, BlockGetter level, BlockPos pos, PathComputationType type) {
+        return !blockState.getValue(BURNING);
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
