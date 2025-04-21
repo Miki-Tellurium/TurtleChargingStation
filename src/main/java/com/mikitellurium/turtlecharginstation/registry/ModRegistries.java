@@ -5,12 +5,11 @@ import com.mikitellurium.telluriumforge.registry.RegistryHelper;
 import com.mikitellurium.turtlecharginstation.util.FastLoc;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModRegistries {
 
-    public static void register(IEventBus modEventBus) {
+    public static void register() {
         ModBlocks.REGISTRY.register();
         ModItems.REGISTRY.register();
         ModBlockEntities.REGISTRY.register();

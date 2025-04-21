@@ -30,7 +30,7 @@ public class TurtleChargingStationMod {
     public TurtleChargingStationMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
-        ModRegistries.register(modEventBus);
+        ModRegistries.register();
         ModEvents.register(modEventBus);
         ModMessages.register();
         ModConfig.registerConfig();
