@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "turtlecharginstation.refmap.json",
   "mixins": [
+    "CreeperAccessor"
   ],
   "client": [
   ],

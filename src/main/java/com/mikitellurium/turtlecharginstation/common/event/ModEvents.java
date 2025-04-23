@@ -6,6 +6,7 @@ import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDy
 import com.mikitellurium.turtlecharginstation.common.integration.computercraft.ThunderchargeDynamoPeripheral;
 import com.mikitellurium.turtlecharginstation.common.integration.computercraft.TurtleChargingStationPeripheral;
 import com.mikitellurium.turtlecharginstation.datagen.DataGenerators;
+import com.mikitellurium.turtlecharginstation.mixin.CreeperAccessor;
 import com.mikitellurium.turtlecharginstation.registry.ModCreativeTab;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
 import net.minecraft.Util;
@@ -60,21 +61,15 @@ public class ModEvents {
         return blockEntity != null ? blockEntity : level.getBlockEntity(blockPos.below());
     }
 
-    private static final Field DATA_IS_POWERED = ObfuscationReflectionHelper.findField(Creeper.class, "f_32274_");
-
-    @SuppressWarnings({"ConstantConditions", "unchecked"})
+    @SuppressWarnings("ConstantConditions")
     private static void maybeDoSpawnCreeper(ServerLevel level, BlockPos pos) {
         if (level.random.nextInt(1023) == 0) {
             Optional<BlockPos> blockPos = getPossibleSpawnPos(level, pos);
             blockPos.ifPresent((p) -> {
                 Creeper creeper = EntityType.CREEPER.spawn(level, p, MobSpawnType.EVENT);
                 if (creeper != null) {
-                    try {
-                        EntityDataAccessor<Boolean> creeperIsPowered = (EntityDataAccessor<Boolean>) DATA_IS_POWERED.get(creeper);
-                        creeper.getEntityData().set(creeperIsPowered, true);
-                    } catch (IllegalAccessException e) {
-                        TurtleChargingStationMod.LOGGER.error("Failed to charge creeper");
-                    }
+                    EntityDataAccessor<Boolean> creeperIsCharged = CreeperAccessor.getDATA_IS_POWERED();
+                    creeper.getEntityData().set(creeperIsCharged, true);
                 }
             });
         }
