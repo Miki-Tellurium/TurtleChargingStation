@@ -1,6 +1,7 @@
 package com.mikitellurium.turtlecharginstation;
 
 import com.mikitellurium.turtlecharginstation.client.blockentity.DebugCableRenderer;
+import com.mikitellurium.turtlecharginstation.common.integration.computercraft.TurtleChargingStationPeripheral;
 import com.mikitellurium.turtlecharginstation.config.ModConfig;
 import com.mikitellurium.turtlecharginstation.common.event.ModEvents;
 import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationScreen;
@@ -9,6 +10,7 @@ import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlecharginstation.registry.ModMenuTypes;
 import com.mikitellurium.turtlecharginstation.registry.ModRegistries;
 import com.mojang.logging.LogUtils;
+import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -34,6 +36,7 @@ public class TurtleChargingStationMod {
         ModEvents.register(modEventBus);
         ModMessages.register();
         ModConfig.registerConfig();
+        ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
