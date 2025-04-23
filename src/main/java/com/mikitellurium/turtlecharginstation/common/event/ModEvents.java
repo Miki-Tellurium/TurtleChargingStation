@@ -3,6 +3,8 @@ package com.mikitellurium.turtlecharginstation.common.event;
 import com.mikitellurium.telluriumforge.event.EventHelper;
 import com.mikitellurium.turtlecharginstation.TurtleChargingStationMod;
 import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDynamoBlockEntity;
+import com.mikitellurium.turtlecharginstation.common.integration.computercraft.ThunderchargeDynamoPeripheral;
+import com.mikitellurium.turtlecharginstation.common.integration.computercraft.TurtleChargingStationPeripheral;
 import com.mikitellurium.turtlecharginstation.datagen.DataGenerators;
 import com.mikitellurium.turtlecharginstation.registry.ModCreativeTab;
 import com.mikitellurium.turtlecharginstation.registry.ModTags;
@@ -32,6 +34,7 @@ public class ModEvents {
                 .addListener(modEventBus, ModCreativeTab::buildCreativeTab)
                 .addListener(modEventBus, DataGenerators::gatherData)
                 .addListener(MinecraftForge.EVENT_BUS, ModEvents::onLightningStrike)
+                .registerClass(MinecraftForge.EVENT_BUS, ThunderchargeDynamoPeripheral.class)
                 .registerAll();
     }
 
