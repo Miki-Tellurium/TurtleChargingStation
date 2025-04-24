@@ -81,7 +81,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
         this.cableNetwork.removeNode(this);
         this.ignoreOnUpdate = true;
         Set<CopperCableBlockEntity> cableSet = this.getAdjacentCables();
-        List<CableNetworkImpl> cachedNetworks = new ArrayList<>(); // Cache network to avoid creating too many new ones
+        List<CableNetwork> cachedNetworks = new ArrayList<>(); // Cache network to avoid creating too many new ones
         cableSet.forEach((cable) -> {
             if (cable.hasNetwork() && !cachedNetworks.contains(cable.getNetwork())) {
                 CableNetworkImpl newNetwork = new CableNetworkImpl(cable);
