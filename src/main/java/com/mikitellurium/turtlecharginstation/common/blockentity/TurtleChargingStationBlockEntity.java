@@ -5,7 +5,7 @@ import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.telluriumforge.energy.SimpleEnergyStorage;
 import com.mikitellurium.turtlecharginstation.common.block.TurtleChargingStationBlock;
 import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationMenu;
-import com.mikitellurium.turtlecharginstation.networking.ModMessages;
+import com.mikitellurium.turtlecharginstation.networking.Networking;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.networking.packets.TurtleFuelSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
@@ -45,7 +45,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         @Override
         public void onEnergyChanged() {
             setChanged();
-            ModMessages.sendToClients(new EnergySyncS2CPacket(this.energy, worldPosition));
+            Networking.HELPER.sendToClients(new EnergySyncS2CPacket(this.energy, worldPosition));
         }
     };
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
@@ -107,7 +107,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     private void refuelTurtle(TurtleBlockEntity turtle) {
         if (this.energyStorage.extractEnergy(CONVERSION_RATE.get(), false) == CONVERSION_RATE.get()) {
             turtle.getAccess().addFuel(1);
-            ModMessages.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
+            Networking.HELPER.sendToClients(new TurtleFuelSyncS2CPacket(turtle.getAccess().getFuelLevel(), turtle.getBlockPos()));
         }
     }
 

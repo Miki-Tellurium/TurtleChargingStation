@@ -2,7 +2,7 @@ package com.mikitellurium.turtlecharginstation.common.block;
 
 import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
-import com.mikitellurium.turtlecharginstation.networking.ModMessages;
+import com.mikitellurium.turtlecharginstation.networking.Networking;
 import com.mikitellurium.turtlecharginstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -68,7 +68,6 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    // Functionality
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand interactionHand,
                                  BlockHitResult hitResult) {
@@ -76,8 +75,7 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof TurtleChargingStationBlockEntity) {
                 NetworkHooks.openScreen((ServerPlayer) player, (TurtleChargingStationBlockEntity)entity, pos);
-                ModMessages.sendToClients(
-                        new EnergySyncS2CPacket(((TurtleChargingStationBlockEntity) entity).getEnergyStorage().getEnergyStored(), pos));
+                Networking.HELPER.sendToClients(new EnergySyncS2CPacket(((TurtleChargingStationBlockEntity) entity).getEnergyStorage().getEnergyStored(), pos));
             } else {
                 throw new IllegalStateException("Container provider is missing");
             }
@@ -130,8 +128,7 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ENABLED);
-        builder.add(CHARGING);
+        builder.add(ENABLED, CHARGING);
     }
 
 }

@@ -5,7 +5,7 @@ import com.mikitellurium.turtlecharginstation.common.integration.computercraft.T
 import com.mikitellurium.turtlecharginstation.config.ModConfig;
 import com.mikitellurium.turtlecharginstation.common.event.ModEvents;
 import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationScreen;
-import com.mikitellurium.turtlecharginstation.networking.ModMessages;
+import com.mikitellurium.turtlecharginstation.networking.Networking;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlecharginstation.registry.ModMenuTypes;
 import com.mikitellurium.turtlecharginstation.registry.ModRegistries;
@@ -34,7 +34,7 @@ public class TurtleChargingStationMod {
         MinecraftForge.EVENT_BUS.register(this);
         ModRegistries.register();
         ModEvents.register(modEventBus);
-        ModMessages.register();
+        Networking.register();
         ModConfig.registerConfig();
         ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
     }

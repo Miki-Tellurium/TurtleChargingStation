@@ -5,7 +5,7 @@ import com.mikitellurium.turtlecharginstation.common.block.CopperCableBlock;
 import com.mikitellurium.turtlecharginstation.common.energy.CableNetwork;
 import com.mikitellurium.turtlecharginstation.common.energy.CableNetworkImpl;
 import com.mikitellurium.turtlecharginstation.common.energy.NetworkNode;
-import com.mikitellurium.turtlecharginstation.networking.ModMessages;
+import com.mikitellurium.turtlecharginstation.networking.Networking;
 import com.mikitellurium.turtlecharginstation.networking.packets.CableIdSyncS2CPacket;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -192,7 +192,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
 
     private void syncClientId() {
         if (!FMLLoader.isProduction()) {
-            ModMessages.sendToClients(new CableIdSyncS2CPacket(((CableNetworkImpl) cableNetwork).getId(), this.worldPosition));
+            Networking.HELPER.sendToClients(new CableIdSyncS2CPacket(((CableNetworkImpl) cableNetwork).getId(), this.worldPosition));
         }
     }
 
