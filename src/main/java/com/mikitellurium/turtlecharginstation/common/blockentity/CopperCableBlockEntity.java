@@ -71,7 +71,11 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
                 .filter(CopperCableBlockEntity::hasNetwork)
                 .map(CopperCableBlockEntity::getNetwork)
                 .max(Comparator.comparingInt(CableNetwork::size)); // Get the largest network
-        optionalNetwork.ifPresent(network -> network.update(this));
+        optionalNetwork.ifPresent((network) -> {
+            if (this.cableNetwork != network) {
+                network.update(this);
+            }
+        });
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -81,7 +85,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
         this.cableNetwork.removeNode(this);
         this.ignoreOnUpdate = true;
         Set<CopperCableBlockEntity> cableSet = this.getAdjacentCables();
-        List<CableNetworkImpl> cachedNetworks = new ArrayList<>(); // Cache network to avoid creating too many new ones
+        List<CableNetwork> cachedNetworks = new ArrayList<>(); // Cache network to avoid creating too many new ones
         cableSet.forEach((cable) -> {
             if (cable.hasNetwork() && !cachedNetworks.contains(cable.getNetwork())) {
                 CableNetworkImpl newNetwork = new CableNetworkImpl(cable);
