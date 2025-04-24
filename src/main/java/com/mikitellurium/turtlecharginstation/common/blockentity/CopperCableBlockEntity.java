@@ -27,7 +27,7 @@ import java.util.*;
 
 public class CopperCableBlockEntity extends BlockEntity implements TickingBlockEntity, NetworkNode {
 
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> EmptyEnergyStorage.INSTANCE);
     private CableNetwork cableNetwork;
     private boolean ignoreOnUpdate = false;
     private int burningTimer = 0;
@@ -71,9 +71,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
                 .filter(CopperCableBlockEntity::hasNetwork)
                 .map(CopperCableBlockEntity::getNetwork)
                 .max(Comparator.comparingInt(CableNetwork::size)); // Get the largest network
-        optionalNetwork.ifPresent(network -> {
-            network.update(this);
-        });
+        optionalNetwork.ifPresent(network -> network.update(this));
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -156,7 +154,6 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyEnergyHandler = LazyOptional.of(() -> EmptyEnergyStorage.INSTANCE);
         if (!this.level.isClientSide) {
             this.updateConnections();
         }

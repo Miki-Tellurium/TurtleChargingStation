@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ThunderchargeDynamoBlockEntity extends BlockEntity implements TickingBlockEntity {
 
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> EmptyEnergyStorage.INSTANCE);
     private int charge = 0;
     public static ForgeConfigSpec.IntValue TRANSFER_RATE;
     public static ForgeConfigSpec.IntValue RECHARGE_AMOUNT;
@@ -67,12 +67,6 @@ public class ThunderchargeDynamoBlockEntity extends BlockEntity implements Ticki
             return lazyEnergyHandler.cast();
         }
         return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        lazyEnergyHandler = LazyOptional.of(() -> EmptyEnergyStorage.INSTANCE);
     }
 
     @Override

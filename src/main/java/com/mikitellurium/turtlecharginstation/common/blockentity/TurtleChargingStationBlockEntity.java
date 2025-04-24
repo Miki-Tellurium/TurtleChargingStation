@@ -54,8 +54,8 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             setChanged();
         }
     };
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private final LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
+    private final LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.of(() -> itemHandler);
 
     public TurtleChargingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TURTLE_CHARGING_STATION.get(), pPos, pBlockState);
@@ -156,13 +156,6 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             return lazyItemHandler.cast();
         }
         return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        lazyEnergyHandler = LazyOptional.of(() -> energyStorage);
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }
 
     @Override
