@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlecharginstation.common.integration.computercraft;
 
+import com.mikitellurium.turtlecharginstation.common.block.TurtleChargingStationBlock;
 import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.registry.ModBlocks;
 import dan200.computercraft.api.lua.LuaFunction;
@@ -25,6 +26,11 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
     @Override
     public PeripheralType getType() {
         return PeripheralType.ofAdditional("charging_station");
+    }
+
+    @LuaFunction(mainThread = true)
+    public final boolean isEnabled(TurtleChargingStationBlockEntity chargingStation) {
+        return chargingStation.getBlockState().getValue(TurtleChargingStationBlock.ENABLED);
     }
 
     @LuaFunction(mainThread = true)
