@@ -1,6 +1,6 @@
 package com.mikitellurium.turtlecharginstation.networking.packets;
 
-import com.mikitellurium.telluriumforge.networking.ModPacket;
+import com.mikitellurium.telluriumforge.networking.SimplePacket;
 import com.mikitellurium.turtlecharginstation.common.blockentity.CopperCableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -9,7 +9,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class CableIdSyncS2CPacket implements ModPacket {
+public class CableIdSyncS2CPacket implements SimplePacket {
 
     private final int id;
     private final BlockPos pos;

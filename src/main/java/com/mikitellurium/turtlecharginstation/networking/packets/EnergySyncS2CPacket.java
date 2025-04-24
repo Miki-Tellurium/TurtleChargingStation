@@ -1,8 +1,8 @@
 package com.mikitellurium.turtlecharginstation.networking.packets;
 
-import com.mikitellurium.telluriumforge.networking.ModPacket;
-import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.telluriumforge.networking.SimplePacket;
 import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationMenu;
+import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,7 +10,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class EnergySyncS2CPacket implements ModPacket {
+public class EnergySyncS2CPacket implements SimplePacket {
 
     private final int energy;
     private final BlockPos pos;

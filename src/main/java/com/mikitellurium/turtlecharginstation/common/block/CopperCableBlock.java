@@ -174,7 +174,7 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockState = this.updateBlockState(context.getLevel(), this.defaultBlockState(), context.getClickedPos());
-        return blockState.setValue(WATERLOGGED, this.getFluidStateForPlacement(context));
+        return blockState.setValue(WATERLOGGED, this.shouldWaterlogOnPlacement(context));
     }
 
     public FluidState getFluidState(BlockState blockState) {

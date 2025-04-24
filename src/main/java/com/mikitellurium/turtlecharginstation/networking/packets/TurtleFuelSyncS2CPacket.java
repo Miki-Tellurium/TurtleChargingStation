@@ -1,6 +1,6 @@
 package com.mikitellurium.turtlecharginstation.networking.packets;
 
-import com.mikitellurium.telluriumforge.networking.ModPacket;
+import com.mikitellurium.telluriumforge.networking.SimplePacket;
 import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationMenu;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -10,7 +10,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class TurtleFuelSyncS2CPacket implements ModPacket {
+public class TurtleFuelSyncS2CPacket implements SimplePacket {
 
     private final int fuelLevel;
     private final BlockPos pos;

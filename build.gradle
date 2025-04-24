@@ -120,7 +120,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("com.mikitellurium:telluriumforge:${telluriumforge_version}-${minecraft_version}-forge")
+    implementation fg.deobf("maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-forge")
 
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
@@ -137,10 +137,10 @@ dependencies {
     runtimeOnly fg.deobf("maven.modrinth:thermal-expansion:11.0.1")
     runtimeOnly fg.deobf("maven.modrinth:thermal-foundation:11.0.6")
 
-    runtimeOnly fg.deobf("maven.modrinth:mekanism:${mekanism_version}") // Mekanism: Core
-    runtimeOnly fg.deobf("maven.modrinth:mekanism-additions:${mekanism_version}") // Mekanism: Additions
-    runtimeOnly fg.deobf("maven.modrinth:mekanism-generators:${mekanism_version}") // Mekanism: Generators
-    runtimeOnly fg.deobf("maven.modrinth:mekanism-tools:${mekanism_version}") // Mekanism: Tools
+    runtimeOnly fg.deobf("maven.modrinth:mekanism:${mekanism_version}")
+    runtimeOnly fg.deobf("maven.modrinth:mekanism-additions:${mekanism_version}")
+    runtimeOnly fg.deobf("maven.modrinth:mekanism-generators:${mekanism_version}")
+    runtimeOnly fg.deobf("maven.modrinth:mekanism-tools:${mekanism_version}")
 
     runtimeOnly fg.deobf("maven.modrinth:powah:${powah_version}-forge")
 
