@@ -20,12 +20,12 @@ public class ThunderchargeDynamoPeripheral implements IPeripheral {
         this.dynamo = dynamo;
     }
 
-    @LuaFunction
+    @LuaFunction(mainThread = true)
     public final int getCharge() {
         return dynamo.getCharge();
     }
 
-    @LuaFunction
+    @LuaFunction(mainThread = true)
     public final boolean isPowered() {
         return dynamo.getBlockState().getValue(ThunderchargeDynamoBlock.POWERED);
     }
