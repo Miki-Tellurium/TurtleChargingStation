@@ -1,0 +1,37 @@
+modLoader="javafml" #mandatory
+loaderVersion="${loader_version_range}" #mandatory
+license="${mod_license}"
+issueTrackerURL="https://github.com/Miki-Tellurium/TurtleChargingStation/issues" #optional
+
+[[mods]] #mandatory
+
+modId="${mod_id}" #mandatory
+version="${mod_version}" #mandatory
+displayName="${mod_name}" #mandatory
+displayURL="https://modrinth.com/mod/turtle-charging-station" #optional
+logoFile="turtlechargingstationlogo.png" #optional
+#credits="" #optional
+authors="${mod_authors}" #optional
+description='''${mod_description}'''
+
+[[mixins]]
+config="${mod_id}.mixins.json"
+
+[[dependencies.${mod_id}]] #optional
+modId="neoforge" #mandatory
+type="required" #mandatory
+versionRange="${neo_version_range}" #mandatory
+ordering="NONE"
+side="BOTH"
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+#[[dependencies.${mod_id}]]
+#modId="computercraft"
+#type="required"
+#versionRange="${cc_version_range}"
+#ordering="NONE"
+#side="BOTH"

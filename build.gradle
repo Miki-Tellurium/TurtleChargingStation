@@ -1,9 +1,17 @@
 plugins {
     id 'java-library'
-    id 'eclipse'
-    id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.142'
+    id 'net.neoforged.moddev' version '2.0.81'
+    id 'idea'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 version = mod_version
@@ -13,41 +21,95 @@ base {
     archivesName = mod_id
 }
 
+java {
+    withSourcesJar()
+}
+
+// Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-//minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
+neoForge {
+    // Specify the version of NeoForge to use.
+    version = project.neo_version
 
-runs {
-    configureEach {
-
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-
-
-        systemProperty 'forge.logging.console.level', 'debug'
-
-        modSource project.sourceSets.main
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    // This line is optional. Access Transformers are automatically detected
+    // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            client()
+
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+
+            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+            // gameDirectory = project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        // applies to all the run configs above
+        configureEach {
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
     }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
-
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    mods {
+        // define mod <-> source bindings
+        // these are used to tell the game which sources are for which mod
+        // multi mod projects should define one per mod
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
     }
 }
 
+// Include resources generated by data generators.
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// Sets up a dependency configuration called 'localRuntime'.
+// This configuration should be used instead of 'runtimeOnly' to declare
+// a dependency that will be present for runtime testing but that is
+// "optional", meaning it will not be pulled by dependents of this mod.
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
 
 repositories {
     mavenLocal()
@@ -59,10 +121,9 @@ repositories {
         url "https://maven.shedaniel.me/"
     }
     maven {
-        url "https://maven.squiddev.cc"
-        content {
-            includeGroup("cc.tweaked")
-        }
+        // CC:Tweaked
+        name = "Squiddev maven cct"
+        url = 'https://maven.squiddev.cc'
     }
     exclusiveContent {
         forRepository {
@@ -75,36 +136,55 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
-
+    maven {
+        name = "Curse Maven"
+        url = "https://cursemaven.com"
+    }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
+    implementation "blank:telluriumforge:1.4.0-beta-1.21.1-neoforge"
 
+    compileOnly "mezz.jei:jei-${minecraft_version}-common:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    implementation "cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_version}"
+    implementation "cc.tweaked:cc-tweaked-${minecraft_version}-core:${cc_version}"
+    implementation "cc.tweaked:cc-tweaked-${minecraft_version}-core-api:${cc_version}"
+    implementation "cc.tweaked:cc-tweaked-${minecraft_version}-common:${cc_version}"
+    implementation "cc.tweaked:cc-tweaked-${minecraft_version}-common-api:${cc_version}"
     implementation "cc.tweaked:cc-tweaked-${minecraft_version}-forge:${cc_version}"
+    implementation "cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_version}"
 
-//    runtimeOnly "maven.modrinth:cofh-core:${thermal_version}"
-//    runtimeOnly "maven.modrinth:thermal-expansion:${thermal_version}"
-//    runtimeOnly "maven.modrinth:thermal-foundation:${thermal_version}"
+//    runtimeOnly "maven.modrinth:cofh-core:11.0.2"
+//    runtimeOnly "maven.modrinth:thermal-expansion:11.0.1"
+//    runtimeOnly "maven.modrinth:thermal-foundation:11.0.6"
 
-//    runtimeOnly "maven.modrinth:mekanism:${mekanism_version}"            // Mekanism: Core
-//    runtimeOnly "maven.modrinth:mekanism-additions:${mekanism_version}"  // Mekanism: Additions
-//    runtimeOnly "maven.modrinth:mekanism-generators:${mekanism_version}" // Mekanism: Generators
-//    runtimeOnly "maven.modrinth:mekanism-tools:${mekanism_version}"      // Mekanism: Tools
-//
-//    runtimeOnly "maven.modrinth:powah:${powah_version}-neoforge"
+    runtimeOnly "maven.modrinth:mekanism:${mekanism_version}"
+    runtimeOnly "maven.modrinth:mekanism-additions:${mekanism_version}"
+    runtimeOnly "maven.modrinth:mekanism-generators:${mekanism_version}"
+    runtimeOnly "maven.modrinth:mekanism-tools:${mekanism_version}"
+
+    runtimeOnly "maven.modrinth:powah:${powah_version}-neoforge"
+    runtimeOnly "maven.modrinth:guideme:${guideme_version}"
 
     implementation "maven.modrinth:architectury-api:${architectury_version}+neoforge"
 
     implementation "maven.modrinth:cloth-config:${cloth_config_version}+neoforge"
+
+//    compileOnly "curse.maven:weather2-237746:5244118"
+//    compileOnly "curse.maven:coroutil-237749:5096038"
 }
 
-tasks.withType(ProcessResources).configureEach {
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    version = "${project.version}-${minecraft_version}-neoforge"
+
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
@@ -120,12 +200,17 @@ tasks.withType(ProcessResources).configureEach {
             cc_version_range       : cc_version_range
     ]
     inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties + [project: project]
-    }
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+neoForge.ideSyncTask generateModMetadata
 
+// Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
@@ -143,6 +228,7 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
     module {
         downloadSources = true
