@@ -2,7 +2,7 @@ package com.mikitellurium.turtlecharginstation;
 
 import com.mikitellurium.turtlecharginstation.client.blockentity.DebugCableRenderer;
 import com.mikitellurium.turtlecharginstation.common.integration.computercraft.TurtleChargingStationPeripheral;
-import com.mikitellurium.turtlecharginstation.config.ModConfig;
+import com.mikitellurium.turtlecharginstation.config.ModConfigs;
 import com.mikitellurium.turtlecharginstation.common.event.ModEvents;
 import com.mikitellurium.turtlecharginstation.client.gui.TurtleChargingStationScreen;
 import com.mikitellurium.turtlecharginstation.networking.Networking;
@@ -35,7 +35,7 @@ public class TurtleChargingStationMod {
         ModRegistries.register();
         ModEvents.register(modEventBus);
         Networking.register();
-        ModConfig.registerConfig();
+        ModConfigs.registerConfig();
         ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
     }
 
