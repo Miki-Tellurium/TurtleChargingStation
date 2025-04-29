@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:lightning_bolt",
+    {
+      "id": "weather2:lightning_bolt",
+      "required": false
+    }
+  ]
+}

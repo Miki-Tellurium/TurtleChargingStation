@@ -3,6 +3,7 @@
 
   "block.turtlechargingstation.turtle_charging_station": "Stazione di ricarica tartaruga",
   "block.turtlechargingstation.thundercharge_dynamo": "Dinamo Fulminata",
+  "block.turtlechargingstation.copper_cable": "Cavo di Rame",
 
   "tooltip.turtlechargingstation.thundercharge_dynamo": "Genera energia quando colpita da un fulmine",
   "tooltip.turtlechargingstation.thundercharge_dynamo.shift": "[SHIFT]",

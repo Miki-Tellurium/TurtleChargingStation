@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "R": {
+      "item": "mekanism:steel_casing"
+    },
+    "c": {
+      "item": "minecraft:black_concrete"
+    },
+    "g": {
+      "tag": "c:ingots/gold"
+    }
+  },
+  "pattern": [
+    "cgc",
+    "gRg",
+    "cIc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "turtlechargingstation:turtle_charging_station"
+  }
+}

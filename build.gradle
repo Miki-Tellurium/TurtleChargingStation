@@ -146,7 +146,7 @@ repositories {
 }
 
 dependencies {
-    implementation "blank:telluriumforge:1.4.0-beta-1.21.1-neoforge"
+    implementation "blank:telluriumforge:1.4.1-beta-1.21.1-neoforge"
 
     compileOnly "mezz.jei:jei-${minecraft_version}-common:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"

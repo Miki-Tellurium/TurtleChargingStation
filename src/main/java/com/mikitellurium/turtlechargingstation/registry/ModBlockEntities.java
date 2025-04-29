@@ -1,28 +1,37 @@
 package com.mikitellurium.turtlechargingstation.registry;
 
-import com.mikitellurium.turtlechargingstation.TurtleChargingStationMod;
-import com.mikitellurium.turtlechargingstation.blockentity.ThunderchargeDynamoBlockEntity;
-import com.mikitellurium.turtlechargingstation.blockentity.TurtleChargingStationBlockEntity;
+import com.mikitellurium.telluriumforge.registry.RegistryHelper;
+import com.mikitellurium.turtlechargingstation.common.blockentity.CopperCableBlockEntity;
+import com.mikitellurium.turtlechargingstation.common.blockentity.ThunderchargeDynamoBlockEntity;
+import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.Set;
+import java.util.function.BiFunction;
 
 public class ModBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TurtleChargingStationMod.MOD_ID);
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TurtleChargingStationBlockEntity>> TURTLE_CHARGING_STATION =
-            BLOCK_ENTITIES.register("turtle_charging_station", () -> BlockEntityType.Builder.of(TurtleChargingStationBlockEntity::new,
-                    ModBlocks.TURTLE_CHARGING_STATION_BLOCK.get()).build(null));
+    public static RegistryHelper<BlockEntityType<?>> REGISTRY;
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TurtleChargingStationBlockEntity>> TURTLE_CHARGING_STATION;
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ThunderchargeDynamoBlockEntity>> THUNDERCHARGE_DYNAMO;
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CopperCableBlockEntity>> COPPER_CABLE;
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ThunderchargeDynamoBlockEntity>> THUNDERCHARGE_DYNAMO =
-            BLOCK_ENTITIES.register("thundercharge_dynamo", () -> BlockEntityType.Builder.of(ThunderchargeDynamoBlockEntity::new,
-                    ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK.get()).build(null));
+    static {
+        REGISTRY = ModRegistries.makeRegistry(Registries.BLOCK_ENTITY_TYPE);
+        TURTLE_CHARGING_STATION = ofBlock(ModBlocks.TURTLE_CHARGING_STATION, TurtleChargingStationBlockEntity::new);
+        THUNDERCHARGE_DYNAMO = ofBlock(ModBlocks.THUNDERCHARGE_DYNAMO, ThunderchargeDynamoBlockEntity::new);
+        COPPER_CABLE = ofBlock(ModBlocks.COPPER_CABLE, CopperCableBlockEntity::new);
+    }
 
-    public static void register(IEventBus eventBus) {
-        BLOCK_ENTITIES.register(eventBus);
+    public static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> ofBlock(DeferredBlock<Block> block, BiFunction<BlockPos, BlockState, T> factory) {
+        return REGISTRY.register(block.getId().getPath(), () -> new BlockEntityType<>(factory::apply, Set.of(block.get()), null));
     }
 
 }
