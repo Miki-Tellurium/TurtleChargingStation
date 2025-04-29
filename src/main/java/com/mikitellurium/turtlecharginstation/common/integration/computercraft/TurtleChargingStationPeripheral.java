@@ -44,9 +44,9 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
         Map<String, Object> results = new HashMap<>();
         for (Direction direction : Direction.values()) {
             Optional<Object> optional = this.getSideData(chargingStation.getLevel(), chargingStation.getBlockPos(), direction);
-            results.put(direction.getName(), optional.orElse(null));
+            optional.ifPresent((obj) -> results.put(direction.getName(), obj));
         }
-        return MethodResult.of(results);
+        return MethodResult.of(!results.isEmpty() ? results : null);
     }
 
     private Optional<Object> getSideData(Level level, BlockPos pos, Direction side) {
