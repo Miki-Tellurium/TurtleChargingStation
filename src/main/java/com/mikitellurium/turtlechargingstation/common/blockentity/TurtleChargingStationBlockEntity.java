@@ -58,6 +58,8 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             setChanged();
         }
     };
+    private final int textureChangeDelay = (int) Math.ceil((double) CONVERSION_RATE.get() / ThunderchargeDynamoBlockEntity.TRANSFER_RATE.get()) + 1;
+    private int textureTimer = 0;
 
     public TurtleChargingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TURTLE_CHARGING_STATION.get(), pPos, pBlockState);
@@ -83,13 +85,17 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         }
         // State stays charging even if disabled
         boolean shouldCharge = !turtles.isEmpty() && this.hasChargeableTurtle(turtles) && this.energyStorage.getEnergyStored() >= CONVERSION_RATE.get();
-        level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, shouldCharge), 2);
+        level.setBlock(pos, state.setValue(TurtleChargingStationBlock.CHARGING, shouldCharge || textureTimer > 0), 2);
         if (shouldCharge && this.getBlockState().getValue(TurtleChargingStationBlock.ENABLED)) {
             for (TurtleBlockEntity turtle: turtles) {
                 if (this.isChargeable(turtle) && this.energyStorage.getEnergyStored() >= CONVERSION_RATE.get()) {
                     this.refuelTurtle(turtle);
+                    this.textureTimer = textureChangeDelay;
                 }
             }
+        }
+        if (textureTimer > 0) {
+            textureTimer--;
         }
     }
 
