@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
+import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.turtlechargingstation.common.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
@@ -57,8 +58,7 @@ public class ThunderchargeDynamoBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.THUNDERCHARGE_DYNAMO.get(),
-                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+        return createTickerHelper(type, ModBlockEntities.THUNDERCHARGE_DYNAMO.get(), TickingBlockEntity.getTicker());
     }
 
     @Override

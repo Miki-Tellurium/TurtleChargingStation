@@ -1,6 +1,7 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
 import com.mikitellurium.telluriumforge.block.WaterloggedHelper;
+import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.turtlechargingstation.common.blockentity.CopperCableBlockEntity;
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlechargingstation.registry.ModBlocks;
@@ -88,8 +89,7 @@ public class CopperCableBlock extends BaseEntityBlock implements WaterloggedHelp
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.COPPER_CABLE.get(),
-                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+        return createTickerHelper(type, ModBlockEntities.COPPER_CABLE.get(), TickingBlockEntity.getTicker());
     }
 
     public RenderShape getRenderShape(BlockState blockState) {
