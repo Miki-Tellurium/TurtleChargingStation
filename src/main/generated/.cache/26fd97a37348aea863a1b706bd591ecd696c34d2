@@ -1,5 +1,7 @@
-// 1.20.1	2024-06-04T14:17:14.2075478	Turtle Charging Station/Recipes
+// 1.20.1	2025-05-02T18:17:52.6023868	Turtle Charging Station/Recipes
 1262a19aba630c588b3a6176292d5bd51b1dcb36 data\turtlechargingstation\recipes\turtle_charging_station.json
+8cc72c1d3db471e381cdbc3e4bd60cf54ffaac19 data\turtlechargingstation\recipes\copper_cable.json
+467fb395c96665e59cfec66a1f070ad74de6a6f5 data\turtlechargingstation\advancements\recipes\misc\copper_cable.json
 b75045ee4930722c6a6f91cf48507aac164ccee2 data\turtlechargingstation\recipes\thundercharge_dynamo.json
 9c0431716d33eecae703ed0158f45d9fd6d335be data\turtlechargingstation\advancements\recipes\misc\turtle_charging_station.json
 ab82a761480a84ba519f662b2c27d011064a6033 data\turtlechargingstation\advancements\recipes\misc\thundercharge_dynamo.json

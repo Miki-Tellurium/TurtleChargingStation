@@ -34,7 +34,7 @@
 		"java": ">=17",
 		"fabric-api": "*",
 		"computercraft": ">=1.105",
-		"telluriumforge": "~1.3"
+		"telluriumforge": "1.4.0-beta"
 	},
 	"suggests": {
 		"another-mod": "*"

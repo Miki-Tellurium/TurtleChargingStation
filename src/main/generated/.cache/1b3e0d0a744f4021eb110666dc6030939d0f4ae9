@@ -1,0 +1,4 @@
+// 1.20.1	2025-05-02T18:17:52.6013862	Turtle Charging Station/Block Loot Tables
+84506930cdeedf6f0766a58737aedde1769ab46b data\turtlechargingstation\loot_tables\blocks\turtle_charging_station.json
+78d150c9d447ec77c2685ef891ad228430bf7704 data\turtlechargingstation\loot_tables\blocks\thundercharge_dynamo.json
+dcb5adc72719b7f37771db08437dc47604cbd253 data\turtlechargingstation\loot_tables\blocks\copper_cable.json

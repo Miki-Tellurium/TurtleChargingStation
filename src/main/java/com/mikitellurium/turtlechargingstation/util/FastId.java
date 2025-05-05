@@ -1,26 +1,24 @@
 package com.mikitellurium.turtlechargingstation.util;
 
-import com.mikitellurium.telluriumforge.registry.IdentifierProvider;
 import com.mikitellurium.turtlechargingstation.TurtleChargingStationMod;
 import net.minecraft.util.Identifier;
 
-public class FastId implements IdentifierProvider {
+public class FastId {
 
-    private final static FastId INSTANCE = new FastId();
+    public static Identifier of(String namespace, String id) {
+        return new Identifier(namespace, id);
+    }
 
-    private FastId() {}
+    public static Identifier ofMod(String id) {
+        return of(modId(), id);
+    }
 
-    @Override
-    public String modId() {
+    public static Identifier ofMc(String id) {
+        return new Identifier(id);
+    }
+
+    public static String modId() {
         return TurtleChargingStationMod.MOD_ID;
-    }
-
-    public static Identifier modId(String path) {
-        return FastId.INSTANCE.modIdentifier(path);
-    }
-
-    public static Identifier mcId(String path) {
-        return FastId.INSTANCE.mcIdentifier(path);
     }
 
 }

@@ -9,7 +9,9 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack packOutput = fabricDataGenerator.createPack();
         packOutput.addProvider(ModRecipeProvider::new);
-        packOutput.addProvider(ModTagProvider::new);
+        packOutput.addProvider(ModBlockTagProvider::new);
+        packOutput.addProvider(ModEntityTagProvider::new);
+        packOutput.addProvider(ModLootTableProvider::new);
     }
 
 }

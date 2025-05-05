@@ -20,7 +20,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.TURTLE_CHARGING_STATION_BLOCK)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.TURTLE_CHARGING_STATION)
                 .pattern("cgc")
                 .pattern("gRg")
                 .pattern("cIc")
@@ -28,12 +28,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('g', Items.GOLD_INGOT)
                 .input('R', Items.REDSTONE_BLOCK)
                 .input('I', Items.IRON_BLOCK)
-                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_NORMAL.get()),
-                        FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_NORMAL.get()))
-                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_ADVANCED.get()),
-                        FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_ADVANCED.get()))
+                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_NORMAL.get()), FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_NORMAL.get()))
+                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_ADVANCED.get()), FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_ADVANCED.get()))
                 .offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO_BLOCK)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.THUNDERCHARGE_DYNAMO)
                 .pattern("XRX")
                 .pattern("X#X")
                 .pattern("XGX")
@@ -41,10 +39,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('R', Blocks.LIGHTNING_ROD)
                 .input('#', Items.REDSTONE_BLOCK)
                 .input('X', Items.IRON_INGOT)
-                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_NORMAL.get()),
-                        FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_NORMAL.get()))
-                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_ADVANCED.get()),
-                        FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_ADVANCED.get()))
+                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_NORMAL.get()), FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_NORMAL.get()))
+                .criterion(FabricRecipeProvider.hasItem(ModRegistry.Items.TURTLE_ADVANCED.get()), FabricRecipeProvider.conditionsFromItem(ModRegistry.Items.TURTLE_ADVANCED.get()))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.COPPER_CABLE, 6)
+                .pattern(" X ")
+                .pattern("CCC")
+                .pattern(" X ")
+                .input('C', Items.COPPER_INGOT)
+                .input('X', Items.HONEYCOMB)
+                .criterion(FabricRecipeProvider.hasItem(Items.COPPER_INGOT), FabricRecipeProvider.conditionsFromItem(Items.COPPER_INGOT))
+                .criterion(FabricRecipeProvider.hasItem(Items.HONEYCOMB), FabricRecipeProvider.conditionsFromItem(Items.HONEYCOMB))
                 .offerTo(exporter);
     }
 

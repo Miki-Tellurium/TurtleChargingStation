@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.6-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -40,14 +40,9 @@ sourceSets {
 repositories {
 	mavenCentral()
 	maven {
-		//ModMenu
+		// ModMenu
 		name = "terraformersmc maven"
 		url = "https://maven.terraformersmc.com"
-	}
-	maven {
-		// location of the maven that hosts JEI files before January 2023
-		name = "Progwml6's maven"
-		url = "https://dvs1.progwml6.com/files/maven/"
 	}
 	maven {
 		// location of the maven that hosts JEI files since January 2023
@@ -55,21 +50,16 @@ repositories {
 		url = "https://maven.blamejared.com/"
 	}
 	maven {
-		// location of a maven mirror for JEI files, as a fallback
-		name = "ModMaven"
-		url = "https://modmaven.dev"
-	}
-	maven {
 		// CC:Tweaked
 		name = "Squiddev maven cct"
-		url = 'https://squiddev.cc/maven/'
+		url = 'https://maven.squiddev.cc'
 	}
 	maven {
 		name = "Modrinth"
 		url = "https://api.modrinth.com/maven"
 	}
 	flatDir {
-		dirs 'dependencies'
+		dirs 'libs'
 	}
 }
 
@@ -77,26 +67,31 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	//modImplementation "maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-fabric"
+	modImplementation ("blank:telluriumforge:1.4.0-beta-${minecraft_version}-fabric") {
+		changing = true
+	}
+
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
 	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
-	// at runtime, use the full JEI jar for Fabric
 	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
 	modImplementation "cc.tweaked:cc-tweaked-${minecraft_version}-fabric:${cc_version}"
+	modCompileOnlyApi("cc.tweaked:cc-tweaked-${minecraft_version}-core:${cc_version}")
+	modCompileOnlyApi("cc.tweaked:cc-tweaked-${minecraft_version}-core-api:${cc_version}")
+	modRuntimeOnly("cc.tweaked:cc-tweaked-${minecraft_version}-common:${cc_version}")
+	modCompileOnlyApi("cc.tweaked:cc-tweaked-${minecraft_version}-common-api:${cc_version}")
+	modCompileOnlyApi("cc.tweaked:cc-tweaked-${minecraft_version}-fabric-api:${cc_version}")
 
 	include modApi("teamreborn:energy:${team_reborn_energy_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 	include implementation("com.electronwill.night-config:toml:${nightconfig_version}")
 	include implementation("com.electronwill.night-config:core:${nightconfig_version}")
-
-	modImplementation  "maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-fabric"
-	compileOnly "maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-fabric:sources"
-	//modImplementation  "dependencies:telluriumforge-1.3.2-${minecraft_version}-fabric"
 }
 
 processResources {

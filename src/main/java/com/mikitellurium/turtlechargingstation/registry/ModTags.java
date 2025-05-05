@@ -1,20 +1,12 @@
 package com.mikitellurium.turtlechargingstation.registry;
 
-import com.mikitellurium.telluriumforge.registry.InitializedRegistry;
-import com.mikitellurium.telluriumforge.registry.RegistryHelper;
-import com.mikitellurium.turtlechargingstation.TurtleChargingStationMod;
-import net.minecraft.block.Block;
+import com.mikitellurium.turtlechargingstation.util.FastId;
+import net.minecraft.entity.EntityType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 
-public class ModTags implements InitializedRegistry {
+public class ModTags {
 
-    public static TagKey<Block> DYNAMO_CONDUCTIVE_BLOCKS;
-
-    @Override
-    public void init(RegistryHelper helper) {
-        DYNAMO_CONDUCTIVE_BLOCKS = helper.registerTag(RegistryKeys.BLOCK, "dynamo_conductive_blocks");
-    }
+    public static final TagKey<EntityType<?>> DYNAMO_ACTIVATORS = TagKey.of(RegistryKeys.ENTITY_TYPE, FastId.ofMod("dynamo_activators"));
 
 }
