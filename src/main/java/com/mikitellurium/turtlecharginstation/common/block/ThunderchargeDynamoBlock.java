@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlecharginstation.common.block;
 
+import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.turtlecharginstation.common.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import net.minecraft.ChatFormatting;
@@ -51,9 +52,8 @@ public class ThunderchargeDynamoBlock extends BaseEntityBlock {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.THUNDERCHARGE_DYNAMO.get(),
-                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.THUNDERCHARGE_DYNAMO.get(), TickingBlockEntity.getTicker());
     }
 
     @Override

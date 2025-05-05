@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlecharginstation.common.block;
 
+import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
 import com.mikitellurium.turtlecharginstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlecharginstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlecharginstation.networking.Networking;
@@ -59,8 +60,7 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.TURTLE_CHARGING_STATION.get(),
-                (tickLevel, pos, state, blockEntity) -> blockEntity.tick(tickLevel, pos, state));
+        return createTickerHelper(type, ModBlockEntities.TURTLE_CHARGING_STATION.get(), TickingBlockEntity.getTicker());
     }
 
     @Override
