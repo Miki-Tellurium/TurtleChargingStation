@@ -45,9 +45,7 @@ repositories {
 		url = "https://maven.terraformersmc.com"
 	}
 	maven {
-		// location of the maven that hosts JEI files since January 2023
-		name = "Jared's maven"
-		url = "https://maven.blamejared.com/"
+		url = 'https://maven.shedaniel.me'
 	}
 	maven {
 		// CC:Tweaked
@@ -76,9 +74,8 @@ dependencies {
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
+	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 
 	modImplementation "cc.tweaked:cc-tweaked-${minecraft_version}-fabric:${cc_version}"
 	modCompileOnlyApi("cc.tweaked:cc-tweaked-${minecraft_version}-core:${cc_version}")
