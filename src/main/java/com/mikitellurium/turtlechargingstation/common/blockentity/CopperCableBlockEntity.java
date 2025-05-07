@@ -6,12 +6,14 @@ import com.mikitellurium.turtlechargingstation.common.block.CopperCableBlock;
 import com.mikitellurium.turtlechargingstation.common.energy.CableNetwork;
 import com.mikitellurium.turtlechargingstation.common.energy.CableNetworkImpl;
 import com.mikitellurium.turtlechargingstation.common.energy.NetworkNode;
-import com.mikitellurium.turtlechargingstation.networking.packets.CableIdSyncPacket;
+import com.mikitellurium.turtlechargingstation.networking.payloads.CableIdSyncPayload;
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -136,15 +138,15 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        NbtCompound nbt = super.toInitialChunkDataNbt();
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup lookup) {
+        NbtCompound nbt = super.toInitialChunkDataNbt(lookup);
         nbt.putInt("networkId", ((CableNetworkImpl)cableNetwork).getId());
         return nbt;
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+        super.readNbt(nbt, lookup);
         burningTimer = nbt.getInt("burningTimer");
         if (nbt.contains("networkId")) {
             this.setClientNetworkId(nbt.getInt("networkId"));
@@ -152,9 +154,9 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
         nbt.putInt("burningTimer", burningTimer);
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, lookup);
     }
 //
 //    /*==DEBUG==*/
@@ -171,8 +173,8 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
 
     @SuppressWarnings("ConstantConditions")
     private void syncClientId() {
-        if (FabricLoaderImpl.INSTANCE.isDevelopmentEnvironment() && !this.world.isClient) {
-            NetworkingHelper.sendToTrackingClients((ServerWorld) this.world, this.pos, new CableIdSyncPacket(this.pos, ((CableNetworkImpl) cableNetwork).getId()));
+        if (FabricLoader.getInstance().isDevelopmentEnvironment() && !this.world.isClient) {
+            NetworkingHelper.sendToTrackingClients((ServerWorld) this.world, this.pos, new CableIdSyncPayload(this.pos, ((CableNetworkImpl) cableNetwork).getId()));
         }
     }
     /**/

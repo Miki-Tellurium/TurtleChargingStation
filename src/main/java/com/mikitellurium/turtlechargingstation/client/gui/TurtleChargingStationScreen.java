@@ -18,8 +18,8 @@ public class TurtleChargingStationScreen extends HandledScreen<TurtleChargingSta
     private TurtleInfoElement turtleInfo;
     private int tickTimer = 0;
 
-    public TurtleChargingStationScreen(TurtleChargingStationScreenHandler screenHandler, PlayerInventory inventory, Text title) {
-        super(screenHandler, inventory, title);
+    public TurtleChargingStationScreen(TurtleChargingStationScreenHandler handler, PlayerInventory inventory, Text title) {
+        super(handler, inventory, title);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class TurtleChargingStationScreen extends HandledScreen<TurtleChargingSta
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, partialTick);
         super.render(context, mouseX, mouseY, partialTick);
         this.drawMouseoverTooltip(context, mouseX, mouseY);
         this.renderEnergyAreaTooltips(context, mouseX, mouseY);

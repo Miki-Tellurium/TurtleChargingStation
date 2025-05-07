@@ -29,8 +29,7 @@ public class DebugCableRenderer implements BlockEntityRenderer<CopperCableBlockE
 
         matrixStack.translate(0.5F, 0.5F, 0.5F);
         matrixStack.multiply(cameraOrientation.get());
-        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
-        matrixStack.scale(0.02F, 0.02F, 0.02F);
+        matrixStack.scale(0.02F, -0.02F, 0.02F);
 
         int opacity = (int) (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f) * 255) << 24;
         String text = String.valueOf(copperCableBlock.getClientNetworkId());

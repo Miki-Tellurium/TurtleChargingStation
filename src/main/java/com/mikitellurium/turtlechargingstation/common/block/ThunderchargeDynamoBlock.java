@@ -1,16 +1,17 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
-import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlechargingstation.common.blockentity.ThunderchargeDynamoBlockEntity;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -21,7 +22,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,6 +40,10 @@ public class ThunderchargeDynamoBlock extends BlockWithEntity {
         setDefaultState(getDefaultState().with(POWERED, false));
     }
 
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(ThunderchargeDynamoBlock::new);
+    }
 
     @Nullable
     @Override
@@ -50,7 +54,7 @@ public class ThunderchargeDynamoBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState blockState, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.THUNDERCHARGE_DYNAMO, TickingBlockEntity.getTicker());
+        return validateTicker(type, ModBlockEntities.THUNDERCHARGE_DYNAMO, TickingBlockEntity.getTicker());
     }
 
     @Override
@@ -75,7 +79,7 @@ public class ThunderchargeDynamoBlock extends BlockWithEntity {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         if(Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("tooltip.turtlechargingstation.thundercharge_dynamo"));
         } else {

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:copper_ingot"
-            ]
+            "items": "minecraft:copper_ingot"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:honeycomb"
-            ]
+            "items": "minecraft:honeycomb"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_copper_ingot",
-      "has_honeycomb",
-      "has_the_recipe"
+      "has_honeycomb"
     ]
   ],
   "rewards": {
     "recipes": [
       "turtlechargingstation:copper_cable"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

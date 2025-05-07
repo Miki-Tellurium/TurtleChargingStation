@@ -1,14 +1,16 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
-import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationBlockEntity;
-import com.mikitellurium.turtlechargingstation.networking.packets.EnergySyncPacket;
+import com.mikitellurium.turtlechargingstation.networking.payloads.EnergySyncPayload;
+import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,14 +21,12 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class TurtleChargingStationBlock extends BlockWithEntity {
-
     public static final BooleanProperty ENABLED = Properties.ENABLED;
     public static final BooleanProperty CHARGING = BooleanProperty.of("charging");
 
@@ -41,6 +41,11 @@ public class TurtleChargingStationBlock extends BlockWithEntity {
                 .with(CHARGING, false));
     }
 
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(TurtleChargingStationBlock::new);
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
@@ -50,7 +55,7 @@ public class TurtleChargingStationBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState blockState, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.TURTLE_CHARGING_STATION, TickingBlockEntity.getTicker());
+        return validateTicker(type, ModBlockEntities.TURTLE_CHARGING_STATION, TickingBlockEntity.getTicker());
     }
 
     @Override
@@ -59,17 +64,15 @@ public class TurtleChargingStationBlock extends BlockWithEntity {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player,
-                              Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof TurtleChargingStationBlockEntity stationBlockEntity) {
-                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+                NamedScreenHandlerFactory screenHandlerFactory = blockState.createScreenHandlerFactory(world, pos);
                 if (screenHandlerFactory != null) {
                     player.openHandledScreen(screenHandlerFactory);
                 }
-                ServerPlayNetworking.send((ServerPlayerEntity) player,
-                        new EnergySyncPacket(stationBlockEntity.getPos(), stationBlockEntity.getEnergy()));
+                ServerPlayNetworking.send((ServerPlayerEntity) player, new EnergySyncPayload(stationBlockEntity.getPos(), stationBlockEntity.getEnergy()));
             } else {
                 throw new IllegalStateException("Container provider is missing");
             }
@@ -79,7 +82,7 @@ public class TurtleChargingStationBlock extends BlockWithEntity {
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomName()) {
+        if (itemStack.contains(DataComponentTypes.CUSTOM_NAME)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof TurtleChargingStationBlockEntity) {
                 ((TurtleChargingStationBlockEntity)blockEntity).setCustomName(itemStack.getName());

@@ -116,6 +116,8 @@ public class TurtleInfoElement {
             }
         }
 
+
+        @SuppressWarnings("DataFlowIssue")
         private Optional<TurtleBlockEntity> getAdjacentTurtle(TurtleChargingStationBlockEntity station, Direction direction) {
             BlockEntity blockEntity = station.getWorld().getBlockEntity(station.getPos().offset(direction));
             return blockEntity instanceof TurtleBlockEntity turtle ? Optional.of(turtle) : Optional.empty();

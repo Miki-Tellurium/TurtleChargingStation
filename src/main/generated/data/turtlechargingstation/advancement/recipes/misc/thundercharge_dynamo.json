@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "computercraft:turtle_advanced"
-            ]
+            "items": "computercraft:turtle_advanced"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "computercraft:turtle_normal"
-            ]
+            "items": "computercraft:turtle_normal"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_turtle_normal",
-      "has_turtle_advanced",
-      "has_the_recipe"
+      "has_turtle_advanced"
     ]
   ],
   "rewards": {
     "recipes": [
       "turtlechargingstation:thundercharge_dynamo"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

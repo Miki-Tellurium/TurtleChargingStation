@@ -6,6 +6,7 @@ import com.mikitellurium.turtlechargingstation.common.blockentity.CopperCableBlo
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlechargingstation.registry.ModBlocks;
 import com.mikitellurium.turtlechargingstation.util.CableHelper;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -66,6 +67,11 @@ public class CopperCableBlock extends BlockWithEntity implements WaterloggedHelp
                 .with(WATERLOGGED, false));
     }
 
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(CopperCableBlock::new);
+    }
+
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState blockState) {
@@ -75,7 +81,7 @@ public class CopperCableBlock extends BlockWithEntity implements WaterloggedHelp
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState blockState, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.COPPER_CABLE, TickingBlockEntity.getTicker());
+        return validateTicker(type, ModBlockEntities.COPPER_CABLE, TickingBlockEntity.getTicker());
     }
 
     @Override
@@ -140,12 +146,12 @@ public class CopperCableBlock extends BlockWithEntity implements WaterloggedHelp
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState blockState, PlayerEntity player) {
-        super.onBreak(world, pos, blockState, player);
+    public BlockState onBreak(World world, BlockPos pos, BlockState blockState, PlayerEntity player) {
         blockState.updateNeighbors(world, pos, 3);
         if (!world.isClient) {
             world.getBlockEntity(pos, ModBlockEntities.COPPER_CABLE).ifPresent(CopperCableBlockEntity::remove);
         }
+        return super.onBreak(world, pos, blockState, player);
     }
 
     private BlockState updateBlockState(WorldAccess world, BlockState blockState, BlockPos pos) {
@@ -166,7 +172,7 @@ public class CopperCableBlock extends BlockWithEntity implements WaterloggedHelp
     }
 
     @Override
-    public boolean canPathfindThrough(BlockState blockState, BlockView world, BlockPos pos, NavigationType type) {
+    protected boolean canPathfindThrough(BlockState blockState, NavigationType type) {
         return !blockState.get(BURNING);
     }
 

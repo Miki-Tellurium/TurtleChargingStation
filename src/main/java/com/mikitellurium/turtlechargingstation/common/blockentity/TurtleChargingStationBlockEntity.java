@@ -7,8 +7,8 @@ import com.mikitellurium.telluriumforge.networking.NetworkingHelper;
 import com.mikitellurium.turtlechargingstation.client.gui.TurtleChargingStationScreenHandler;
 import com.mikitellurium.turtlechargingstation.common.block.TurtleChargingStationBlock;
 import com.mikitellurium.turtlechargingstation.common.energy.ModEnergyStorage;
-import com.mikitellurium.turtlechargingstation.networking.packets.EnergySyncPacket;
-import com.mikitellurium.turtlechargingstation.networking.packets.TurtleFuelSyncPacket;
+import com.mikitellurium.turtlechargingstation.networking.payloads.EnergySyncPayload;
+import com.mikitellurium.turtlechargingstation.networking.payloads.TurtleFuelSyncPayload;
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -24,7 +24,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -37,7 +37,7 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TurtleChargingStationBlockEntity extends NameableBlockEntity implements ExtendedScreenHandlerFactory, TickingBlockEntity {
+public class TurtleChargingStationBlockEntity extends NameableBlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, TickingBlockEntity {
 
     public static RangedConfigEntry<Long> CAPACITY;
     public static RangedConfigEntry<Long> CONVERSION_RATE; // Based on Thermal Expansion stirling dynamo production rate using coal
@@ -48,7 +48,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         protected void onFinalCommit() {
             markDirty();
             if (!world.isClient) {
-                NetworkingHelper.sendToTrackingClients((ServerWorld) world, pos, new EnergySyncPacket(pos, this.getAmount()));
+                NetworkingHelper.sendToTrackingClients((ServerWorld) world, pos, new EnergySyncPayload(pos, this.getAmount()));
             }
         }
     };
@@ -127,7 +127,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             if (this.energyStorage.extract(CONVERSION_RATE.get(), transaction) == CONVERSION_RATE.get()) {
                 turtle.getAccess().addFuel(1);
                 transaction.commit();
-                NetworkingHelper.sendToTrackingClients((ServerWorld) this.world, this.pos, new TurtleFuelSyncPacket(turtle.getPos(), turtle.getAccess().getFuelLevel()));
+                NetworkingHelper.sendToTrackingClients((ServerWorld) this.world, this.pos, new TurtleFuelSyncPayload(turtle.getPos(), turtle.getAccess().getFuelLevel()));
             }
         }
     }
@@ -167,9 +167,8 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
-        buf.writeLong(energyStorage.getAmount());
+    public BlockPos getScreenOpeningData(ServerPlayerEntity serverPlayerEntity) {
+        return this.pos;
     }
 
     @Override
@@ -183,17 +182,16 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+        super.writeNbt(nbt, lookup);
         energyStorage.setAmount(nbt.getLong("energy"));
-        inventory.readNbtList(nbt.getList("inventory", NbtElement.COMPOUND_TYPE));
+        inventory.readNbtList(nbt.getList("inventory", NbtElement.COMPOUND_TYPE), lookup);
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
         nbt.putLong("energy", energyStorage.getAmount());
-        nbt.put("inventory", inventory.toNbtList());
-        super.readNbt(nbt);
+        nbt.put("inventory", inventory.toNbtList(lookup));
+        super.readNbt(nbt, lookup);
     }
-
 }

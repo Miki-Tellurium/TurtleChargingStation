@@ -37,5 +37,4 @@ public class ModConfig {
     public static TelluriumConfig getCommon() {
         return COMMON_CONFIG;
     }
-
 }

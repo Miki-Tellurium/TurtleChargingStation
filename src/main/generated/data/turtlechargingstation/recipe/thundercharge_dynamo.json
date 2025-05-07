@@ -21,7 +21,7 @@
     "XGX"
   ],
   "result": {
-    "item": "turtlechargingstation:thundercharge_dynamo"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "turtlechargingstation:thundercharge_dynamo"
+  }
 }

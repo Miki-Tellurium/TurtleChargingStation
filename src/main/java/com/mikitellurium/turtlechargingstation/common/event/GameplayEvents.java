@@ -11,14 +11,12 @@ import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
 
 public class GameplayEvents {
-
     private static final EventHelper HELPER = new EventHelper();
 
     public static void register() {
@@ -62,10 +60,9 @@ public class GameplayEvents {
         BlockPos startPos = blockPos.add(1, 2, 1);
         BlockPos downPos = blockPos.add(-1, -10, -1);
         List<BlockPos> list = BlockPos.stream(startPos, downPos)
-                .filter((pos) -> world.isSkyVisible(pos) && SpawnHelper.canSpawn(SpawnRestriction.Location.ON_GROUND, world, pos, EntityType.CREEPER))
+                .filter((pos) -> world.isSkyVisible(pos) && SpawnRestriction.isSpawnPosAllowed(EntityType.CREEPER, world, pos))
                 .map(BlockPos::toImmutable)
                 .toList();
         return Util.getRandomOrEmpty(list, world.random);
     }
-
 }

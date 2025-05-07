@@ -7,16 +7,16 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.BlockPos;
 
 public class TurtleChargingStationScreenHandler extends QuickMoveScreenHandler {
 
     private final TurtleChargingStationBlockEntity blockEntity;
     private final int invYOffset = 31;
 
-    public TurtleChargingStationScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+    public TurtleChargingStationScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
+        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos));
     }
 
     public TurtleChargingStationScreenHandler(int id, PlayerInventory inventory, BlockEntity entity) {

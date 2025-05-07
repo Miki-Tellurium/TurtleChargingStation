@@ -6,7 +6,7 @@ import net.minecraft.util.Identifier;
 public class FastId {
 
     public static Identifier of(String namespace, String id) {
-        return new Identifier(namespace, id);
+        return Identifier.of(namespace, id);
     }
 
     public static Identifier ofMod(String id) {
@@ -14,7 +14,7 @@ public class FastId {
     }
 
     public static Identifier ofMc(String id) {
-        return new Identifier(id);
+        return Identifier.of(id);
     }
 
     public static String modId() {

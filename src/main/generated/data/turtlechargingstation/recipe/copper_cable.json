@@ -16,7 +16,6 @@
   ],
   "result": {
     "count": 6,
-    "item": "turtlechargingstation:copper_cable"
-  },
-  "show_notification": true
+    "id": "turtlechargingstation:copper_cable"
+  }
 }

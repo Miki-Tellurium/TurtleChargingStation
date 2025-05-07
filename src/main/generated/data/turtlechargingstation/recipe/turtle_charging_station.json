@@ -21,7 +21,7 @@
     "cIc"
   ],
   "result": {
-    "item": "turtlechargingstation:turtle_charging_station"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "turtlechargingstation:turtle_charging_station"
+  }
 }
