@@ -11,19 +11,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 
 public class ModBlocks {
-
     public static final BlockRegistrator REGISTRATOR;
     public static final Block TURTLE_CHARGING_STATION;
     public static final Block THUNDERCHARGE_DYNAMO;
     public static final Block COPPER_CABLE;
-    public static final Block ENERGY_TEST;
 
     static  {
         REGISTRATOR = new BlockRegistrator(FastId.modId());
         TURTLE_CHARGING_STATION = REGISTRATOR.registerWithItem("turtle_charging_station", () -> new TurtleChargingStationBlock(FabricBlockSettings.create()));
         THUNDERCHARGE_DYNAMO = REGISTRATOR.registerWithItem("thundercharge_dynamo", () -> new ThunderchargeDynamoBlock(FabricBlockSettings.create()));
         COPPER_CABLE = REGISTRATOR.registerWithItem("copper_cable", () -> new CopperCableBlock(FabricBlockSettings.copyOf(Blocks.COPPER_BLOCK)));
-        ENERGY_TEST = REGISTRATOR.registerWithItem("energy_test_block", () -> new EnergyTestBlock(FabricBlockSettings.copyOf(Blocks.STONE)));
     }
-
 }

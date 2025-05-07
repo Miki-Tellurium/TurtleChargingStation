@@ -8,7 +8,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 
 public class ModCreativeTab {
-
     public static final Registrator<ItemGroup> REGISTRATOR;
     public static final ItemGroup TAB_TURTLECHARGINGSTATION;
 
@@ -24,5 +23,4 @@ public class ModCreativeTab {
                             entries.add(ModBlocks.COPPER_CABLE);
                         }).build());
     }
-
 }

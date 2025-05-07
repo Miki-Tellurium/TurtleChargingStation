@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
 public class ModItems {
-
     public static final Registrator<Item> REGISTRATOR;
     public static final Item ENERGY_TEST_ITEM;
 
@@ -20,5 +19,4 @@ public class ModItems {
         REGISTRATOR = ModRegistries.makeRegistrator(Registries.ITEM);
         ENERGY_TEST_ITEM = REGISTRATOR.register("energy_test_item", () -> new EnergyTestItem(new FabricItemSettings()));
     }
-
 }

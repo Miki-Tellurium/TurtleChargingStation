@@ -8,7 +8,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandlerType;
 
 public class ModScreenHandlers {
-
     public static final Registrator<ScreenHandlerType<?>> REGISTRATOR;
     public static final ScreenHandlerType<TurtleChargingStationScreenHandler> TURTLE_CHARGING_STATION;
 
@@ -16,5 +15,4 @@ public class ModScreenHandlers {
         REGISTRATOR = ModRegistries.makeRegistrator(Registries.SCREEN_HANDLER);
         TURTLE_CHARGING_STATION = REGISTRATOR.register("turtle_charging_station", () -> new ExtendedScreenHandlerType<>(TurtleChargingStationScreenHandler::new));
     }
-
 }
