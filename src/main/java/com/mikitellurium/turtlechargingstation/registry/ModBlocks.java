@@ -4,7 +4,6 @@ import com.mikitellurium.telluriumforge.registry.BlockRegistrator;
 import com.mikitellurium.turtlechargingstation.common.block.CopperCableBlock;
 import com.mikitellurium.turtlechargingstation.common.block.ThunderchargeDynamoBlock;
 import com.mikitellurium.turtlechargingstation.common.block.TurtleChargingStationBlock;
-import com.mikitellurium.turtlechargingstation.test.EnergyTestBlock;
 import com.mikitellurium.turtlechargingstation.util.FastId;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;

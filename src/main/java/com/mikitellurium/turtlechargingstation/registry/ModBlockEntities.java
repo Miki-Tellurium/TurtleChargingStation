@@ -1,19 +1,13 @@
 package com.mikitellurium.turtlechargingstation.registry;
 
 import com.mikitellurium.telluriumforge.registry.BlockEntityRegistrator;
-import com.mikitellurium.telluriumforge.registry.Registrator;
 import com.mikitellurium.turtlechargingstation.common.blockentity.CopperCableBlockEntity;
 import com.mikitellurium.turtlechargingstation.common.blockentity.ThunderchargeDynamoBlockEntity;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationBlockEntity;
-import com.mikitellurium.turtlechargingstation.test.EnergyTestBlockEntity;
 import com.mikitellurium.turtlechargingstation.util.FastId;
 import dan200.computercraft.api.peripheral.PeripheralLookup;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.registry.Registries;
 import team.reborn.energy.api.EnergyStorage;
 
 public class ModBlockEntities {
