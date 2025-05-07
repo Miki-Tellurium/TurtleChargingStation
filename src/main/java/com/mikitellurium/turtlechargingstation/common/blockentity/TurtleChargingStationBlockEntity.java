@@ -41,8 +41,8 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
 
     public static RangedConfigEntry<Long> CAPACITY;
     public static RangedConfigEntry<Long> CONVERSION_RATE; // Based on Thermal Expansion stirling dynamo production rate using coal
-    private final long maxReceive = CONVERSION_RATE.getValue() * 6; // 6 sides
-    private final ModEnergyStorage energyStorage = new ModEnergyStorage(CAPACITY.getValue(), maxReceive) {
+    private final long maxReceive = CONVERSION_RATE.get() * 6; // 6 sides
+    private final ModEnergyStorage energyStorage = new ModEnergyStorage(CAPACITY.get(), maxReceive) {
         @SuppressWarnings("DataFlowIssue")
         @Override
         protected void onFinalCommit() {
@@ -59,7 +59,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
             TurtleChargingStationBlockEntity.this.markDirty();
         }
     };
-    private final int textureChangeDelay = (int) Math.ceil((double) CONVERSION_RATE.getValue() / ThunderchargeDynamoBlockEntity.TRANSFER_RATE.getValue()) + 1;
+    private final int textureChangeDelay = (int) Math.ceil((double) CONVERSION_RATE.get() / ThunderchargeDynamoBlockEntity.TRANSFER_RATE.get()) + 1;
     private int textureTimer = 0;
 
     public TurtleChargingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -94,11 +94,11 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         }
 
         // State stays charging even if disabled
-        boolean shouldCharge = !turtles.isEmpty() && this.hasChargeableTurtle(turtles) && this.energyStorage.getAmount() >= CONVERSION_RATE.getValue();
+        boolean shouldCharge = !turtles.isEmpty() && this.hasChargeableTurtle(turtles) && this.energyStorage.getAmount() >= CONVERSION_RATE.get();
         world.setBlockState(pos, state.with(TurtleChargingStationBlock.CHARGING, shouldCharge || textureTimer > 0), 2);
         if (shouldCharge && this.getCachedState().get(TurtleChargingStationBlock.ENABLED)) {
             for (TurtleBlockEntity turtle : turtles) {
-                if (this.isChargeable(turtle) && this.energyStorage.getAmount() >= CONVERSION_RATE.getValue()) {
+                if (this.isChargeable(turtle) && this.energyStorage.getAmount() >= CONVERSION_RATE.get()) {
                     this.refuelTurtle(turtle);
                     textureTimer = textureChangeDelay;
                 }
@@ -124,7 +124,7 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
 
     private void refuelTurtle(TurtleBlockEntity turtle) {
         try (Transaction transaction = Transaction.openOuter()) {
-            if (this.energyStorage.extract(CONVERSION_RATE.getValue(), transaction) == CONVERSION_RATE.getValue()) {
+            if (this.energyStorage.extract(CONVERSION_RATE.get(), transaction) == CONVERSION_RATE.get()) {
                 turtle.getAccess().addFuel(1);
                 transaction.commit();
                 NetworkingHelper.sendToTrackingClients((ServerWorld) this.world, this.pos, new TurtleFuelSyncPacket(turtle.getPos(), turtle.getAccess().getFuelLevel()));

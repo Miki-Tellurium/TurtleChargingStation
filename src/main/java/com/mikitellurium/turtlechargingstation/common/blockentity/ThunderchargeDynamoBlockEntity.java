@@ -38,7 +38,7 @@ public class ThunderchargeDynamoBlockEntity extends BlockEntity implements Ticki
                         EnergyStorage energyStorage = EnergyStorage.SIDED.find(world, belowPos, receiver.getCachedState(), receiver, null);
                         if (energyStorage != null) {
                             try (Transaction transaction = Transaction.openOuter()) {
-                                long amountInserted = energyStorage.insert(TRANSFER_RATE.getValue(), transaction);
+                                long amountInserted = energyStorage.insert(TRANSFER_RATE.get(), transaction);
                                 if (amountInserted > 0) {
                                     transaction.commit();
                                 }
@@ -50,7 +50,7 @@ public class ThunderchargeDynamoBlockEntity extends BlockEntity implements Ticki
                     EnergyStorage energyStorage = EnergyStorage.SIDED.find(world, belowPos, blockEntity.getCachedState(), blockEntity, Direction.UP);
                     if (energyStorage != null) {
                         try (Transaction transaction = Transaction.openOuter()) {
-                            long amountInserted = energyStorage.insert(TRANSFER_RATE.getValue(), transaction);
+                            long amountInserted = energyStorage.insert(TRANSFER_RATE.get(), transaction);
                             if (amountInserted > 0) {
                                 transaction.commit();
                             }
@@ -71,7 +71,7 @@ public class ThunderchargeDynamoBlockEntity extends BlockEntity implements Ticki
     }
 
     public void recharge() {
-        this.charge = Math.min(this.getCharge() + RECHARGE_AMOUNT.getValue(), Integer.MAX_VALUE);
+        this.charge = Math.min(this.getCharge() + RECHARGE_AMOUNT.get(), Integer.MAX_VALUE);
     }
 
     public EnergyStorage energyLookup(Direction side) {
