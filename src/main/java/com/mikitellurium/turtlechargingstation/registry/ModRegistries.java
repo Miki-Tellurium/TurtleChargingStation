@@ -7,17 +7,15 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 public class ModRegistries {
-
     public static void register() {
-        ModBlocks.REGISTRY.register();
-        ModItems.REGISTRY.register();
-        ModBlockEntities.REGISTRY.register();
-        ModCreativeTab.REGISTRY.register();
-        ModMenuTypes.REGISTRY.register();
+        ModBlocks.REGISTRATOR.register();
+        ModItems.REGISTRATOR.register();
+        ModBlockEntities.REGISTRATOR.register();
+        ModCreativeTab.REGISTRATOR.register();
+        ModMenuTypes.REGISTRATOR.register();
     }
 
-    public static <T> RegistryHelper<T> makeRegistry(ResourceKey<Registry<T>> resourceKey) {
+    public static <T> Registrator<T> makeRegistry(ResourceKey<Registry<T>> resourceKey) {
         return Registrator.makeRegistrator(resourceKey, FastLoc.modId());
     }
-
 }

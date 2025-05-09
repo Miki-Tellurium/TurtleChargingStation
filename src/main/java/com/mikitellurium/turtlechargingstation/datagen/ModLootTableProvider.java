@@ -16,7 +16,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class ModLootTableProvider extends BlockLootSubProvider {
-
     private ModLootTableProvider(HolderLookup.Provider registries) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
@@ -30,15 +29,12 @@ public class ModLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.REGISTRY.registry().getEntries().stream().map(DeferredHolder::get).collect(Collectors.toUnmodifiableSet());
+        return ModBlocks.REGISTRATOR.registry().getEntries().stream().map(DeferredHolder::get).collect(Collectors.toUnmodifiableSet());
     }
 
     public static class Output extends LootTableProvider {
-
         public Output(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
             super(packOutput, Set.of(), List.of(new LootTableProvider.SubProviderEntry(ModLootTableProvider::new, LootContextParamSets.BLOCK)), registries);
         }
-
     }
-
 }

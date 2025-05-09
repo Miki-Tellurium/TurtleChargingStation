@@ -16,7 +16,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void clientSetup(RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.TURTLE_CHARGING_STATION_GUI.get(), TurtleChargingStationScreen::new);
+        event.register(ModMenuTypes.TURTLE_CHARGING_STATION.get(), TurtleChargingStationScreen::new);
     }
 
     @SubscribeEvent

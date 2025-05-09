@@ -8,7 +8,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ModConfigs {
-
     private static ModConfigSpec COMMON_CONFIG;
 
     public static void register() {
@@ -42,5 +41,4 @@ public class ModConfigs {
     public static ModConfigSpec getCommon() {
         return COMMON_CONFIG;
     }
-
 }
