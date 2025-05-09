@@ -13,7 +13,6 @@ import org.joml.Quaternionf;
 import java.util.function.Supplier;
 
 public class DebugCableRenderer implements BlockEntityRenderer<CopperCableBlockEntity> {
-
     private final Font font;
     private final Supplier<Quaternionf> cameraOrientation;
 
@@ -38,5 +37,4 @@ public class DebugCableRenderer implements BlockEntityRenderer<CopperCableBlockE
 
         poseStack.popPose();
     }
-
 }

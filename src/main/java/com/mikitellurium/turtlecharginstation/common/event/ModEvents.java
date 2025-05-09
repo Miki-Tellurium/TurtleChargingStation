@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ModEvents {
-
     public static void register(IEventBus modEventBus) {
         final EventHelper HELPER = new EventHelper();
         HELPER
@@ -85,5 +84,4 @@ public class ModEvents {
                 .toList();
         return Util.getRandomSafe(list, level.random);
     }
-
 }

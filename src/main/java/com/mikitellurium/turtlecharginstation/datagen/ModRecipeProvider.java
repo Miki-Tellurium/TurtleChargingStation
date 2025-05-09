@@ -9,19 +9,15 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
@@ -65,7 +61,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('#', redstoneBlock)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer,  FastLoc.modLoc("thundercharge_dynamo"));
+                .build(consumer,  FastLoc.ofMod("thundercharge_dynamo"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.COPPER_CABLE.get(), 6)
                 .pattern(" X ")
                 .pattern("CCC")
@@ -74,7 +70,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .unlockedBy("has_honeyComb", has(Items.HONEYCOMB))
-                .save(consumer, FastLoc.modLoc("copper_cable"));
+                .save(consumer, FastLoc.ofMod("copper_cable"));
 
         if (ModList.get().isLoaded(ModIdConstants.ID_THERMAL)) {
             this.turtleChargingStation(consumer, and(
@@ -97,7 +93,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                     .define('#', machineFrame)
                                     .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                     .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                    .build(consumer, FastLoc.modLoc("thundercharge_dynamo_thermal"));
+                    .build(consumer, FastLoc.ofMod("thundercharge_dynamo_thermal"));
         }
 
         if (ModList.get().isLoaded(ModIdConstants.ID_MEKANISM)) {
@@ -121,7 +117,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                     .define('#', steelCasing)
                                     .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                     .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                    .build(consumer, FastLoc.modLoc("thundercharge_dynamo_mekanism"));
+                    .build(consumer, FastLoc.ofMod("thundercharge_dynamo_mekanism"));
         }
 
         if (ModList.get().isLoaded(ModIdConstants.ID_POWAH)) {
@@ -145,7 +141,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                     .define('#', dielectricCasing)
                                     .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                     .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                    .build(consumer, FastLoc.modLoc("thundercharge_dynamo_powah"));
+                    .build(consumer, FastLoc.ofMod("thundercharge_dynamo_powah"));
         }
     }
 
@@ -163,7 +159,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                 .define('R', item)
                                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))::save)
-                .build(consumer,  FastLoc.modLoc(path));
+                .build(consumer,  FastLoc.ofMod(path));
     }
 
 }

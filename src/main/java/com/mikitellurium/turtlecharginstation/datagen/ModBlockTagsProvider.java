@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagsProvider extends BlockTagsProvider {
-
     public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, FastLoc.modId(), existingFileHelper);
     }
@@ -26,7 +25,4 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.THUNDERCHARGE_DYNAMO.get())
                 .add(ModBlocks.COPPER_CABLE.get());
     }
-
-
-
 }

@@ -1,15 +1,13 @@
 package com.mikitellurium.turtlecharginstation.registry;
 
-import com.mikitellurium.telluriumforge.registry.RegistryHelper;
+import com.mikitellurium.telluriumforge.registry.Registrator;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModItems {
-
-    public static RegistryHelper<Item> REGISTRY;
+    public static Registrator<Item> REGISTRATOR;
 
     static {
-        REGISTRY = ModRegistries.makeRegistry(ForgeRegistries.ITEMS);
+        REGISTRATOR = ModRegistries.makeRegistry(ForgeRegistries.ITEMS);
     }
-
 }

@@ -7,7 +7,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 
 public class ModConfigs {
-
     private static ForgeConfigSpec COMMON_CONFIG;
 
     public static void registerConfig() {
@@ -41,5 +40,4 @@ public class ModConfigs {
     public static ForgeConfigSpec getCommon() {
         return COMMON_CONFIG;
     }
-
 }

@@ -26,7 +26,7 @@ public class TurtleChargingStationMenu extends QuickMoveContainerMenu {
     }
 
     public TurtleChargingStationMenu(int id, Inventory inventory, BlockEntity entity) {
-        super(ModMenuTypes.TURTLE_CHARGING_STATION_GUI.get(), id, 1);
+        super(ModMenuTypes.TURTLE_CHARGING_STATION.get(), id, 1);
         blockEntity = (TurtleChargingStationBlockEntity) entity;
         this.level = inventory.player.level();
         this.addPlayerInventory(inventory);

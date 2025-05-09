@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ModLootTableProvider extends BlockLootSubProvider {
-
     private ModLootTableProvider() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
@@ -27,15 +26,12 @@ public class ModLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.REGISTRY.registry().getEntries().stream().map(RegistryObject::get)::iterator;
+        return ModBlocks.REGISTRATOR.registry().getEntries().stream().map(RegistryObject::get)::iterator;
     }
 
     public static class Output extends LootTableProvider {
-
         public Output(PackOutput packOutput) {
             super(packOutput, Set.of(), List.of(new LootTableProvider.SubProviderEntry(ModLootTableProvider::new, LootContextParamSets.BLOCK)));
         }
-
     }
-
 }

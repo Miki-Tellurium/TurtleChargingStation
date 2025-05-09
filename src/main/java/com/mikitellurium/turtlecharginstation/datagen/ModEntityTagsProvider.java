@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ModEntityTagsProvider extends EntityTypeTagsProvider {
-
     public ModEntityTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, FastLoc.modId(), existingFileHelper);
     }
@@ -24,5 +23,4 @@ public class ModEntityTagsProvider extends EntityTypeTagsProvider {
                 .add(EntityType.LIGHTNING_BOLT)
                 .addOptional(EntityRegistry.LIGHTNING_BOLT.getId());
     }
-
 }

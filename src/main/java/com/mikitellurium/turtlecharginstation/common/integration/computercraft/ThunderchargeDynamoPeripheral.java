@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ThunderchargeDynamoPeripheral implements IPeripheral {
 
-    private static final ResourceLocation ID = FastLoc.modLoc("thundercharge_dynamo");
+    private static final ResourceLocation ID = FastLoc.ofMod("thundercharge_dynamo");
     private final ThunderchargeDynamoBlockEntity dynamo;
 
     public ThunderchargeDynamoPeripheral(ThunderchargeDynamoBlockEntity dynamo) {

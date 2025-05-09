@@ -44,7 +44,7 @@ public class TurtleChargingStationMod {
 
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(ModMenuTypes.TURTLE_CHARGING_STATION_GUI.get(), TurtleChargingStationScreen::new);
+            MenuScreens.register(ModMenuTypes.TURTLE_CHARGING_STATION.get(), TurtleChargingStationScreen::new);
         }
 
         @SubscribeEvent

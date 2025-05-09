@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EnergyStorageElement {
 
-    private static final ResourceLocation ENERGY_STORAGE_TEXTURE = FastLoc.modLoc("textures/gui/energy_storage.png");
+    private static final ResourceLocation ENERGY_STORAGE_TEXTURE = FastLoc.ofMod("textures/gui/energy_storage.png");
     private final int textureWidth = 30;
     private final int textureHeight = 66;
     private final TurtleChargingStationBlockEntity station;
