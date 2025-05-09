@@ -77,7 +77,6 @@ minecraft {
 
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
-
     config "${mod_id}.mixins.json"
 }
 
@@ -119,6 +118,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     //implementation fg.deobf("maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-forge")
     implementation fg.deobf("blank:telluriumforge:1.4.0-1.20.1-forge")
