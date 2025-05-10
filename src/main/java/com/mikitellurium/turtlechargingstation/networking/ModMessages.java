@@ -6,7 +6,6 @@ import com.mikitellurium.turtlechargingstation.networking.packets.TurtleFuelSync
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 public class ModMessages {
-
     public static void registerC2SPackets() {
     }
 
@@ -14,7 +13,5 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(EnergySyncPacket.TYPE, EnergySyncPacket::handle);
         ClientPlayNetworking.registerGlobalReceiver(TurtleFuelSyncPacket.TYPE, TurtleFuelSyncPacket::handle);
         ClientPlayNetworking.registerGlobalReceiver(CableIdSyncPacket.TYPE, CableIdSyncPacket::handle);
-
     }
-
 }
