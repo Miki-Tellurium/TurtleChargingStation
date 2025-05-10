@@ -15,9 +15,11 @@ import com.mikitellurium.turtlechargingstation.networking.payloads.TurtleFuelSyn
 import com.mikitellurium.turtlechargingstation.registry.ModCreativeTab;
 import com.mikitellurium.turtlechargingstation.util.FastLoc;
 import dan200.computercraft.api.ComputerCraftAPI;
+import dan200.computercraft.api.ForgeComputerCraftAPI;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -26,16 +28,21 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonSetup {
-
     public static void register(IEventBus modEventBus) {
         final EventHelper helper = new EventHelper();
         helper
                 .addListener(modEventBus, ModCreativeTab::buildCreativeTab)
+                .addListener(modEventBus, CommonSetup::commonSetup)
                 .addListener(modEventBus, CommonSetup::gatherData)
                 .addListener(modEventBus, CommonSetup::registerCapabilities)
                 .addListener(modEventBus, CommonSetup::registerPayloads)
                 .registerAll();
         ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
+    }
+
+    private static void commonSetup(FMLCommonSetupEvent event) {
+        ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
+        ForgeComputerCraftAPI.registerGenericCapability(TurtleChargingStationBlockEntity.ACCESS_CAP);
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -59,5 +66,4 @@ public class CommonSetup {
         generator.addProvider(true, new ModBlockTagsProvider(generator.getPackOutput(), lookupProvider, event.getExistingFileHelper()));
         generator.addProvider(true, new ModEntityTagsProvider(generator.getPackOutput(), lookupProvider, event.getExistingFileHelper()));
     }
-
 }

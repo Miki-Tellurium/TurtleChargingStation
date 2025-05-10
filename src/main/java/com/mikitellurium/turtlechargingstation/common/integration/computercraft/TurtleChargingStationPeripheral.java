@@ -17,9 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("ConstantConditions")
 public class TurtleChargingStationPeripheral implements GenericPeripheral {
-
     @Override
     public String id() {
         return ModBlocks.TURTLE_CHARGING_STATION.getId().toString();
@@ -31,26 +29,27 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
     }
 
     @LuaFunction(mainThread = true)
-    public final boolean isEnabled(TurtleChargingStationBlockEntity chargingStation) {
-        return chargingStation.getBlockState().getValue(TurtleChargingStationBlock.ENABLED);
+    public final boolean isEnabled(TurtleChargingStationBlockEntity.CCAccess access) {
+        return access.getBlockState().getValue(TurtleChargingStationBlock.ENABLED);
     }
 
     @LuaFunction(mainThread = true)
-    public final MethodResult getSide(TurtleChargingStationBlockEntity chargingStation, Direction side) {
-        Optional<Object> optional = this.getSideData(chargingStation.getLevel(), chargingStation.getBlockPos(), side);
+    public final MethodResult getSide(TurtleChargingStationBlockEntity.CCAccess access, Direction side) {
+        Optional<Object> optional = this.getSideData(access.getLevel(), access.getPos(), side);
         return MethodResult.of(optional.orElse(null));
     }
 
     @LuaFunction(mainThread = true)
-    public final MethodResult getSides(TurtleChargingStationBlockEntity chargingStation) {
+    public final MethodResult getSides(TurtleChargingStationBlockEntity.CCAccess access) {
         Map<String, Object> results = new HashMap<>();
         for (Direction direction : Direction.values()) {
-            Optional<Object> optional = this.getSideData(chargingStation.getLevel(), chargingStation.getBlockPos(), direction);
+            Optional<Object> optional = this.getSideData(access.getLevel(), access.getPos(), direction);
             optional.ifPresent((obj) -> results.put(direction.getName(), obj));
         }
         return MethodResult.of(!results.isEmpty() ? results : null);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private Optional<Object> getSideData(Level level, BlockPos pos, Direction side) {
         BlockEntity blockEntity = level.getBlockEntity(pos.relative(side));
         if (blockEntity instanceof TurtleBlockEntity turtle) {
@@ -59,5 +58,4 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
         }
         return Optional.empty();
     }
-
 }
