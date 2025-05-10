@@ -60,7 +60,6 @@ minecraft {
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
         }
 
         gameTestServer {
@@ -150,8 +149,8 @@ dependencies {
 
     implementation fg.deobf("maven.modrinth:cloth-config:${cloth_config_version}+forge")
 
-    compileOnly fg.deobf("curse.maven:weather2-237746:5244118")
-    compileOnly fg.deobf("curse.maven:coroutil-237749:5096038")
+    //compileOnly fg.deobf("curse.maven:weather2-237746:5244118")
+    //compileOnly fg.deobf("curse.maven:coroutil-237749:5096038")
 }
 
 tasks.named('processResources', ProcessResources).configure {
