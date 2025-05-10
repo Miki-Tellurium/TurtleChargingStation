@@ -24,8 +24,12 @@ public class CommonSetup {
         final EventHelper helper = new EventHelper();
         helper
                 .addListener(modEventBus, ModCreativeTab::buildCreativeTab)
+                .addListener(modEventBus, CommonSetup::commonSetup)
                 .addListener(modEventBus, CommonSetup::gatherData)
                 .registerAll();
+    }
+
+    private static void commonSetup(FMLCommonSetupEvent event) {
         ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
         ForgeComputerCraftAPI.registerGenericCapability(TurtleChargingStationBlockEntity.ACCESS_CAP);
     }
