@@ -4,7 +4,6 @@ import com.mikitellurium.turtlechargingstation.TurtleChargingStationMod;
 import net.minecraft.util.Identifier;
 
 public class FastId {
-
     public static Identifier of(String namespace, String id) {
         return new Identifier(namespace, id);
     }
@@ -18,7 +17,6 @@ public class FastId {
     }
 
     public static String modId() {
-        return TurtleChargingStationMod.MOD_ID;
+        return TurtleChargingStationMod.modId();
     }
-
 }
