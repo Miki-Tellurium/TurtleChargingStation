@@ -24,8 +24,8 @@ public class ModConfig {
                 .comment("The amount of energy required to increase the turtle fuel level by 1");
         ThunderchargeDynamoBlockEntity.RECHARGE_AMOUNT = config.entryBuilder()
                 .defineInRange("dynamoRechargeAmount", 1200, 0, Integer.MAX_VALUE)
-                .comment("The amount of time (in ticks) that is added to the charge when the thundercharge\n" +
-                        "dynamo is struck by lightning.")
+                .comment("The amount of time (in ticks) that is added to the charge when the thundercharge")
+                .comment("dynamo is struck by lightning.")
                 .comment("# 1 minute = 1200 in-game ticks");
         ThunderchargeDynamoBlockEntity.TRANSFER_RATE = config.entryBuilder()
                 .defineInRange("dynamoTransferRate", 1024, 0, (long)Integer.MAX_VALUE)
