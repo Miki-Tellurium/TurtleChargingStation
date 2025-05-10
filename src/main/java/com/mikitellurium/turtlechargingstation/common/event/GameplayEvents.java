@@ -23,13 +23,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import java.util.List;
 import java.util.Optional;
 
-public class ModEvents {
+public class GameplayEvents {
     public static void register(IEventBus modEventBus) {
         final EventHelper HELPER = new EventHelper();
         HELPER
                 .addListener(modEventBus, ModCreativeTab::buildCreativeTab)
                 .addListener(modEventBus, DataGenerators::gatherData)
-                .addListener(MinecraftForge.EVENT_BUS, ModEvents::onLightningStrike)
+                .addListener(MinecraftForge.EVENT_BUS, GameplayEvents::onLightningStrike)
                 .registerClass(MinecraftForge.EVENT_BUS, ThunderchargeDynamoPeripheral.class)
                 .registerAll();
     }

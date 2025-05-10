@@ -46,5 +46,4 @@ public class ThunderchargeDynamoPeripheral implements IPeripheral {
             event.addCapability(ID, new PeripheralProvider<>(dynamo, ThunderchargeDynamoPeripheral::new));
         }
     }
-
 }

@@ -178,7 +178,6 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     }
 
     /*==DEBUG==*/
-
     private int clientNetworkId = -1;
 
     public void setClientNetworkId(int id) {
@@ -195,7 +194,5 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
             Networking.HELPER.sendToClients(new CableIdSyncS2CPacket(((CableNetworkImpl) cableNetwork).getId(), this.worldPosition));
         }
     }
-
     /**/
-
 }

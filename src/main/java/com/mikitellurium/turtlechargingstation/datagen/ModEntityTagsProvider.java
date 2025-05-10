@@ -7,7 +7,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import weather2.EntityRegistry;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +20,6 @@ public class ModEntityTagsProvider extends EntityTypeTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(ModTags.DYNAMO_ACTIVATORS)
                 .add(EntityType.LIGHTNING_BOLT)
-                .addOptional(EntityRegistry.LIGHTNING_BOLT.getId());
+                .addOptional(FastLoc.of("weather2", "lightning_bolt"));
     }
 }
