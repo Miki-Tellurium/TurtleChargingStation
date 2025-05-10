@@ -10,7 +10,9 @@ import com.mikitellurium.turtlechargingstation.common.energy.ModEnergyStorage;
 import com.mikitellurium.turtlechargingstation.networking.packets.EnergySyncPacket;
 import com.mikitellurium.turtlechargingstation.networking.packets.TurtleFuelSyncPacket;
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
+import com.mikitellurium.turtlechargingstation.util.FastId;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
@@ -31,6 +33,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
@@ -38,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TurtleChargingStationBlockEntity extends NameableBlockEntity implements ExtendedScreenHandlerFactory, TickingBlockEntity {
-
+    public static final BlockApiLookup<CCAccess, Direction> ACCESS_LOOKUP = BlockApiLookup.get(FastId.ofMod("cc_access"), CCAccess.class, Direction.class);
     public static RangedConfigEntry<Long> CAPACITY;
     public static RangedConfigEntry<Long> CONVERSION_RATE; // Based on Thermal Expansion stirling dynamo production rate using coal
     private final long maxReceive = CONVERSION_RATE.get() * 6; // 6 sides
@@ -57,6 +60,32 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         public void markDirty() {
             super.markDirty();
             TurtleChargingStationBlockEntity.this.markDirty();
+        }
+    };
+    private final CCAccess access = new CCAccess() {
+        @Override
+        public BlockPos getPos() {
+            return pos;
+        }
+
+        @Override
+        public BlockState getBlockState() {
+            return TurtleChargingStationBlockEntity.this.getCachedState();
+        }
+
+        @Override
+        public World getWorld() {
+            return world;
+        }
+
+        @Override
+        public long getEnergy() {
+            return TurtleChargingStationBlockEntity.this.getEnergy();
+        }
+
+        @Override
+        public long getEnergyCapacity() {
+            return TurtleChargingStationBlockEntity.this.getEnergyCapacity();
         }
     };
     private final int textureChangeDelay = (int) Math.ceil((double) CONVERSION_RATE.get() / ThunderchargeDynamoBlockEntity.TRANSFER_RATE.get()) + 1;
@@ -160,6 +189,10 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         return InventoryStorage.of(this.inventory, side);
     }
 
+    public CCAccess accessLookup(Direction side) {
+        return access;
+    }
+
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
@@ -196,4 +229,15 @@ public class TurtleChargingStationBlockEntity extends NameableBlockEntity implem
         super.readNbt(nbt);
     }
 
+    // Computercraft MethodSupplierImpl.getMethodsImpl() makes TickingBlockEntity.clientTick()
+    // load ClientWorld class when running on dedicated server because it loads all method
+    // from the block entity, including interfaces. Using this we expose charging station
+    // data as a capability without loading methods from the block entity.
+    public interface CCAccess {
+        BlockPos getPos();
+        BlockState getBlockState();
+        World getWorld();
+        long getEnergy();
+        long getEnergyCapacity();
+    }
 }

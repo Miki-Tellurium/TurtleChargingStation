@@ -21,8 +21,13 @@ public class ModBlockEntities {
         TURTLE_CHARGING_STATION = REGISTRATOR.ofBlock("turtle_charging_station", TurtleChargingStationBlockEntity::new, ModBlocks.TURTLE_CHARGING_STATION);
         THUNDERCHARGE_DYNAMO = REGISTRATOR.ofBlock("thundercharge_dynamo", ThunderchargeDynamoBlockEntity::new, ModBlocks.THUNDERCHARGE_DYNAMO);
         COPPER_CABLE = REGISTRATOR.ofBlock("copper_cable", CopperCableBlockEntity::new, ModBlocks.COPPER_CABLE);
+        registerBlockLookups();
+    }
+
+    private static void registerBlockLookups() {
         EnergyStorage.SIDED.registerForBlockEntity(TurtleChargingStationBlockEntity::energyLookup, TURTLE_CHARGING_STATION);
         ItemStorage.SIDED.registerForBlockEntity(TurtleChargingStationBlockEntity::inventoryLookup, TURTLE_CHARGING_STATION);
+        TurtleChargingStationBlockEntity.ACCESS_LOOKUP.registerForBlockEntity(TurtleChargingStationBlockEntity::accessLookup, TURTLE_CHARGING_STATION);
         EnergyStorage.SIDED.registerForBlockEntity(ThunderchargeDynamoBlockEntity::energyLookup, THUNDERCHARGE_DYNAMO);
         PeripheralLookup.get().registerForBlockEntity(ThunderchargeDynamoBlockEntity::peripheralLookup, THUNDERCHARGE_DYNAMO);
         EnergyStorage.SIDED.registerForBlockEntity(CopperCableBlockEntity::energyLookup, COPPER_CABLE);
