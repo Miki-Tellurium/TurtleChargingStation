@@ -52,7 +52,6 @@ neoForge {
 
         server {
             server()
-            programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
@@ -146,7 +145,7 @@ repositories {
 }
 
 dependencies {
-    implementation "blank:telluriumforge:1.4.1-beta-1.21.1-neoforge"
+    implementation "blank:telluriumforge:1.4.0-1.21.1-neoforge"
 
     compileOnly "mezz.jei:jei-${minecraft_version}-common:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
@@ -197,7 +196,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            cc_version_range       : cc_version_range
+            cc_version             : cc_version,
+            telluriumforge_version : telluriumforge_version
     ]
     inputs.properties replaceProperties
     expand replaceProperties
