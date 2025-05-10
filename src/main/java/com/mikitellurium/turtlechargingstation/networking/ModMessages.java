@@ -1,19 +1,21 @@
 package com.mikitellurium.turtlechargingstation.networking;
 
-import com.mikitellurium.telluriumforge.networking.NetworkingHelper;
 import com.mikitellurium.turtlechargingstation.networking.payloads.CableIdSyncPayload;
 import com.mikitellurium.turtlechargingstation.networking.payloads.EnergySyncPayload;
 import com.mikitellurium.turtlechargingstation.networking.payloads.TurtleFuelSyncPayload;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 
 public class ModMessages {
-
     public static void registerC2SPackets() {
+        ClientPlayNetworking.registerGlobalReceiver(EnergySyncPayload.ID, EnergySyncPayload::handle);
+        ClientPlayNetworking.registerGlobalReceiver(TurtleFuelSyncPayload.ID, TurtleFuelSyncPayload::handle);
+        ClientPlayNetworking.registerGlobalReceiver(CableIdSyncPayload.ID, CableIdSyncPayload::handle);
     }
 
     public static void registerS2CPackets() {
-        NetworkingHelper.registerS2C(EnergySyncPayload.ID, EnergySyncPayload.CODEC, EnergySyncPayload::handle);
-        NetworkingHelper.registerS2C(TurtleFuelSyncPayload.ID, TurtleFuelSyncPayload.CODEC, TurtleFuelSyncPayload::handle);
-        NetworkingHelper.registerS2C(CableIdSyncPayload.ID, CableIdSyncPayload.CODEC, CableIdSyncPayload::handle);
+        PayloadTypeRegistry.playS2C().register(EnergySyncPayload.ID, EnergySyncPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(TurtleFuelSyncPayload.ID, TurtleFuelSyncPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(CableIdSyncPayload.ID, CableIdSyncPayload.CODEC);
     }
-
 }

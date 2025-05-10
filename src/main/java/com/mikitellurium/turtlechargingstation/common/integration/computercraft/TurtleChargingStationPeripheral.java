@@ -32,34 +32,34 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
     }
 
     @LuaFunction(mainThread = true)
-    public final long getEnergy(TurtleChargingStationBlockEntity chargingStation) {
-        return chargingStation.getEnergy();
+    public final boolean isEnabled(TurtleChargingStationBlockEntity.CCAccess access) {
+        return access.getBlockState().get(TurtleChargingStationBlock.ENABLED);
     }
 
     @LuaFunction(mainThread = true)
-    public final long getEnergyCapacity(TurtleChargingStationBlockEntity chargingStation) {
-        return chargingStation.getEnergyCapacity();
-    }
-
-    @LuaFunction(mainThread = true)
-    public final boolean isEnabled(TurtleChargingStationBlockEntity chargingStation) {
-        return chargingStation.getCachedState().get(TurtleChargingStationBlock.ENABLED);
-    }
-
-    @LuaFunction(mainThread = true)
-    public final MethodResult getSide(TurtleChargingStationBlockEntity chargingStation, Direction side) {
-        Optional<Object> optional = this.getSideData(chargingStation.getWorld(), chargingStation.getPos(), side);
+    public final MethodResult getSide(TurtleChargingStationBlockEntity.CCAccess access, Direction side) {
+        Optional<Object> optional = this.getSideData(access.getWorld(), access.getPos(), side);
         return MethodResult.of(optional.orElse(null));
     }
 
     @LuaFunction(mainThread = true)
-    public final MethodResult getSides(TurtleChargingStationBlockEntity chargingStation) {
+    public final MethodResult getSides(TurtleChargingStationBlockEntity.CCAccess access) {
         Map<String, Object> results = new HashMap<>();
         for (Direction direction : Direction.values()) {
-            Optional<Object> optional = this.getSideData(chargingStation.getWorld(), chargingStation.getPos(), direction);
+            Optional<Object> optional = this.getSideData(access.getWorld(), access.getPos(), direction);
             optional.ifPresent((obj) -> results.put(direction.getName(), obj));
         }
         return MethodResult.of(!results.isEmpty() ? results : null);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final long getEnergy(TurtleChargingStationBlockEntity.CCAccess access) {
+        return access.getEnergy();
+    }
+
+    @LuaFunction(mainThread = true)
+    public final long getEnergyCapacity(TurtleChargingStationBlockEntity.CCAccess access) {
+        return access.getEnergyCapacity();
     }
 
     private Optional<Object> getSideData(World world, BlockPos pos, Direction side) {

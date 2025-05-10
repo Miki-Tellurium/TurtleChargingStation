@@ -14,7 +14,7 @@ public class TurtleChargingStationClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         HandledScreens.register(ModScreenHandlers.TURTLE_CHARGING_STATION, TurtleChargingStationScreen::new);
-        ModMessages.registerS2CPackets();
+        ModMessages.registerC2SPackets();
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             BlockEntityRendererFactories.register(ModBlockEntities.COPPER_CABLE, DebugCableRenderer::new);
         }
