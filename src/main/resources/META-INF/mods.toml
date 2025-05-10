@@ -38,13 +38,13 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId="computercraft"
 mandatory=true
-versionRange="${cc_version_range}"
+versionRange="[${cc_version},)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies."${mod_id}"]]
 modId="telluriumforge"
 mandatory=true
-versionRange="${telluriumforge_version_range}"
+versionRange="[${telluriumforge_version},)"
 ordering="NONE"
 side="BOTH"
