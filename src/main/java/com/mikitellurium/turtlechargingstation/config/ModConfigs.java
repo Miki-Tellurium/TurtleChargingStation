@@ -9,7 +9,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 public class ModConfigs {
     private static ForgeConfigSpec COMMON_CONFIG;
 
-    public static void registerConfig() {
+    public static void register() {
         ForgeConfigSpec.Builder CONFIG_BUILDER = new ForgeConfigSpec.Builder();
         COMMON_CONFIG = setupConfig(CONFIG_BUILDER);
         ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, COMMON_CONFIG);

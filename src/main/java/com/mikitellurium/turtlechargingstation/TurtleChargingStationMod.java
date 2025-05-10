@@ -1,58 +1,36 @@
 package com.mikitellurium.turtlechargingstation;
 
-import com.mikitellurium.turtlechargingstation.client.blockentity.DebugCableRenderer;
-import com.mikitellurium.turtlechargingstation.common.integration.computercraft.TurtleChargingStationPeripheral;
+import com.mikitellurium.turtlechargingstation.common.event.GameplayEvents;
 import com.mikitellurium.turtlechargingstation.config.ModConfigs;
-import com.mikitellurium.turtlechargingstation.common.event.ModEvents;
-import com.mikitellurium.turtlechargingstation.client.gui.TurtleChargingStationScreen;
 import com.mikitellurium.turtlechargingstation.networking.Networking;
-import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
-import com.mikitellurium.turtlechargingstation.registry.ModMenuTypes;
 import com.mikitellurium.turtlechargingstation.registry.ModRegistries;
 import com.mojang.logging.LogUtils;
-import dan200.computercraft.api.ComputerCraftAPI;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLLoader;
 import org.slf4j.Logger;
 
 @Mod(TurtleChargingStationMod.MOD_ID)
 public class TurtleChargingStationMod {
 
     public static final String MOD_ID = "turtlechargingstation";
-    public static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public TurtleChargingStationMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        MinecraftForge.EVENT_BUS.register(this);
         ModRegistries.register();
-        ModEvents.register(modEventBus);
+        CommonSetup.register(modEventBus);
+        GameplayEvents.register(modEventBus);
         Networking.register();
-        ModConfigs.registerConfig();
-        ComputerCraftAPI.registerGenericSource(new TurtleChargingStationPeripheral());
+        ModConfigs.register();
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
+    public static String modId() {
+        return MOD_ID;
+    }
 
-        @SubscribeEvent
-        public static void clientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(ModMenuTypes.TURTLE_CHARGING_STATION.get(), TurtleChargingStationScreen::new);
-        }
-
-        @SubscribeEvent
-        public static void registerRenderer(EntityRenderersEvent.RegisterRenderers event) {
-            if (!FMLLoader.isProduction()) {
-                event.registerBlockEntityRenderer(ModBlockEntities.COPPER_CABLE.get(), DebugCableRenderer::new);
-            }
-        }
+    public static Logger logger() {
+        return LOGGER;
     }
 
 }
