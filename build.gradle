@@ -68,9 +68,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	//modImplementation "maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-fabric"
-	modImplementation ("blank:telluriumforge:1.4.0-beta-${minecraft_version}-fabric") {
-		changing = true
-	}
+	modImplementation ("blank:telluriumforge:1.4.0-${minecraft_version}-fabric")
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
