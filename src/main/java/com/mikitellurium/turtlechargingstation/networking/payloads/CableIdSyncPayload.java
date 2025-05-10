@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CableIdSyncPayload extends IntSyncPayload {
 
-    public static final CustomPacketPayload.Type<CableIdSyncPayload> TYPE = new Type<>(FastLoc.modLoc("id_sync_payload"));
+    public static final CustomPacketPayload.Type<CableIdSyncPayload> TYPE = new Type<>(FastLoc.ofMod("id_sync_payload"));
     public static final StreamCodec<FriendlyByteBuf, CableIdSyncPayload> CODEC = IntSyncPayload.getCodec(CableIdSyncPayload::new);
 
     public CableIdSyncPayload(BlockPos blockPos, Integer value) {

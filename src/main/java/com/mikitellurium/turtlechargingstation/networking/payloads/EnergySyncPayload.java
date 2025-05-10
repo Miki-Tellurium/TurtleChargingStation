@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class EnergySyncPayload extends IntSyncPayload {
 
-    public static final CustomPacketPayload.Type<EnergySyncPayload> TYPE = new Type<>(FastLoc.modLoc("energy_sync"));
+    public static final CustomPacketPayload.Type<EnergySyncPayload> TYPE = new Type<>(FastLoc.ofMod("energy_sync"));
     public static final StreamCodec<FriendlyByteBuf, EnergySyncPayload> CODEC = IntSyncPayload.getCodec(EnergySyncPayload::new);
 
     public EnergySyncPayload(BlockPos blockPos, Integer value) {

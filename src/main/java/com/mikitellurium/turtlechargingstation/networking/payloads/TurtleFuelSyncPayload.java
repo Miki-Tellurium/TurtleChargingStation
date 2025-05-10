@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class TurtleFuelSyncPayload extends IntSyncPayload {
 
-    public static final CustomPacketPayload.Type<TurtleFuelSyncPayload> TYPE = new Type<>(FastLoc.modLoc("turtle_fuel_sync"));
+    public static final CustomPacketPayload.Type<TurtleFuelSyncPayload> TYPE = new Type<>(FastLoc.ofMod("turtle_fuel_sync"));
     public static final StreamCodec<FriendlyByteBuf, TurtleFuelSyncPayload> CODEC = IntSyncPayload.getCodec(TurtleFuelSyncPayload::new);
 
     public TurtleFuelSyncPayload(BlockPos blockPos, Integer value) {

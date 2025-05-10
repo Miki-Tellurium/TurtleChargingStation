@@ -9,11 +9,11 @@ public class FastLoc {
         return ResourceLocation.fromNamespaceAndPath(namespace, id);
     }
 
-    public static ResourceLocation modLoc(String id) {
+    public static ResourceLocation ofMod(String id) {
         return of(modId(), id);
     }
 
-    public static ResourceLocation mcLoc(String id) {
+    public static ResourceLocation ofMc(String id) {
         return ResourceLocation.withDefaultNamespace(id);
     }
 

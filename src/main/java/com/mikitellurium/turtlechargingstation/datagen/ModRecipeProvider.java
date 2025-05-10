@@ -46,7 +46,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .unlockedBy("has_honeyComb", has(Items.HONEYCOMB))
-                .save(recipeOutput, FastLoc.modLoc("copper_cable"));
+                .save(recipeOutput, FastLoc.ofMod("copper_cable"));
         // Thermal
         if (ModList.get().isLoaded(ModIdConstants.ID_THERMAL)) {
             Item energyCellFrame = BuiltInRegistries.ITEM.get(FastLoc.of(ModIdConstants.ID_THERMAL, "energy_cell_frame"));
@@ -82,7 +82,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', coreItem)
                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))
-                .save(recipeOutput.withConditions(condition), FastLoc.modLoc(recipeId));
+                .save(recipeOutput.withConditions(condition), FastLoc.ofMod(recipeId));
     }
 
     private void thunderchargeDynamo(RecipeOutput recipeOutput, ItemLike coreItem, ItemLike secondItem, String recipeId, ICondition condition) {
@@ -96,7 +96,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', secondItem)
                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))
-                .save(recipeOutput.withConditions(condition), FastLoc.modLoc(recipeId));
+                .save(recipeOutput.withConditions(condition), FastLoc.ofMod(recipeId));
     }
 
     private void thunderchargeDynamo(RecipeOutput recipeOutput, ItemLike coreItem, TagKey<Item> secondItem, String recipeId, ICondition condition) {
@@ -110,7 +110,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', secondItem)
                 .unlockedBy("has_turtle", has(ModRegistry.Blocks.TURTLE_NORMAL.get()))
                 .unlockedBy("has_advanced_turtle", has(ModRegistry.Blocks.TURTLE_ADVANCED.get()))
-                .save(recipeOutput.withConditions(condition), FastLoc.modLoc(recipeId));
+                .save(recipeOutput.withConditions(condition), FastLoc.ofMod(recipeId));
     }
 
 }

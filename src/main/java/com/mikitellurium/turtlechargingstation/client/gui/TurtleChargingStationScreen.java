@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class TurtleChargingStationScreen extends AbstractContainerScreen<TurtleChargingStationMenu> {
 
-    private static final ResourceLocation GUI_TEXTURE = FastLoc.modLoc("textures/gui/turtle_charging_station_gui.png");
+    private static final ResourceLocation GUI_TEXTURE = FastLoc.ofMod("textures/gui/turtle_charging_station_gui.png");
     private EnergyStorageElement energyStorage;
     private TurtleInfoElement turtleInfo;
     private int tickTimer = 0;
