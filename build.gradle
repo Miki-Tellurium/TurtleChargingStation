@@ -120,8 +120,8 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    //implementation fg.deobf("maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-forge")
-    implementation fg.deobf("blank:telluriumforge:1.4.0-1.20.1-forge")
+    implementation fg.deobf("maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-forge")
+    //implementation fg.deobf("blank:telluriumforge:1.4.0-1.20.1-forge")
 
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
