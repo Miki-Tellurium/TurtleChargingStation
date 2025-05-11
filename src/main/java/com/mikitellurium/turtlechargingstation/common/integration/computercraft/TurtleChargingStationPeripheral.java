@@ -8,6 +8,7 @@ import dan200.computercraft.api.lua.MethodResult;
 import dan200.computercraft.api.peripheral.GenericPeripheral;
 import dan200.computercraft.api.peripheral.PeripheralType;
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.BlockPos;
@@ -28,12 +29,18 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
 
     @Override
     public PeripheralType getType() {
-        return PeripheralType.ofAdditional("charging_station");
+        return PeripheralType.ofAdditional("turtle_charging_station");
     }
 
     @LuaFunction(mainThread = true)
     public final boolean isEnabled(TurtleChargingStationBlockEntity.CCAccess access) {
         return access.getBlockState().get(TurtleChargingStationBlock.ENABLED);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final boolean isCharging(TurtleChargingStationBlockEntity.CCAccess access) {
+        BlockState blockState = access.getBlockState();
+        return blockState.get(TurtleChargingStationBlock.ENABLED) && blockState.get(TurtleChargingStationBlock.CHARGING);
     }
 
     @LuaFunction(mainThread = true)
