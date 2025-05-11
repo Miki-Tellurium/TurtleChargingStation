@@ -131,6 +131,16 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
         return ignoreOnUpdate;
     }
 
+    @Override
+    public World getNodeWorld() {
+        return world;
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return pos;
+    }
+
     public EnergyStorage energyLookup(Direction side) {
         return EnergyStorage.EMPTY;
     }
