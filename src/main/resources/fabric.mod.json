@@ -33,7 +33,7 @@
 		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*",
-		"computercraft": "~1.115.1",
+		"computercraft": ">=1.115.1",
 		"telluriumforge": ">=1.4.0"
 	},
 	"suggests": {
