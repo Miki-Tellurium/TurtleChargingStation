@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,12 +27,18 @@ public class TurtleChargingStationPeripheral implements GenericPeripheral {
 
     @Override
     public PeripheralType getType() {
-        return PeripheralType.ofAdditional("charging_station");
+        return PeripheralType.ofAdditional("turtle_charging_station");
     }
 
     @LuaFunction(mainThread = true)
     public final boolean isEnabled(TurtleChargingStationBlockEntity.CCAccess access) {
         return access.getBlockState().getValue(TurtleChargingStationBlock.ENABLED);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final boolean isCharging(TurtleChargingStationBlockEntity.CCAccess access) {
+        BlockState blockState = access.getBlockState();
+        return blockState.getValue(TurtleChargingStationBlock.ENABLED) && blockState.getValue(TurtleChargingStationBlock.CHARGING);
     }
 
     @LuaFunction(mainThread = true)
