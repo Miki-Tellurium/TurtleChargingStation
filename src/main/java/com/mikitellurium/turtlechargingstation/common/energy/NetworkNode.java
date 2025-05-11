@@ -4,7 +4,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface NetworkNode {
-
     CableNetwork getNetwork();
 
     void setNetwork(CableNetwork cableNetwork);
@@ -13,8 +12,7 @@ public interface NetworkNode {
 
     boolean ignoreOnUpdate();
 
-    World getWorld();
+    World getNodeWorld();
 
-    BlockPos getPos();
-
+    BlockPos getBlockPos();
 }

@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CableNetworkImpl implements CableNetwork {
-
     private static int ids = 0; // Keep track of the networks created, for debug purposes
     private static int id() {
         return ++ids;
@@ -39,9 +38,9 @@ public class CableNetworkImpl implements CableNetwork {
     @SuppressWarnings("ConstantConditions")
     @Override
     public void update(NetworkNode startingPoint) {
-        if (!startingPoint.getWorld().isClient) {
+        if (!startingPoint.getNodeWorld().isClient) {
             receivers.clear();
-            Set<NetworkNode> nodes = this.findConnectedNodes(startingPoint.getWorld(), startingPoint.getPos(), null, new HashSet<>());
+            Set<NetworkNode> nodes = this.findConnectedNodes(startingPoint.getNodeWorld(), startingPoint.getBlockPos(), null, new HashSet<>());
             nodes.forEach((node) -> {
                 this.addNode(node);
                 this.findReceivers(node);
@@ -71,9 +70,9 @@ public class CableNetworkImpl implements CableNetwork {
 
     private void findReceivers(NetworkNode node) {
         for (Direction direction : Direction.values()) {
-            BlockPos relativePos = node.getPos().offset(direction);
-            BlockEntity blockEntity = node.getWorld().getBlockEntity(relativePos);
-            if (blockEntity != null && !(blockEntity instanceof NetworkNode) && EnergyStorage.SIDED.find(node.getWorld(), blockEntity.getPos(), blockEntity.getCachedState(), blockEntity, direction) != null) {
+            BlockPos relativePos = node.getBlockPos().offset(direction);
+            BlockEntity blockEntity = node.getNodeWorld().getBlockEntity(relativePos);
+            if (blockEntity != null && !(blockEntity instanceof NetworkNode) && EnergyStorage.SIDED.find(node.getNodeWorld(), blockEntity.getPos(), blockEntity.getCachedState(), blockEntity, direction) != null) {
                 this.addReceiver(blockEntity);
             }
         }
@@ -125,5 +124,4 @@ public class CableNetworkImpl implements CableNetwork {
     public String toString() {
         return this.getClass().getSimpleName() + "[Id:" + id + ", Nodes:" + nodes.size() + ", Receivers:" + receivers.size() + "]";
     }
-
 }
