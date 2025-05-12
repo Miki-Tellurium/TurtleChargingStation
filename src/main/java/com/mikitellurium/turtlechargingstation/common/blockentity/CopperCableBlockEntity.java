@@ -150,7 +150,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup lookup) {
         NbtCompound nbt = super.toInitialChunkDataNbt(lookup);
-        nbt.putInt("networkId", ((CableNetworkImpl)cableNetwork).getId());
+        nbt.putInt("networkId", cableNetwork != null ? ((CableNetworkImpl)cableNetwork).getId() : clientNetworkId);
         return nbt;
     }
 
