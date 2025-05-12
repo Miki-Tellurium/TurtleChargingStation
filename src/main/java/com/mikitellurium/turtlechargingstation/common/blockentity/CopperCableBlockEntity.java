@@ -138,7 +138,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
-        tag.putInt("networkId", ((CableNetworkImpl)cableNetwork).getId());
+        tag.putInt("networkId", cableNetwork != null ? ((CableNetworkImpl)cableNetwork).getId() : clientNetworkId);
         return tag;
     }
 
