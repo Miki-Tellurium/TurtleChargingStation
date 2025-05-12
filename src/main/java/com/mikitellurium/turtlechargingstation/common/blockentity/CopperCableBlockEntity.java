@@ -148,7 +148,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         NbtCompound nbt = super.toInitialChunkDataNbt();
-        nbt.putInt("networkId", ((CableNetworkImpl)cableNetwork).getId());
+        nbt.putInt("networkId", cableNetwork != null ? ((CableNetworkImpl)cableNetwork).getId() : clientNetworkId);
         return nbt;
     }
 
@@ -166,7 +166,7 @@ public class CopperCableBlockEntity extends BlockEntity implements TickingBlockE
         nbt.putInt("burningTimer", burningTimer);
         super.writeNbt(nbt);
     }
-//
+
 //    /*==DEBUG==*/
     private int clientNetworkId = -1;
 
