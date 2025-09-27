@@ -20,9 +20,11 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 public class TurtleChargingStationBlock extends BlockWithEntity {
@@ -47,15 +49,15 @@ public class TurtleChargingStationBlock extends BlockWithEntity {
         return new TurtleChargingStationBlockEntity(pos, state);
     }
 
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState blockState, BlockEntityType<T> type) {
         return checkType(type, ModBlockEntities.TURTLE_CHARGING_STATION, TickingBlockEntity.getTicker());
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
     }
 
     @Override
@@ -104,6 +106,21 @@ public class TurtleChargingStationBlock extends BlockWithEntity {
         boolean flag = !world.isReceivingRedstonePower(pos);
         if (flag != state.get(ENABLED)) {
             world.setBlockState(pos, state.with(ENABLED, flag), 2);
+        }
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (world.isClient) return;
+
+        if (!state.isOf(newState.getBlock())) {
+            BlockEntity blockentity = world.getBlockEntity(pos);
+            if (blockentity instanceof TurtleChargingStationBlockEntity turtleChargingStation) {
+                ItemScatterer.spawn(world, pos, turtleChargingStation.getInventory());
+                world.updateComparators(pos, this);
+            }
+
+            super.onStateReplaced(state, world, pos, newState, moved);
         }
     }
 
