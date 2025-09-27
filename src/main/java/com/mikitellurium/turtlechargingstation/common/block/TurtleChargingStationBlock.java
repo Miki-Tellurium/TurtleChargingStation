@@ -1,13 +1,16 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
 import com.mikitellurium.telluriumforge.blockentity.TickingBlockEntity;
+import com.mikitellurium.telluriumforge.util.ContainerUtils;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationBlockEntity;
 import com.mikitellurium.turtlechargingstation.registry.ModBlockEntities;
 import com.mikitellurium.turtlechargingstation.networking.Networking;
 import com.mikitellurium.turtlechargingstation.networking.packets.EnergySyncS2CPacket;
 import com.mikitellurium.turtlechargingstation.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +21,7 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,6 +34,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +56,6 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
                 .setValue(CHARGING, Boolean.FALSE));
     }
 
-    // Block entity stuff
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
@@ -59,13 +63,13 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.TURTLE_CHARGING_STATION.get(), TickingBlockEntity.getTicker());
+    public RenderShape getRenderShape(BlockState blockState) {
+        return RenderShape.MODEL;
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.MODEL;
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.TURTLE_CHARGING_STATION.get(), TickingBlockEntity.getTicker());
     }
 
     @Override
@@ -124,6 +128,20 @@ public class TurtleChargingStationBlock extends BaseEntityBlock {
             }
         }
         return drops;
+    }
+
+    public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (level.isClientSide) return;
+
+        if (!blockState.is(newState.getBlock())) {
+            BlockEntity blockentity = level.getBlockEntity(pos);
+            if (blockentity instanceof TurtleChargingStationBlockEntity turtleChargingStation) {
+                Containers.dropContents(level, pos, ContainerUtils.fromItemHandler(turtleChargingStation.getItemHandler()));
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
+
+            super.onRemove(blockState, level, pos, newState, isMoving);
+        }
     }
 
     @Override
