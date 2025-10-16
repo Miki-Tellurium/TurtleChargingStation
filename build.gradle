@@ -22,6 +22,9 @@ repositories {
     maven {
         url = "https://maven.minecraftforge.net/"
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
