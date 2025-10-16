@@ -22,6 +22,30 @@ repositories {
     maven {
         url = "https://maven.minecraftforge.net/"
     }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url "https://maven.shedaniel.me/"
+    }
+    maven {
+        // CC:Tweaked
+        name = "Squiddev maven cct"
+        url = 'https://maven.squiddev.cc'
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        forRepositories(fg.repository)
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
     flatDir {
         dirs 'libs'
     }
@@ -31,6 +55,11 @@ dependencies {
     minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
 
     implementation fg.deobf("blank:telluriumforge:1.4.0-beta-1.12.2-forge")
+
+    //compileOnly fg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}:api")
+    implementation fg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}")
+
+    implementation fg.deobf("org.squiddev:cc-tweaked-${minecraft_version}:${cc_version}")
 }
 
 minecraft {
