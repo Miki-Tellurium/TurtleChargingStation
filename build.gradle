@@ -29,6 +29,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
+
+    implementation fg.deobf("blank:telluriumforge:1.4.0-beta-1.12.2-forge")
 }
 
 minecraft {
