@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "turtlechargingstation:block/turtle_charging_station_on"
+  }
+}

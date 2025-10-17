@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "top": "turtlechargingstation:block/thundercharge_dynamo_top_on",
+    "bottom": "turtlechargingstation:block/thundercharge_dynamo_top_on",
+    "side": "turtlechargingstation:block/thundercharge_dynamo_side_on"
+  }
+}

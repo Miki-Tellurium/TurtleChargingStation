@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "turtlechargingstation:block/thundercharge_dynamo_off"
+    },
+    "powered=true": {
+      "model": "turtlechargingstation:block/thundercharge_dynamo_on"
+    }
+  }
+}
