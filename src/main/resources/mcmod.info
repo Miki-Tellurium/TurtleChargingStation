@@ -11,6 +11,14 @@
   "credits": "",
   "logoFile": "${mod_icon}",
   "screenshots": [],
-  "dependencies": []
+  "useDependencyInformation": true,
+  "requiredMods": [
+    "telluriumforge",
+    "computercraft"
+  ],
+  "dependencies": [
+    "telluriumforge",
+    "computercraft"
+  ]
 }
 ]
