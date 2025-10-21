@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlechargingstation;
 
+import com.mikitellurium.turtlechargingstation.registry.ModRegistries;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +18,7 @@ public class TurtleChargingStationMod {
     }
 
     private TurtleChargingStationMod() {
-//        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-//        ModRegistries.register();
+        ModRegistries.register();
 //        CommonSetup.register(modEventBus);
 //        GameplayEvents.register(modEventBus);
 //        Networking.register();

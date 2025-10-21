@@ -1,16 +1,16 @@
 {
   "variants": {
-    "enabled=true,charging=false": {
-      "model": "turtlechargingstation:block/turtle_charging_station_off"
+    "charging=true,enabled=false": {
+      "model": "turtlechargingstation:turtle_charging_station_off"
     },
-    "enabled=true,charging=true": {
-      "model": "turtlechargingstation:block/turtle_charging_station_on"
+    "charging=true,enabled=true": {
+      "model": "turtlechargingstation:turtle_charging_station_on"
     },
-    "enabled=false,charging=false": {
-      "model": "turtlechargingstation:block/turtle_charging_station_disabled"
+    "charging=false,enabled=false": {
+      "model": "turtlechargingstation:turtle_charging_station_disabled"
     },
-    "enabled=false,charging=true": {
-      "model": "turtlechargingstation:block/turtle_charging_station_disabled"
+    "charging=false,enabled=true": {
+      "model": "turtlechargingstation:turtle_charging_station_disabled"
     }
   }
 }
