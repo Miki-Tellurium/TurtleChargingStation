@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
+import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationTileEntity;
 import com.mikitellurium.turtlechargingstation.registry.ModCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -8,7 +9,16 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class TurtleChargingStationBlock extends Block {
     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
@@ -17,14 +27,28 @@ public class TurtleChargingStationBlock extends Block {
     public TurtleChargingStationBlock() {
         super(Material.ROCK, MapColor.BLACK);
         this.setCreativeTab(ModCreativeTabs.MAIN_TAB);
-        this.setDefaultState(this.blockState.getBaseState()
-                .withProperty(ENABLED, false)
-                .withProperty(CHARGING, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ENABLED, true).withProperty(CHARGING, false));
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TurtleChargingStationTileEntity();
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, ENABLED, CHARGING);
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return this.getDefaultState().withProperty(ENABLED, true);
     }
 
     @Override
@@ -43,5 +67,19 @@ public class TurtleChargingStationBlock extends Block {
         if (state.getValue(CHARGING)) meta |= 2;
 
         return meta;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile instanceof TurtleChargingStationTileEntity) {
+                TurtleChargingStationTileEntity stationTile = (TurtleChargingStationTileEntity) tile;
+                stationTile.switchState(state);
+                return true;
+            }
+        }
+
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 }
