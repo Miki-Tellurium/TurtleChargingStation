@@ -3,9 +3,9 @@ package com.mikitellurium.turtlechargingstation.common.block;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationTileEntity;
 import com.mikitellurium.turtlechargingstation.registry.ModCreativeTabs;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class TurtleChargingStationBlock extends Block {
     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
@@ -27,7 +28,13 @@ public class TurtleChargingStationBlock extends Block {
     public TurtleChargingStationBlock() {
         super(Material.ROCK, MapColor.BLACK);
         this.setCreativeTab(ModCreativeTabs.MAIN_TAB);
+        this.setHardness(3.0F).setResistance(6.0F).setHarvestLevel("pickaxe", 0);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ENABLED, true).withProperty(CHARGING, false));
+    }
+
+    @Override
+    public SoundType getSoundType() {
+        return SoundType.METAL;
     }
 
     @Override
@@ -71,15 +78,6 @@ public class TurtleChargingStationBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TurtleChargingStationTileEntity) {
-                TurtleChargingStationTileEntity stationTile = (TurtleChargingStationTileEntity) tile;
-                stationTile.switchState(state);
-                return true;
-            }
-        }
-
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 }
