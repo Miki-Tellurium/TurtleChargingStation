@@ -1,5 +1,6 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
+import com.mikitellurium.turtlechargingstation.client.ModGuiHandler;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationTileEntity;
 import com.mikitellurium.turtlechargingstation.registry.ModCreativeTabs;
 import net.minecraft.block.Block;
@@ -12,7 +13,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -78,6 +81,14 @@ public class TurtleChargingStationBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+        if (!worldIn.isRemote) {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+
+            if (tileentity instanceof TurtleChargingStationTileEntity) {
+                ModGuiHandler.openTurtleChargingStationGui(playerIn, (TurtleChargingStationTileEntity) tileentity);
+            }
+
+        }
+        return true;
     }
 }
