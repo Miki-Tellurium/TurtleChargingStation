@@ -22,7 +22,7 @@ public class EnergySyncS2CPacket extends IntSyncPacket {
     public static IMessageHandler<EnergySyncS2CPacket, IMessage> handler() {
         return (message, context) -> {
             TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(message.getBlockPos());
-            if(tile instanceof TurtleChargingStationTileEntity) {
+            if (tile instanceof TurtleChargingStationTileEntity) {
                 TurtleChargingStationTileEntity station = (TurtleChargingStationTileEntity) tile;
                 station.setEnergy(message.getValue());
 
