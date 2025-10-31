@@ -2,6 +2,7 @@ package com.mikitellurium.turtlechargingstation.client.gui;
 
 import com.mikitellurium.telluriumforge.util.MouseUtils;
 import com.mikitellurium.turtlechargingstation.client.gui.element.EnergyStorageElement;
+import com.mikitellurium.turtlechargingstation.client.gui.element.TurtleInfoElement;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationTileEntity;
 import com.mikitellurium.turtlechargingstation.util.FastLoc;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -16,7 +17,8 @@ public class TurtleChargingStationGui extends GuiContainer {
     private final IInventory playerInv;
     private final TurtleChargingStationContainer container;
     private EnergyStorageElement energyStorage;
-    //private TurtleInfoElement turtleInfo;
+    private TurtleInfoElement turtleInfo;
+    private int tickTimer = 0;
 
     public TurtleChargingStationGui(IInventory playerInv, TurtleChargingStationTileEntity tile) {
         super(new TurtleChargingStationContainer(playerInv, tile));
@@ -30,6 +32,16 @@ public class TurtleChargingStationGui extends GuiContainer {
         this.ySize = 197;
         super.initGui();
         energyStorage = new EnergyStorageElement(container.getTile(), this.guiLeft + 8, this.guiTop + 15);
+        turtleInfo = new TurtleInfoElement(container.getTile(), this.guiLeft + 30, this.guiTop + 16);
+    }
+
+    @Override
+    public void updateScreen() {
+        super.updateScreen();
+        if (++tickTimer >= 12) {
+            this.turtleInfo.updateStringTimer();
+            tickTimer = 0;
+        }
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -54,6 +66,7 @@ public class TurtleChargingStationGui extends GuiContainer {
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         energyStorage.draw(this);
+        turtleInfo.draw(this);
     }
 
     private void renderEnergyAreaTooltips(int mouseX, int mouseY) {
