@@ -2,6 +2,8 @@ package com.mikitellurium.turtlechargingstation.common.block;
 
 import com.mikitellurium.turtlechargingstation.client.ModGuiHandler;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationTileEntity;
+import com.mikitellurium.turtlechargingstation.networking.ModNetworking;
+import com.mikitellurium.turtlechargingstation.networking.packet.EnergySyncS2CPacket;
 import com.mikitellurium.turtlechargingstation.registry.ModCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -82,13 +84,34 @@ public class TurtleChargingStationBlock extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-
-            if (tileentity instanceof TurtleChargingStationTileEntity) {
-                ModGuiHandler.openTurtleChargingStationGui(playerIn, (TurtleChargingStationTileEntity) tileentity);
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile instanceof TurtleChargingStationTileEntity) {
+                TurtleChargingStationTileEntity stationTile = (TurtleChargingStationTileEntity) tile;
+                ModGuiHandler.openTurtleChargingStationGui(playerIn, stationTile);
+                ModNetworking.INSTANCE.sendToAll(new EnergySyncS2CPacket(pos, stationTile.getEnergy()));
+            } else {
+                throw new IllegalStateException("Container provider is missing");
             }
-
         }
         return true;
+    }
+
+    @Override
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+        //if (!oldState.is(blockState.getBlock())) {
+            this.checkPoweredState(world, pos, state);
+        //}
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        this.checkPoweredState(world, pos, state);
+    }
+
+    private void checkPoweredState(World world, BlockPos pos, IBlockState state) {
+        boolean flag = !world.isBlockPowered(pos);
+        if (flag != state.getValue(ENABLED)) {
+            world.setBlockState(pos, state.withProperty(ENABLED, flag), 2);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.mikitellurium.turtlechargingstation;
 
 import com.mikitellurium.turtlechargingstation.client.ModGuiHandler;
+import com.mikitellurium.turtlechargingstation.networking.ModNetworking;
 import com.mikitellurium.turtlechargingstation.registry.ModRegistries;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -23,6 +24,7 @@ public class TurtleChargingStationMod {
     public void preInit(FMLPreInitializationEvent event) {
         ModRegistries.register();
         CommonSetup.register();
+        ModNetworking.register();
     }
 
     @Mod.EventHandler
