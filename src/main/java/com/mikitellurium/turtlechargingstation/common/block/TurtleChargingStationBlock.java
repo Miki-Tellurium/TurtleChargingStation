@@ -1,11 +1,13 @@
 package com.mikitellurium.turtlechargingstation.common.block;
 
+import com.mikitellurium.telluriumforge.util.ContainerUtils;
 import com.mikitellurium.turtlechargingstation.client.ModGuiHandler;
 import com.mikitellurium.turtlechargingstation.common.blockentity.TurtleChargingStationTileEntity;
 import com.mikitellurium.turtlechargingstation.networking.ModNetworking;
 import com.mikitellurium.turtlechargingstation.networking.packet.EnergySyncS2CPacket;
 import com.mikitellurium.turtlechargingstation.registry.ModCreativeTabs;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -14,19 +16,24 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class TurtleChargingStationBlock extends Block {
+public class TurtleChargingStationBlock extends BlockContainer {
     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
     public static final PropertyBool CHARGING = PropertyBool.create("charging");
 
@@ -49,8 +56,13 @@ public class TurtleChargingStationBlock extends Block {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TurtleChargingStationTileEntity();
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -98,9 +110,7 @@ public class TurtleChargingStationBlock extends Block {
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-        //if (!oldState.is(blockState.getBlock())) {
-            this.checkPoweredState(world, pos, state);
-        //}
+        this.checkPoweredState(world, pos, state);
     }
 
     @Override
@@ -113,5 +123,25 @@ public class TurtleChargingStationBlock extends Block {
         if (flag != state.getValue(ENABLED)) {
             world.setBlockState(pos, state.withProperty(ENABLED, flag), 2);
         }
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        if (stack.hasDisplayName()) {
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile instanceof TurtleChargingStationTileEntity) {
+                ((TurtleChargingStationTileEntity)tile).setCustomName(stack.getDisplayName());
+            }
+        }
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TurtleChargingStationTileEntity) {
+            InventoryHelper.dropInventoryItems(world, pos, ContainerUtils.fromItemHandler(((TurtleChargingStationTileEntity)tile).getItemHandler()));
+            world.updateComparatorOutputLevel(pos, this);
+        }
+        super.breakBlock(world, pos, state);
     }
 }

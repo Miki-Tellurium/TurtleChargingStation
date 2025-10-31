@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -28,6 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nullable;
 
 public class TurtleChargingStationTileEntity extends TileEntity implements ISideTickingTile, IInteractionObject {
+    private String customName;
     private final ItemStackHandler itemHandler = new ItemStackHandler() {
         @Override
         protected void onContentsChanged(int slot) {
@@ -91,17 +93,21 @@ public class TurtleChargingStationTileEntity extends TileEntity implements ISide
 
     @Override
     public String getName() {
-        return "Turtle Charging Station <-- add custom name";
+        return this.hasCustomName() ? this.customName : this.getBlockType().getTranslationKey();
+    }
+
+    public void setCustomName(String customName) {
+        this.customName = customName;
     }
 
     @Override
     public boolean hasCustomName() {
-        return false;
+        return this.customName != null && !this.customName.isEmpty();
     }
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TextComponentString(this.getName());
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
     }
 
     @Override
