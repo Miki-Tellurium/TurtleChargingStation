@@ -6,7 +6,6 @@ import dan200.computercraft.shared.turtle.blocks.TileTurtle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
@@ -42,8 +41,8 @@ public class TurtleInfoElement {
         int yPos = area.y;
         int namePos = xPos + 75;
         int fuelPos = xPos + 143;
-        ITextComponent name = new TextComponentTranslation("gui.turtlechargingstation.turtle_charging_station.turtle_name");
-        ITextComponent fuelLevel = new TextComponentTranslation("gui.turtlechargingstation.turtle_charging_station.fuel_level");
+        ITextComponent name = new TextComponentTranslation("gui.turtle_charging_station.turtle_name");
+        ITextComponent fuelLevel = new TextComponentTranslation("gui.turtle_charging_station.fuel_level");
         parent.drawCenteredString(font, name.getUnformattedText(), namePos, yPos + 2, WHITE);
         parent.drawCenteredString(font, fuelLevel.getUnformattedText(), fuelPos, yPos + 2, WHITE);
         int h = yPos + 2;
@@ -59,7 +58,7 @@ public class TurtleInfoElement {
     }
 
     private String getDirectionName(EnumFacing direction) {
-        String name = new TextComponentTranslation("gui.turtlechargingstation.turtle_charging_station." + direction.getName()).getUnformattedText();
+        String name = new TextComponentTranslation("gui.turtle_charging_station." + direction.getName()).getUnformattedText();
         String withColon = name + ":";
         int leadingSpace = 7 - withColon.length(); // 7 is fixed
         return String.join("", Collections.nCopies(Math.max(leadingSpace, 0), " ")) + withColon; // Add space to align the ':'

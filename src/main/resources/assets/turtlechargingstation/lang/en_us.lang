@@ -1,0 +1,17 @@
+itemGroup.main.name=Turtle Charging Station
+
+tile.turtle_charging_station.name=Turtle Charging Station
+tile.thundercharge_dynamo.name=Thundercharge Dynamo
+tile.copper_cable.name=Copper Cable
+
+tooltip.thundercharge_dynamo=Generates energy when struck by lightning
+tooltip.thundercharge_dynamo.shift=[SHIFT]
+
+gui.turtle_charging_station.turtle_name=Name
+gui.turtle_charging_station.fuel_level=Fuel Level
+gui.turtle_charging_station.down=Down
+gui.turtle_charging_station.up=Up
+gui.turtle_charging_station.north=North
+gui.turtle_charging_station.south=South
+gui.turtle_charging_station.east=East
+gui.turtle_charging_station.west=West

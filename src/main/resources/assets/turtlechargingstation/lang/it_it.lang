@@ -1,0 +1,17 @@
+itemGroup.main.name=Turtle Charging Station
+
+tile.turtle_charging_station.name=Stazione di ricarica tartaruga
+tile.thundercharge_dynamo.name=Dinamo Fulminata
+tile.copper_cable.name=Cavo di Rame
+
+tooltip.thundercharge_dynamo=Genera energia quando colpita da un fulmine
+tooltip.thundercharge_dynamo.shift=[SHIFT]
+
+gui.turtle_charging_station.turtle_name=Nome
+gui.turtle_charging_station.fuel_level=Carburante
+gui.turtle_charging_station.down=Sotto
+gui.turtle_charging_station.up=Sopra
+gui.turtle_charging_station.north=Nord
+gui.turtle_charging_station.south=Sud
+gui.turtle_charging_station.east=Est
+gui.turtle_charging_station.west=Ovest

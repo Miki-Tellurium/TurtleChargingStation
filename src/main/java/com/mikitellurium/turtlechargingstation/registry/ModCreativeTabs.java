@@ -10,5 +10,10 @@ public class ModCreativeTabs {
         public ItemStack createIcon() {
             return new ItemStack(ModBlocks.TURTLE_CHARGING_STATION);
         }
+
+        @Override
+        public String getTranslationKey() {
+            return "itemGroup.main.name";
+        }
     };
 }
