@@ -164,7 +164,7 @@ public class TurtleChargingStationTileEntity extends TileEntity implements ISide
 
     @Override
     public String getName() {
-        return this.hasCustomName() ? this.customName : this.getBlockType().getTranslationKey();
+        return this.hasCustomName() ? this.customName : this.getBlockType().getLocalizedName();
     }
 
     public void setCustomName(String customName) {
