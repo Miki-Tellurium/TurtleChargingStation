@@ -18,6 +18,11 @@ public class TurtleChargingStationMod {
     private static final TurtleChargingStationMod INSTANCE = new TurtleChargingStationMod();
     private static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
+    @Mod.InstanceFactory
+    public static TurtleChargingStationMod getInstance() {
+        return INSTANCE;
+    }
+
     private TurtleChargingStationMod() {}
 
     @Mod.EventHandler
@@ -30,10 +35,5 @@ public class TurtleChargingStationMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, ModGuiHandler.INSTANCE);
-    }
-
-    @Mod.InstanceFactory
-    public static TurtleChargingStationMod getInstance() {
-        return INSTANCE;
     }
 }
