@@ -1,0 +1,7 @@
+itemGroup.main.name=海龟充电站
+
+tile.turtle_charging_station.name=海龟充电站
+tile.thundercharge_dynamo.name=闪电充能发电机
+
+tooltip.thundercharge_dynamo=被闪电击中时会产生能量
+tooltip.thundercharge_dynamo.shift=[SHIFT]

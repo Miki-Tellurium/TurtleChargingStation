@@ -1,0 +1,105 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url = "https://maven.minecraftforge.net/" }
+    }
+
+    dependencies {
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+"
+    }
+}
+
+apply plugin: "java"
+apply plugin: "net.minecraftforge.gradle"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+compileJava {
+    sourceCompatibility = "8"
+    targetCompatibility = "8"
+}
+
+base {
+    archivesName = "${mod_id}-${mod_version}-${minecraft_version}-forge"
+}
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    exclude 'com/mikitellurium/telluriumforge/test/**'
+}
+
+repositories {
+    maven {
+        url = "https://maven.minecraftforge.net/"
+    }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url "https://maven.shedaniel.me/"
+    }
+    maven {
+        // CC:Tweaked
+        name = "Squiddev maven cct"
+        url = 'https://maven.squiddev.cc'
+    }
+    maven {
+        url "https://cursemaven.com"
+    }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
+
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("blank:telluriumforge:1.4.0-beta-1.12.2-forge")
+
+    implementation fg.deobf("org.squiddev:cc-tweaked-${minecraft_version}:${cc_version}")
+}
+
+minecraft {
+    mappings channel: "${mapping_channel}", version: "${mapping_version}"
+
+    runs {
+        "client" {
+            workingDirectory file("./run")
+            mods { "${mod_id}" { source sourceSets.main } }
+        }
+
+        "server" {
+            workingDirectory file("./run/server")
+            mods { "${mod_id}" { source sourceSets.main } }
+        }
+    }
+}
+
+processResources {
+    var replaceProperties = [
+            minecraft_version   : minecraft_version,
+            mod_id              : mod_id,
+            mod_name            : mod_name,
+            mod_version         : mod_version,
+            mod_authors         : mod_authors,
+            mod_description     : mod_description,
+            mod_icon            : mod_icon,
+            mod_url             : mod_url
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching("mcmod.info") {
+        expand replaceProperties + [project: project]
+    }
+}
+
+
+//When Forge 1.12 loads mods from a directory that's been put on the classpath, it expects to find resources in the same directory.
+//Default Gradle behavior puts resources in ./build/resources/main instead of ./build/classes/main/java. Let's change that.
+sourceSets.all { it.output.resourcesDir = it.output.classesDirs.getFiles().iterator().next() }

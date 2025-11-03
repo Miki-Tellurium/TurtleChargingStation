@@ -1,0 +1,23 @@
+{
+  "multipart": [
+    {
+      "apply": {"model": "turtlechargingstation:block/copper_cable_core"},
+      "when": {
+        "OR": [
+          {"down": "false"},
+          {"up": "false"},
+          {"east": "false"},
+          {"west": "false"},
+          {"north": "false"},
+          {"south": "false"}
+        ]
+      }
+    },
+    {"apply": {"model": "turtlechargingstation:block/copper_cable_arm", "x": 270, "y": 0}, "when": {"down": "true"}},
+    {"apply": {"model": "turtlechargingstation:block/copper_cable_arm", "x": 90, "y": 0}, "when": {"up": "true"}},
+    {"apply": {"model": "turtlechargingstation:block/copper_cable_arm", "x": 0, "y": 180}, "when": {"north": "true"}},
+    {"apply": {"model": "turtlechargingstation:block/copper_cable_arm", "x": 0, "y": 0}, "when": {"south": "true"}},
+    {"apply": {"model": "turtlechargingstation:block/copper_cable_arm", "x": 0, "y": 90}, "when": {"west": "true"}},
+    {"apply": {"model": "turtlechargingstation:block/copper_cable_arm", "x": 0, "y": 270}, "when": {"east": "true"}}
+  ]
+}
