@@ -8,6 +8,7 @@ import com.mikitellurium.turtlechargingstation.common.block.TurtleChargingStatio
 import com.mikitellurium.turtlechargingstation.networking.ModNetworking;
 import com.mikitellurium.turtlechargingstation.networking.packet.EnergySyncS2CPacket;
 import com.mikitellurium.turtlechargingstation.networking.packet.TurtleFuelSyncS2CPacket;
+import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.shared.turtle.blocks.TileTurtle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,6 +62,22 @@ public class TurtleChargingStationTileEntity extends TileEntity implements ISide
         public void onEnergyChanged() {
             markDirty();
             ModNetworking.INSTANCE.sendToAll(new EnergySyncS2CPacket(pos, this.energy));
+        }
+    };
+    private final CCAccess access = new CCAccess() {
+        @Override
+        public BlockPos getPos() {
+            return pos;
+        }
+
+        @Override
+        public IBlockState getBlockState() {
+            return world.getBlockState(pos);
+        }
+
+        @Override
+        public World getWorld() {
+            return world;
         }
     };
     private final int textureChangeDelay = (int) Math.ceil((double) CONVERSION_RATE / 1024) + 1;
@@ -152,6 +169,10 @@ public class TurtleChargingStationTileEntity extends TileEntity implements ISide
         return itemHandler;
     }
 
+    public CCAccess getAccess() {
+        return access;
+    }
+
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
         return new TurtleChargingStationContainer(playerInventory, this);
@@ -214,5 +235,11 @@ public class TurtleChargingStationTileEntity extends TileEntity implements ISide
         nbt.setInteger("turtle_charging_station.energy", energyStorage.getEnergyStored());
         nbt.setTag("turtle_charging_station.inventory", itemHandler.serializeNBT());
         return super.writeToNBT(nbt);
+    }
+
+    public interface CCAccess {
+        BlockPos getPos();
+        IBlockState getBlockState();
+        World getWorld();
     }
 }
