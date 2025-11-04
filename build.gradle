@@ -22,10 +22,6 @@ base {
     archivesName = "${mod_id}-${mod_version}-${minecraft_version}-forge"
 }
 
-java {
-    withSourcesJar()
-}
-
 jar {
     exclude 'com/mikitellurium/telluriumforge/test/**'
 }
@@ -55,8 +51,6 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
-
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf("blank:telluriumforge:1.4.0-beta-1.12.2-forge")
