@@ -43,7 +43,8 @@ repositories {
         url = 'https://maven.squiddev.cc'
     }
     maven {
-        url "https://cursemaven.com"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
     }
     flatDir {
         dirs 'libs'
@@ -53,7 +54,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("blank:telluriumforge:1.4.0-beta-1.12.2-forge")
+    //implementation fg.deobf("blank:telluriumforge:1.4.0-beta-1.12.2-forge")
+    implementation fg.deobf("maven.modrinth:telluriumforge:${telluriumforge_version}-${minecraft_version}-forge")
 
     implementation fg.deobf("org.squiddev:cc-tweaked-${minecraft_version}:${cc_version}")
 }
