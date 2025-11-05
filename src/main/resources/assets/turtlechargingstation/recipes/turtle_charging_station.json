@@ -1,0 +1,27 @@
+{
+  "type":"minecraft:crafting_shaped",
+  "pattern":[
+    "cgc",
+    "gRg",
+    "cIc"
+  ],
+  "key": {
+    "c": {
+      "item": "minecraft:concrete",
+      "data": 15
+    },
+    "g":{
+      "type":"forge:ore_dict","ore":"ingotGold"
+    },
+    "R":{
+      "type":"forge:ore_dict","ore":"blockRedstone"
+    },
+    "I":{
+      "type":"forge:ore_dict","ore":"ingotIron"
+    }
+  },
+  "result": {
+    "item": "turtlechargingstation:turtle_charging_station",
+    "count": 1
+  }
+}
