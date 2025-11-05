@@ -16,7 +16,6 @@ public class ModRegistries {
 
     private static void registerTileEntities() {
         GameRegistry.registerTileEntity(TurtleChargingStationTileEntity.class, FastLoc.ofMod("turtle_charging_station"));
-        GameRegistry.registerTileEntity(EnergyTestTile.class, FastLoc.ofMod("energy_test"));
     }
 
     public static <T extends IForgeRegistryEntry<T>> Registrator<T> makeRegistry(IForgeRegistry<T> registry) {

@@ -13,6 +13,5 @@ public class ModBlocks {
     static {
         REGISTRATOR = BlockRegistrator.makeRegistrator(FastLoc.modId());
         TURTLE_CHARGING_STATION = REGISTRATOR.registerWithItem("turtle_charging_station", new TurtleChargingStationBlock());
-        REGISTRATOR.registerWithItem("energy_test", new EnergyTestBlock());
     }
 }
